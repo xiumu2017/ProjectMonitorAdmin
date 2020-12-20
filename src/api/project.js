@@ -2,29 +2,15 @@ import request from '@/utils/request'
 
 export function getList(params) {
   return request({
-    url: '/project/list',
+    url: '/pm-project/page',
     method: 'get',
     params
   })
 }
 
-export function getMasTypeList() {
-  return request({
-    url: '/project/masTypeList',
-    method: 'get'
-  })
-}
-
-export function getProjectTypeList() {
-  return request({
-    url: '/project/projectTypeList',
-    method: 'get'
-  })
-}
-
 export function saveProject(params) {
   return request({
-    url: '/project/saveProject',
+    url: '/pm-project/create',
     method: 'post',
     params
   })

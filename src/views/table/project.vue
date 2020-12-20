@@ -340,8 +340,8 @@
 
 <script>
 import { Message } from 'element-ui'
-import { getList, getMasTypeList, saveProject, changeEnable, saveDb, saveServer, getServer, deleteProject, check, excelExport,
-  getDb, dbConnectTest, serverConnectTest, transitCheck, getProjectTypeList, webLoginCheck, startCheck, pushToDing } from '@/api/project'
+import { getList, saveProject, saveDb, saveServer, getServer, deleteProject, check, excelExport,
+  getDb, dbConnectTest, serverConnectTest } from '@/api/project'
 import { getServerOsList, getServerTypeList } from '@/api/server'
 
 export default {
@@ -357,14 +357,12 @@ export default {
   },
   data() {
     return {
-      masTypeArr: [],
-      typeArr: [],
       serverOsArr: [],
       serverTypeArr: [],
       cityArr: ['合肥', '宿州', '阜阳', '马鞍山', '宣城', '池州', '安庆', '六安', '滁州', '铜陵', '亳州', '淮南', '淮北', '黄山'],
       list: null,
       listLoading: true,
-      listQuery: {},
+      listQuery: {pageNum:1, pageSize:10},
       dialogFormVisible: false,
       serverDialogVisible: false,
       dbDialogVisible: false,
@@ -380,19 +378,7 @@ export default {
     }
   },
   created() {
-    getMasTypeList().then(response => {
-      this.masTypeArr = response.data
-      this.fetchData()
-    })
-    getProjectTypeList().then(res => {
-      this.typeArr = res.data
-    })
-    getServerTypeList().then(res => {
-      this.serverTypeArr = res.data
-    })
-    getServerOsList().then(res => {
-      this.serverOsArr = res.data
-    })
+    this.fetchData();
   },
   methods: {
     openLoading() {
