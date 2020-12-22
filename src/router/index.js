@@ -56,6 +56,29 @@ export const constantRoutes = [
   },
 
   {
+    path: '/ums',
+    component: Layout,
+    redirect: '/transit/table',
+    meta: { title: 'Vote', icon: 'nested' },
+    children: [
+      {
+        path: 'admin',
+        component: () => import('@/views/ums/admin'),
+        meta: { title: '管理员管理', icon: 'table' }
+      },
+      {
+        path: 'menu',
+        component: () => import('@/views/ums/menu'),
+        meta: { title: '菜单管理', icon: 'table' }
+      },
+      {
+        path: 'role',
+        component: () => import('@/views/ums/role'),
+        meta: { title: '角色管理', icon: 'table' }
+      }
+    ]
+  },
+  {
     path: '/transit',
     component: Layout,
     redirect: '/transit/table',
@@ -65,32 +88,20 @@ export const constantRoutes = [
       {
         path: 'project',
         name: '项目管理',
-        component: () => import('@/views/table/project'),
+        component: () => import('@/views/pm/project/project'),
         meta: { title: '项目管理', icon: 'table' }
       },
       {
-        path: 'record',
-        name: '巡检记录',
-        component: () => import('@/views/table/record'),
-        meta: { title: '巡检记录', icon: 'table' }
-      }
-    ]
-  },
-  {
-    path: '/vote',
-    component: Layout,
-    redirect: '/transit/table',
-    meta: { title: 'Vote', icon: 'nested' },
-    children: [
-      {
-        path: 'voteManger',
-        component: () => import('@/views/table/project'),
-        meta: { title: '投票管理', icon: 'table' }
+        path: 'server',
+        name: '服务器管理',
+        component: () => import('@/views/pm/server/table'),
+        meta: { title: '服务器管理', icon: 'table' }
       },
       {
-        path: 'voteView',
-        component: () => import('@/views/table/project'),
-        meta: { title: '投票统计', icon: 'table' }
+        path: 'db',
+        name: '数据库管理',
+        component: () => import('@/views/pm/db/'),
+        meta: { title: '数据库管理', icon: 'table' }
       }
     ]
   },
