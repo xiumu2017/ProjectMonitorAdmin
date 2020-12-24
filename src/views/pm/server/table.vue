@@ -93,7 +93,10 @@
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="10%">
-        <el-button>Operate</el-button>
+        <template slot-scope="{row}">
+          <el-button type="primary" size="small" @click="handleDetail(row)">详情</el-button>
+          <el-button type="info" size="small" @click="handleEdit(row)">编辑</el-button>
+        </template>
       </el-table-column>
     </el-table>
     <el-pagination
@@ -193,7 +196,15 @@ export default {
     },
     handleAdd() {
       console.info('tag', 'handleAdd')
-      this.$refs['serverInfoDialog'].initServerDialog(true, 0)
+      this.$refs['serverInfoDialog'].initServerDialog(true, 0, 1)
+    },
+    handleEdit(row) {
+      console.info('handleEdit', row)
+      this.$refs['serverInfoDialog'].initServerDialog(true, row.id, 2)
+    },
+    handleDetail(row) {
+      console.info('handleDetail', row)
+      this.$refs['serverInfoDialog'].initServerDialog(true, row.id, 0)
     },
     deleteProject(row, c, e) {
       event.preventDefault()
