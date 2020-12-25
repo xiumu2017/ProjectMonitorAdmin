@@ -14,19 +14,16 @@ export function create(data) {
   return request({
     url: '/server',
     method: 'post',
-    headers: {
-      'Content-Type': 'application/json'
-    },
     data
   })
 }
 
 // 修改服务器信息
-export function update(id, params) {
+export function update(id, data) {
   return request({
     url: '/server/' + id,
     method: 'put',
-    params
+    data
   })
 }
 

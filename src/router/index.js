@@ -100,7 +100,7 @@ export const constantRoutes = [
       {
         path: 'db',
         name: '数据库管理',
-        component: () => import('@/views/pm/db/'),
+        component: () => import('@/views/pm/db/table'),
         meta: { title: '数据库管理', icon: 'table' }
       }
     ]

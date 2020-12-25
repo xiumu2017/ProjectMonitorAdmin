@@ -3,3 +3,4 @@
 .vs/ProjectMonitorAdmin/v16/.suo
 node_modules
 dist
+package-lock.json
