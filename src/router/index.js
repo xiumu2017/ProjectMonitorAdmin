@@ -105,6 +105,27 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/day',
+    component: Layout,
+    redirect: '/day/table',
+    name: 'Day',
+    meta: { title: 'DayRecord', icon: 'example' },
+    children: [
+      {
+        path: 'sleep-record',
+        name: '睡眠管理',
+        component: () => import('@/views/day/sleep/table'),
+        meta: { title: '睡眠管理', icon: 'table' }
+      },
+      {
+        path: 'meal-record',
+        name: '用餐管理',
+        component: () => import('@/views/day/meal/table'),
+        meta: { title: '用餐管理', icon: 'table' }
+      }
+    ]
+  },
 
   /*  {
     path: '/form',
