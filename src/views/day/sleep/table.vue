@@ -3,13 +3,9 @@
 
     <!-- 查询区域 -->
     <div class="filter-container">
-      <el-select v-model="pageQuery.type" class="filter-item" placeholder="请选择类别" filterable clearable>
-        <el-option v-for="item in serverTypeArr" :key="item" :value="item" :label="item" />
-      </el-select>
-      <el-input v-model="pageQuery.name" placeholder="请输入项目名称" style="width: 200px;" class="filter-item" />
-      <el-select v-model="pageQuery.enable" class="filter-item" placeholder="启用/禁用" clearable>
-        <el-option key="1" value="1" label="启用" />
-        <el-option key="0" value="0" label="禁用" />
+      <el-select v-model="pageQuery.enable" class="filter-item" placeholder="是否熬夜" clearable>
+        <el-option key="1" value="1" label="是" />
+        <el-option key="0" value="0" label="否" />
       </el-select>
       <el-button class="filter-item" type="primary" size="mini" icon="el-icon-search" @click="fetchData">查询</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-edit" @click="handleAdd">添加</el-button>
@@ -34,62 +30,50 @@
           {{ scope.$index +1 }}
         </template>
       </el-table-column>
-      <el-table-column label="名称" min-width="10%">
+      <el-table-column label="日期" min-width="10%">
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.date }}
         </template>
       </el-table-column>
-      <el-table-column label="内网IP" min-width="10%">
+      <el-table-column label="上床时间" min-width="10%">
         <template slot-scope="scope">
-          {{ scope.row.ipAddr }}
+          {{ scope.row.bedTime }}
         </template>
       </el-table-column>
-      <el-table-column label="公网IP" min-width="10%">
+      <el-table-column label="入睡时间" min-width="10%">
         <template slot-scope="scope">
-          {{ scope.row.ipAddrPublic }}
+          {{ scope.row.sleepTime }}
         </template>
       </el-table-column>
-      <el-table-column label="域名" min-width="10%">
+      <el-table-column label="醒来时间" min-width="10%">
         <template slot-scope="scope">
-          {{ scope.row.domainAddr }}
+          {{ scope.row.wakeTime }}
         </template>
       </el-table-column>
-      <el-table-column label="端口" min-width="5%">
+      <el-table-column label="起床时间" min-width="5%">
         <template slot-scope="scope">
-          {{ scope.row.port }}
+          {{ scope.row.upTime }}
         </template>
       </el-table-column>
-      <el-table-column label="用户名" min-width="10%">
+      <el-table-column label="睡眠时长" min-width="10%">
         <template slot-scope="scope">
-          {{ scope.row.userName }}
+          {{ scope.row.duration }}
         </template>
       </el-table-column>
-      <el-table-column label="密码" min-width="10%">
+      <el-table-column label="睡眠质量" min-width="10%">
         <template slot-scope="scope">
-          {{ scope.row.password }}
-          <a :href="scope.row.url" class="el-icon-share" target="_blank" style="color: #409EFF">link</a>
+          {{ scope.row.sleepQuality }}
+          <a :href="scope.row.sleepQuality" class="el-icon-share" target="_blank" style="color: #409EFF">link</a>
         </template>
       </el-table-column>
-      <el-table-column label="是否启用" min-width="5%" align="center">
-        <template slot-scope="{row}">
-          <el-switch
-            v-model="row.enable"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            active-value="1"
-            inactive-value="0"
-            @change="changeEnable(row)"
-          />
+      <el-table-column label="睡前回忆" min-width="5%">
+        <template slot-scope="scope">
+          {{ scope.row.memory }}
         </template>
       </el-table-column>
-      <el-table-column label="类型" min-width="5%">
+      <el-table-column label="熬夜原因" min-width="5%">
         <template slot-scope="scope">
-          {{ scope.row.serverType }}
-        </template>
-      </el-table-column>
-      <el-table-column label="状态" min-width="5%">
-        <template slot-scope="scope">
-          {{ scope.row.serverStatus }}
+          {{ scope.row.lateReason }}
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="10%">
@@ -107,17 +91,17 @@
       :page-size="pageQuery.pageSize"
       :current-page="pageQuery.pageNum"
     />
-    <ServerInfo ref="serverInfoDialog" @close="fetchData" />
+    <SleepRecordInfo ref="SleepRecordInfoDialog" @close="fetchData" />
   </div>
 </template>
 
 <script>
-import ServerInfo from './info'
+import SleepRecordInfo from './info'
 import { Message } from 'element-ui'
-import { getPage, del, update, getServerTypeList, connect, excelExport } from '@/api/server'
+import { getPage, del, update, excelExport } from '@/api/day/sleep'
 
 export default {
-  components: { ServerInfo },
+  components: { SleepRecordInfo },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -130,7 +114,6 @@ export default {
   },
   data() {
     return {
-      serverTypeArr: [],
       list: null,
       listLoading: false,
       pageQuery: {
@@ -143,9 +126,6 @@ export default {
     }
   },
   created() {
-    getServerTypeList().then(res => {
-      this.serverTypeArr = res.data
-    })
     this.fetchData()
   },
   methods: {
@@ -182,30 +162,17 @@ export default {
         }
       })
     },
-    serverTest() {
-      this.openLoading()
-      connect(this.serverFormData).then(res => {
-        this.closeLoading()
-        if (res.code === 200) {
-          Message({
-            message: res.msg + res.data,
-            type: 'success',
-            duration: 3 * 1000
-          })
-        }
-      })
-    },
     handleAdd() {
       console.info('tag', 'handleAdd')
-      this.$refs['serverInfoDialog'].initServerDialog(true, 0, 1)
+      this.$refs['SleepRecordInfoDialog'].initServerDialog(true, 0, 1)
     },
     handleEdit(row) {
       console.info('handleEdit', row)
-      this.$refs['serverInfoDialog'].initServerDialog(true, row.id, 2)
+      this.$refs['SleepRecordInfoDialog'].initServerDialog(true, row.id, 2)
     },
     handleDetail(row) {
       console.info('handleDetail', row)
-      this.$refs['serverInfoDialog'].initServerDialog(true, row.id, 0)
+      this.$refs['SleepRecordInfoDialog'].initServerDialog(true, row.id, 0)
     },
     handleDel(row) {
       this.$confirm('是否确认删除', '提示', {
