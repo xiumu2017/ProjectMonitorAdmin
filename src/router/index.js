@@ -88,7 +88,7 @@ export const constantRoutes = [
       {
         path: 'project',
         name: '项目管理',
-        component: () => import('@/views/pm/project/project'),
+        component: () => import('@/views/pm/project/table'),
         meta: { title: '项目管理', icon: 'table' }
       },
       {

@@ -89,7 +89,7 @@ service.interceptors.response.use(
       Message({
         message: res.message,
         type: 'error',
-        duration: 5 * 1000
+        duration: 3 * 1000
       })
     }
     return response.data
@@ -99,7 +99,7 @@ service.interceptors.response.use(
     Message({
       message: error.message,
       type: 'error',
-      duration: 5 * 1000
+      duration: 3 * 1000
     })
     return Promise.reject(error)
   }

@@ -29,13 +29,13 @@
       <el-form-item label="睡眠质量">
         <el-rate v-model="formData.sleepQuality" />
       </el-form-item>
-      <el-form-item label="睡前回忆" prop="memory">
+      <el-form-item label="睡前回忆">
         <el-input v-model="formData.memory" />
       </el-form-item>
-      <el-form-item label="熬夜原因" prop="lateReason">
+      <el-form-item label="熬夜原因">
         <el-input v-model="formData.lateReason" />
       </el-form-item>
-      <el-form-item label="今日最佳" prop="bestTime">
+      <el-form-item label="今日最佳">
         <el-input v-model="formData.bestTime" />
       </el-form-item>
       <el-form-item label="备注">
