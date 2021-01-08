@@ -59,22 +59,22 @@ export const constantRoutes = [
     path: '/ums',
     component: Layout,
     redirect: '/transit/table',
-    meta: { title: 'Ums', icon: 'user' },
+    meta: { title: 'Ums', icon: 'user2' },
     children: [
       {
         path: 'admin',
         component: () => import('@/views/ums/admin'),
-        meta: { title: '管理员管理', icon: 'table' }
+        meta: { title: '管理员管理', icon: 'admin' }
       },
       {
         path: 'menu',
         component: () => import('@/views/ums/menu'),
-        meta: { title: '菜单管理', icon: 'table' }
+        meta: { title: '菜单管理', icon: 'sub-menu' }
       },
       {
         path: 'role',
         component: () => import('@/views/ums/role'),
-        meta: { title: '角色管理', icon: 'table' }
+        meta: { title: '角色管理', icon: 'role' }
       }
     ]
   },
@@ -83,13 +83,13 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/transit/table',
     name: 'Transit',
-    meta: { title: 'ProjectMonitor', icon: 'setting' },
+    meta: { title: 'ProjectMonitor', icon: 'pm' },
     children: [
       {
         path: 'project',
         name: '项目管理',
         component: () => import('@/views/pm/project/table'),
-        meta: { title: '项目管理', icon: 'table' }
+        meta: { title: '项目管理', icon: 'project' }
       },
       {
         path: 'server',
@@ -107,7 +107,7 @@ export const constantRoutes = [
         path: 'ding-talk-group',
         name: '钉钉群组管理',
         component: () => import('@/views/pm/dingTalk/groupTable'),
-        meta: { title: '钉钉群组管理', icon: 'db' }
+        meta: { title: '钉钉群组管理', icon: 'group' }
       }
     ]
   },
@@ -116,19 +116,19 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/day/table',
     name: 'Day',
-    meta: { title: 'DayRecord', icon: 'example' },
+    meta: { title: 'DayRecord', icon: 'record' },
     children: [
       {
         path: 'sleep-record',
         name: '睡眠管理',
         component: () => import('@/views/day/sleep/table'),
-        meta: { title: '睡眠管理', icon: 'table' }
+        meta: { title: '睡眠管理', icon: 'sleep' }
       },
       {
         path: 'meal-record',
         name: '用餐管理',
         component: () => import('@/views/day/meal/table'),
-        meta: { title: '用餐管理', icon: 'table' }
+        meta: { title: '用餐管理', icon: 'meal' }
       }
     ]
   },
