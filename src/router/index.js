@@ -59,7 +59,7 @@ export const constantRoutes = [
     path: '/ums',
     component: Layout,
     redirect: '/transit/table',
-    meta: { title: 'Vote', icon: 'nested' },
+    meta: { title: 'Ums', icon: 'user' },
     children: [
       {
         path: 'admin',
@@ -83,7 +83,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/transit/table',
     name: 'Transit',
-    meta: { title: 'Transit', icon: 'example' },
+    meta: { title: 'ProjectMonitor', icon: 'setting' },
     children: [
       {
         path: 'project',
@@ -95,13 +95,19 @@ export const constantRoutes = [
         path: 'server',
         name: '服务器管理',
         component: () => import('@/views/pm/server/table'),
-        meta: { title: '服务器管理', icon: 'table' }
+        meta: { title: '服务器管理', icon: 'server2' }
       },
       {
         path: 'db',
         name: '数据库管理',
         component: () => import('@/views/pm/db/table'),
-        meta: { title: '数据库管理', icon: 'table' }
+        meta: { title: '数据库管理', icon: 'db' }
+      },
+      {
+        path: 'ding-talk-group',
+        name: '钉钉群组管理',
+        component: () => import('@/views/pm/dingTalk/groupTable'),
+        meta: { title: '钉钉群组管理', icon: 'db' }
       }
     ]
   },
