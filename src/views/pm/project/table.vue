@@ -34,19 +34,9 @@
           {{ scope.$index +1 }}
         </template>
       </el-table-column>
-      <el-table-column label="项目名称" min-width="10%">
+      <el-table-column label="项目名称" min-width="5%">
         <template slot-scope="scope">
           {{ scope.row.projectName }}
-        </template>
-      </el-table-column>
-      <el-table-column label="简介" min-width="10%">
-        <template slot-scope="scope">
-          {{ scope.row.remark }}
-        </template>
-      </el-table-column>
-      <el-table-column label="用户名密码" min-width="10%">
-        <template slot-scope="scope">
-          {{ scope.row.username + ':' + scope.row.password }}
         </template>
       </el-table-column>
       <el-table-column label="访问地址" min-width="10%">
@@ -55,7 +45,18 @@
           <a :href="scope.row.serviceUrl" class="el-icon-share" target="_blank" style="color: #409EFF">link</a>
         </template>
       </el-table-column>
-      <el-table-column label="重要性" min-width="10%">
+      <el-table-column label="用户名密码" min-width="10%">
+        <template slot-scope="scope">
+          {{ scope.row.username + ':' + scope.row.password }}
+        </template>
+      </el-table-column>
+      <el-table-column label="信息与资料地址" min-width="10%">
+        <template slot-scope="scope">
+          {{ scope.row.projectInfoLink }}
+          <a :href="scope.row.projectInfoLink" class="el-icon-share" target="_blank" style="color: #409EFF">link</a>
+        </template>
+      </el-table-column>
+      <el-table-column label="重要性" min-width="5%">
         <template slot-scope="scope">
           <el-rate v-model="scope.row.importance" disabled />
         </template>
@@ -65,17 +66,16 @@
           {{ scope.row.statusCode }}
         </template>
       </el-table-column>
-      <el-table-column label="项目开始时间" min-width="10%">
+      <el-table-column label="项目开始时间" min-width="5%">
         <template slot-scope="scope">
           {{ scope.row.startTime }}
         </template>
       </el-table-column>
-      <el-table-column label="项目结束时间" min-width="10%">
+      <el-table-column label="项目结束时间" min-width="5%">
         <template slot-scope="scope">
           {{ scope.row.endTime }}
         </template>
       </el-table-column>
-
       <el-table-column label="是否启用" min-width="5%" align="center">
         <template slot-scope="{row}">
           <el-switch
@@ -93,10 +93,9 @@
           {{ scope.row.type }}
         </template>
       </el-table-column>
-      <el-table-column label="信息与资料地址" min-width="10%">
+      <el-table-column label="简介" min-width="15%">
         <template slot-scope="scope">
-          {{ scope.row.projectInfoLink }}
-          <a :href="scope.row.projectInfoLink" class="el-icon-share" target="_blank" style="color: #409EFF">link</a>
+          {{ scope.row.remark }}
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="10%">
