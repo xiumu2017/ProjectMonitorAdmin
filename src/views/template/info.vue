@@ -11,8 +11,8 @@
       <el-form-item label="ID" prop="id" :hidden="hideIdFlag">
         <el-input v-model="formData.id" disabled />
       </el-form-item>
-      <el-form-item label="服务器类型" prop="type">
-        <el-select v-model="formData.serverType">
+      <el-form-item label="类型" prop="type">
+        <el-select v-model="formData.type">
           <el-option
             v-for="(item,index) in typeArr"
             :key="item"
@@ -21,17 +21,8 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="服务器名称" prop="name">
+      <el-form-item label="名称" prop="name">
         <el-input v-model="formData.name" />
-      </el-form-item>
-      <el-form-item label="IP地址" prop="ipAddr">
-        <el-input v-model="formData.ipAddr" />
-      </el-form-item>
-      <el-form-item label="IP地址（公网）" prop="ipAddrPublic">
-        <el-input v-model="formData.ipAddrPublic" />
-      </el-form-item>
-      <el-form-item label="域名地址" prop="domainAddr">
-        <el-input v-model="formData.domainAddr" />
       </el-form-item>
       <el-form-item label="PORT" prop="port">
         <el-input v-model="formData.port" />
@@ -45,36 +36,16 @@
       <el-form-item label="登录用户名" prop="userName">
         <el-input v-model="formData.userName" />
       </el-form-item>
-      <el-form-item label="OS" prop="os">
-        <el-input v-model="formData.os" />
-      </el-form-item>
-      <el-form-item label="OSVersion" prop="osVersion">
-        <el-input v-model="formData.osVersion" />
-      </el-form-item>
-      <el-form-item label="内存大小" prop="memory">
-        <el-input v-model="formData.memory" />
-      </el-form-item>
       <el-form-item label="启用状态">
         <el-select
           v-model="formData.enable"
           class="filter-item"
           placeholder="Please select"
         >
-          <el-option key="0" value="0" label="启用" />
-          <el-option key="1" value="1" label="停用" />
+          <el-option key="0" :value="0" label="禁用" />
+          <el-option key="1" :value="1" label="启用" />
         </el-select>
       </el-form-item>
-      <el-form-item label="链接状态">
-        <el-select
-          v-model="formData.serverStatus"
-          class="filter-item"
-          placeholder="Please select"
-        >
-          <el-option key="0" value="0" label="启用" />
-          <el-option key="1" value="1" label="停用" />
-        </el-select>
-      </el-form-item>
-
       <el-form-item label="备注">
         <el-input
           v-model="formData.remark"

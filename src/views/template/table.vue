@@ -4,22 +4,18 @@
     <!-- 查询区域 -->
     <div class="filter-container">
       <el-select v-model="pageQuery.type" class="filter-item" placeholder="请选择类别" filterable clearable>
-        <el-option v-for="item in serverTypeArr" :key="item" :value="item" :label="item" />
+        <el-option v-for="item in typeArr" :key="item" :value="item" :label="item" />
       </el-select>
       <el-input v-model="pageQuery.name" placeholder="请输入项目名称" style="width: 200px;" class="filter-item" />
       <el-select v-model="pageQuery.enable" class="filter-item" placeholder="启用/禁用" clearable>
-        <el-option key="1" value="1" label="启用" />
-        <el-option key="0" value="0" label="禁用" />
+        <el-option key="1" :value="1" label="启用" />
+        <el-option key="0" :value="0" label="禁用" />
       </el-select>
       <el-button class="filter-item" type="primary" size="mini" icon="el-icon-search" @click="fetchData">查询</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-edit" @click="handleAdd">添加</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-refresh" @click="pageQuery = {pageNum: 1,pageSize: 10}">重置</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" @click="excelExport">导出</el-button>
     </div>
-
-    <!-- table
-      @row-dblclick="handleEdit"
-      @row-contextmenu="deleteProject" -->
 
     <el-table
       v-loading="listLoading"
@@ -39,26 +35,6 @@
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column label="内网IP" min-width="10%">
-        <template slot-scope="scope">
-          {{ scope.row.ipAddr }}
-        </template>
-      </el-table-column>
-      <el-table-column label="公网IP" min-width="10%">
-        <template slot-scope="scope">
-          {{ scope.row.ipAddrPublic }}
-        </template>
-      </el-table-column>
-      <el-table-column label="域名" min-width="10%">
-        <template slot-scope="scope">
-          {{ scope.row.domainAddr }}
-        </template>
-      </el-table-column>
-      <el-table-column label="端口" min-width="5%">
-        <template slot-scope="scope">
-          {{ scope.row.port }}
-        </template>
-      </el-table-column>
       <el-table-column label="用户名" min-width="10%">
         <template slot-scope="scope">
           {{ scope.row.userName }}
@@ -76,20 +52,10 @@
             v-model="row.enable"
             active-color="#13ce66"
             inactive-color="#ff4949"
-            active-value="1"
-            inactive-value="0"
+            :active-value="1"
+            :inactive-value="0"
             @change="changeEnable(row)"
           />
-        </template>
-      </el-table-column>
-      <el-table-column label="类型" min-width="5%">
-        <template slot-scope="scope">
-          {{ scope.row.serverType }}
-        </template>
-      </el-table-column>
-      <el-table-column label="状态" min-width="5%">
-        <template slot-scope="scope">
-          {{ scope.row.serverStatus }}
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="10%">
@@ -130,7 +96,7 @@ export default {
   },
   data() {
     return {
-      serverTypeArr: [],
+      typeArr: [],
       list: null,
       listLoading: false,
       pageQuery: {
@@ -144,7 +110,7 @@ export default {
   },
   created() {
     getTypeList().then(res => {
-      this.serverTypeArr = res.data
+      this.typeArr = res.data
     })
     this.fetchData()
   },
@@ -184,15 +150,15 @@ export default {
     },
     handleDetail(row) {
       console.info('handleDetail', row)
-      this.$refs['InfoDialog'].initServerDialog(true, row.id, 0)
+      this.$refs['InfoDialog'].initInfoDialog(true, row.id, 0)
     },
     handleAdd() {
       console.info('tag', 'handleAdd')
-      this.$refs['InfoDialog'].initServerDialog(true, 0, 1)
+      this.$refs['InfoDialog'].initInfoDialog(true, 0, 1)
     },
     handleEdit(row) {
       console.info('handleEdit', row)
-      this.$refs['InfoDialog'].initServerDialog(true, row.id, 2)
+      this.$refs['InfoDialog'].initInfoDialog(true, row.id, 2)
     },
     handleDel(row) {
       this.$confirm('是否确认删除', '提示', {
