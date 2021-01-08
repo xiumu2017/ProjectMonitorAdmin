@@ -132,6 +132,21 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/bing',
+    component: Layout,
+    redirect: '/bing/table',
+    name: 'Bing',
+    meta: { title: 'Bing', icon: 'record' },
+    children: [
+      {
+        path: 'sleep-record',
+        name: 'Bing壁纸',
+        component: () => import('@/views/table/bingImageTable'),
+        meta: { title: 'Bing壁纸', icon: 'sleep' }
+      }
+    ]
+  },
 
   /*  {
     path: '/form',
