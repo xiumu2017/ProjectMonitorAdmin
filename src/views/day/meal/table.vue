@@ -4,7 +4,7 @@
     <!-- 查询区域 -->
     <div class="filter-container">
       <el-select v-model="pageQuery.type" class="filter-item" placeholder="请选择类别" filterable clearable>
-        <el-option v-for="item in serverTypeArr" :key="item" :value="item" :label="item" />
+        <el-option v-for="item in typeArr" :key="item" :value="item" :label="item" />
       </el-select>
       <el-input v-model="pageQuery.name" placeholder="请输入项目名称" style="width: 200px;" class="filter-item" />
       <el-select v-model="pageQuery.enable" class="filter-item" placeholder="启用/禁用" clearable>
@@ -34,62 +34,39 @@
           {{ scope.$index +1 }}
         </template>
       </el-table-column>
-      <el-table-column label="名称" min-width="10%">
+      <el-table-column label="日期" min-width="10%">
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.date }}
         </template>
       </el-table-column>
-      <el-table-column label="内网IP" min-width="10%">
+      <el-table-column label="类型" min-width="10%">
         <template slot-scope="scope">
-          {{ scope.row.ipAddr }}
+          {{ scope.row.type }}
         </template>
       </el-table-column>
-      <el-table-column label="公网IP" min-width="10%">
+      <el-table-column label="吃什么" min-width="10%">
         <template slot-scope="scope">
-          {{ scope.row.ipAddrPublic }}
+          {{ scope.row.what }}
         </template>
       </el-table-column>
-      <el-table-column label="域名" min-width="10%">
+      <el-table-column label="在哪儿吃" min-width="10%">
         <template slot-scope="scope">
-          {{ scope.row.domainAddr }}
+          {{ scope.row.place }}
         </template>
       </el-table-column>
-      <el-table-column label="端口" min-width="5%">
+      <el-table-column label="花了多少" min-width="5%">
         <template slot-scope="scope">
-          {{ scope.row.port }}
+          {{ '￥' + scope.row.cost }}
         </template>
       </el-table-column>
-      <el-table-column label="用户名" min-width="10%">
+      <el-table-column label="支付方式" min-width="10%">
         <template slot-scope="scope">
-          {{ scope.row.userName }}
+          {{ scope.row.payType }}
         </template>
       </el-table-column>
-      <el-table-column label="密码" min-width="10%">
+      <el-table-column label="备注信息" min-width="15%">
         <template slot-scope="scope">
-          {{ scope.row.password }}
-          <a :href="scope.row.url" class="el-icon-share" target="_blank" style="color: #409EFF">link</a>
-        </template>
-      </el-table-column>
-      <el-table-column label="是否启用" min-width="5%" align="center">
-        <template slot-scope="{row}">
-          <el-switch
-            v-model="row.enable"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            active-value="1"
-            inactive-value="0"
-            @change="changeEnable(row)"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column label="类型" min-width="5%">
-        <template slot-scope="scope">
-          {{ scope.row.serverType }}
-        </template>
-      </el-table-column>
-      <el-table-column label="状态" min-width="5%">
-        <template slot-scope="scope">
-          {{ scope.row.serverStatus }}
+          {{ scope.row.remark }}
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="10%">
@@ -107,17 +84,18 @@
       :page-size="pageQuery.pageSize"
       :current-page="pageQuery.pageNum"
     />
-    <ServerInfo ref="serverInfoDialog" @close="fetchData" />
+    <MealInfo ref="infoDialog" @close="fetchData" />
   </div>
 </template>
 
 <script>
-import ServerInfo from './info'
+import MealInfo from './info'
 import { Message } from 'element-ui'
-import { getPage, del, update, getServerTypeList, connect, excelExport } from '@/api/server'
+import { getPage, del, update, types, payTypes, excelExport } from '@/api/day/meal'
+import { formatDate } from '@/utils/dateUtils'
 
 export default {
-  components: { ServerInfo },
+  components: { MealInfo },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -130,7 +108,8 @@ export default {
   },
   data() {
     return {
-      serverTypeArr: [],
+      typeArr: [],
+      payTypeArr: [],
       list: null,
       listLoading: false,
       pageQuery: {
@@ -143,8 +122,12 @@ export default {
     }
   },
   created() {
-    getServerTypeList().then(res => {
-      this.serverTypeArr = res.data
+    // 初始化查询
+    types().then(res => {
+      this.typeArr = res.data
+    })
+    payTypes().then(res => {
+      this.payTypeArr = res.data
     })
     this.fetchData()
   },
@@ -167,6 +150,12 @@ export default {
         this.list = response.data.list
         this.total = response.data.total
         this.listLoading = false
+        this.list.forEach(item => {
+          item.type = this.typeArr[item.type]
+          item.payType = this.payTypeArr[item.payType]
+          item.cost = item.cost / 100
+          item.date = formatDate(item.date)
+        })
       })
     },
     changeEnable(row) {
@@ -182,30 +171,17 @@ export default {
         }
       })
     },
-    serverTest() {
-      this.openLoading()
-      connect(this.serverFormData).then(res => {
-        this.closeLoading()
-        if (res.code === 200) {
-          Message({
-            message: res.msg + res.data,
-            type: 'success',
-            duration: 3 * 1000
-          })
-        }
-      })
-    },
     handleAdd() {
       console.info('tag', 'handleAdd')
-      this.$refs['serverInfoDialog'].initServerDialog(true, 0, 1)
+      this.$refs['infoDialog'].initDialog(true, 0, 1)
     },
     handleEdit(row) {
       console.info('handleEdit', row)
-      this.$refs['serverInfoDialog'].initServerDialog(true, row.id, 2)
+      this.$refs['infoDialog'].initDialog(true, row.id, 2)
     },
     handleDetail(row) {
       console.info('handleDetail', row)
-      this.$refs['serverInfoDialog'].initServerDialog(true, row.id, 0)
+      this.$refs['infoDialog'].initDialog(true, row.id, 0)
     },
     handleDel(row) {
       this.$confirm('是否确认删除', '提示', {
@@ -220,32 +196,6 @@ export default {
             this.fetchData()
             Message({
               message: res.message,
-              type: 'success',
-              duration: 3 * 1000
-            })
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
-    },
-    deleteProject(row, c, e) {
-      event.preventDefault()
-      this.$confirm('是否确认删除', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.openLoading()
-        del({ 'id': row.id }).then(res => {
-          this.closeLoading()
-          if (res.code === 200) {
-            this.fetchData()
-            Message({
-              message: res.msg,
               type: 'success',
               duration: 3 * 1000
             })

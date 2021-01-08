@@ -9,76 +9,44 @@
   >
     <el-form label-width="120px" size="mini" label-position="right" :disabled="disabled">
       <el-form-item label="ID" prop="id" :hidden="hideIdFlag">
-        <el-input v-model="serverFormData.id" disabled />
+        <el-input v-model="formData.id" disabled />
       </el-form-item>
-      <el-form-item label="服务器类型" prop="type">
-        <el-select v-model="serverFormData.serverType">
+      <el-form-item label="日期" prop="date">
+        <el-date-picker v-model="formData.date" type="date" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期" />
+      </el-form-item>
+      <el-form-item label="类型" prop="type">
+        <el-select v-model="formData.type">
           <el-option
-            v-for="(item,index) in serverTypeArr"
+            v-for="(item,index) in typeArr"
             :key="item"
             :value="index"
             :label="item"
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="服务器名称" prop="name">
-        <el-input v-model="serverFormData.name" />
+      <el-form-item label="吃什么" prop="what">
+        <el-input v-model="formData.what" />
       </el-form-item>
-      <el-form-item label="IP地址" prop="ipAddr">
-        <el-input v-model="serverFormData.ipAddr" />
+      <el-form-item label="在哪儿吃" prop="place">
+        <el-input v-model="formData.place" />
       </el-form-item>
-      <el-form-item label="IP地址（公网）" prop="ipAddrPublic">
-        <el-input v-model="serverFormData.ipAddrPublic" />
+      <el-form-item label="花了多少" prop="costY">
+        <el-input v-model="formData.costY" suffix-icon="el-icon-money" type="number" />
       </el-form-item>
-      <el-form-item label="域名地址" prop="domainAddr">
-        <el-input v-model="serverFormData.domainAddr" />
-      </el-form-item>
-      <el-form-item label="PORT" prop="port">
-        <el-input v-model="serverFormData.port" />
-      </el-form-item>
-      <el-form-item label="用户名" prop="userName">
-        <el-input v-model="serverFormData.userName" />
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input v-model="serverFormData.password" />
-      </el-form-item>
-      <el-form-item label="登录用户名" prop="userName">
-        <el-input v-model="serverFormData.userName" />
-      </el-form-item>
-      <el-form-item label="OS" prop="os">
-        <el-input v-model="serverFormData.os" />
-      </el-form-item>
-      <el-form-item label="OSVersion" prop="osVersion">
-        <el-input v-model="serverFormData.osVersion" />
-      </el-form-item>
-      <el-form-item label="内存大小" prop="memory">
-        <el-input v-model="serverFormData.memory" />
-      </el-form-item>
-      <el-form-item label="启用状态">
-        <el-select
-          v-model="serverFormData.enable"
-          class="filter-item"
-          placeholder="Please select"
-        >
-          <el-option key="0" value="0" label="启用" />
-          <el-option key="1" value="1" label="停用" />
+      <el-form-item label="支付方式" prop="payType">
+        <el-select v-model="formData.payType">
+          <el-option
+            v-for="(item,index) in payTypeArr"
+            :key="item"
+            :value="index"
+            :label="item"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="链接状态">
-        <el-select
-          v-model="serverFormData.serverStatus"
-          class="filter-item"
-          placeholder="Please select"
-        >
-          <el-option key="0" value="0" label="启用" />
-          <el-option key="1" value="1" label="停用" />
-        </el-select>
-      </el-form-item>
-
       <el-form-item label="备注">
         <el-input
-          v-model="serverFormData.remark"
-          :autosize="{ minRows: 2, maxRows: 4 }"
+          v-model="formData.remark"
+          :autosize="{ minRows: 3, maxRows: 4 }"
           type="textarea"
           placeholder=""
         />
@@ -94,17 +62,18 @@
 
 <script>
 import { Message } from 'element-ui'
-import { create, update, getServerTypeList, detail } from '@/api/server'
+import { create, update, types, payTypes, detail } from '@/api/day/meal'
 export default {
-  name: 'ServerInfo',
+  name: 'MealInfo',
   data() {
     return {
       // 0 详情 1 新增 2 更新
       type: 0,
-      title: '新增Server',
-      titleArr: ['Server详情', '新增Server', '更新Server'],
-      serverFormData: {},
-      serverTypeArr: [],
+      title: '新增',
+      titleArr: ['详情', '新增', '更新'],
+      formData: {},
+      typeArr: [],
+      payTypeArr: [],
       id: 0,
       disabled: false,
       dialogVisible: false,
@@ -122,15 +91,18 @@ export default {
     }
   },
   created() {
-    // 初始化查询 服务器类型列表
-    getServerTypeList().then(res => {
-      this.serverTypeArr = res.data
+    // 初始化查询
+    types().then(res => {
+      this.typeArr = res.data
+    })
+    payTypes().then(res => {
+      this.payTypeArr = res.data
     })
   },
   methods: {
-    initServerDialog(visible, serverId, type) {
+    initDialog(visible, infoId, type) {
       console.log('type', type)
-      console.log('serverId', serverId)
+      console.log('infoId', infoId)
       this.type = type
       if (type && type instanceof Number) {
         this.title = this.type[type]
@@ -139,21 +111,23 @@ export default {
         this.disabled = true
       }
       if (this.type === 1) {
-        this.serverFormData = {}
+        this.formData = {}
       }
       this.dialogVisible = true
-      this.id = serverId
+      this.id = infoId
       // 查询详情数据
-      if (serverId !== 0) {
-        detail(serverId).then(res => {
-          this.serverFormData = res.data
+      if (infoId !== 0) {
+        detail(infoId).then(res => {
+          this.formData = res.data
+          this.formData.costY = this.formData.cost / 100
         })
       }
     },
     submit() {
       // 更新
       if (this.type === 2) {
-        update(this.id, this.serverFormData).then(res => {
+        this.formData.cost = this.formData.costY * 100
+        update(this.id, this.formData).then(res => {
           if (res.code === 200) {
             this.dialogVisible = false
             this.$emit('close')
@@ -165,10 +139,8 @@ export default {
           })
         })
       } else {
-        // 新增
-        // const data = JSON.stringify(this.serverFormData)
-        // console.log('data', data)
-        create(this.serverFormData).then(res => {
+        this.formData.cost = this.formData.cost * 100
+        create(this.formData).then(res => {
           if (res.code === 200) {
             this.dialogVisible = false
             this.$emit('close')

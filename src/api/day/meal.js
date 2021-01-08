@@ -50,3 +50,17 @@ export function excelExport() {
     method: 'get'
   })
 }
+
+export function types() {
+  return request({
+    url: '/dayMealRecord/types',
+    method: 'get'
+  })
+}
+
+export function payTypes() {
+  return request({
+    url: '/dayMealRecord/payTypes',
+    method: 'get'
+  })
+}
