@@ -9,75 +9,72 @@
   >
     <el-form label-width="120px" size="mini" label-position="right" :disabled="disabled">
       <el-form-item label="ID" prop="id" :hidden="hideIdFlag">
-        <el-input v-model="serverFormData.id" disabled />
+        <el-input v-model="formData.id" disabled />
       </el-form-item>
-      <el-form-item label="服务器类型" prop="type">
-        <el-select v-model="serverFormData.serverType">
+      <el-form-item label="数据库类型" prop="type">
+        <el-select v-model="formData.type">
           <el-option
-            v-for="(item,index) in serverTypeArr"
+            v-for="(item) in typeArr"
             :key="item"
-            :value="index"
+            :value="item"
             :label="item"
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="服务器名称" prop="name">
-        <el-input v-model="serverFormData.name" />
+      <el-form-item label="数据库版本" prop="version">
+        <el-input v-model="formData.version" />
+      </el-form-item>
+      <el-form-item label="名称" prop="name">
+        <el-input v-model="formData.name" />
       </el-form-item>
       <el-form-item label="IP地址" prop="ipAddr">
-        <el-input v-model="serverFormData.ipAddr" />
+        <el-input v-model="formData.ipAddr" />
       </el-form-item>
       <el-form-item label="IP地址（公网）" prop="ipAddrPublic">
-        <el-input v-model="serverFormData.ipAddrPublic" />
+        <el-input v-model="formData.ipAddrPublic" />
       </el-form-item>
       <el-form-item label="域名地址" prop="domainAddr">
-        <el-input v-model="serverFormData.domainAddr" />
+        <el-input v-model="formData.domainAddr" />
       </el-form-item>
       <el-form-item label="PORT" prop="port">
-        <el-input v-model="serverFormData.port" />
+        <el-input v-model="formData.port" />
       </el-form-item>
       <el-form-item label="用户名" prop="userName">
-        <el-input v-model="serverFormData.userName" />
+        <el-input v-model="formData.userName" />
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input v-model="serverFormData.password" />
+        <el-input v-model="formData.password" />
       </el-form-item>
-      <el-form-item label="登录用户名" prop="userName">
-        <el-input v-model="serverFormData.userName" />
+      <el-form-item label="JDBC_URL" prop="url">
+        <el-input v-model="formData.url" />
       </el-form-item>
-      <el-form-item label="OS" prop="os">
-        <el-input v-model="serverFormData.os" />
-      </el-form-item>
-      <el-form-item label="OSVersion" prop="osVersion">
-        <el-input v-model="serverFormData.osVersion" />
-      </el-form-item>
-      <el-form-item label="内存大小" prop="memory">
-        <el-input v-model="serverFormData.memory" />
+      <el-form-item label="关联服务器" prop="serverId">
+        <el-input v-model="formData.serverId" />
       </el-form-item>
       <el-form-item label="启用状态">
         <el-select
-          v-model="serverFormData.enable"
+          v-model="formData.enable"
           class="filter-item"
           placeholder="Please select"
         >
-          <el-option key="0" value="0" label="启用" />
-          <el-option key="1" value="1" label="停用" />
+          <el-option key="0" :value="0" label="禁用" />
+          <el-option key="1" :value="1" label="启用" />
         </el-select>
       </el-form-item>
-      <el-form-item label="链接状态">
+      <el-form-item label="外网连接">
         <el-select
-          v-model="serverFormData.serverStatus"
+          v-model="formData.isPublic"
           class="filter-item"
           placeholder="Please select"
         >
-          <el-option key="0" value="0" label="启用" />
-          <el-option key="1" value="1" label="停用" />
+          <el-option key="0" :value="0" label="关闭" />
+          <el-option key="1" :value="1" label="开启" />
         </el-select>
       </el-form-item>
 
       <el-form-item label="备注">
         <el-input
-          v-model="serverFormData.remark"
+          v-model="formData.remark"
           :autosize="{ minRows: 2, maxRows: 4 }"
           type="textarea"
           placeholder=""
@@ -94,17 +91,17 @@
 
 <script>
 import { Message } from 'element-ui'
-import { create, update, getServerTypeList, detail } from '@/api/server'
+import { create, update, getTypeList, detail } from '@/api/pm/db'
 export default {
-  name: 'ServerInfo',
+  name: 'DbInfo',
   data() {
     return {
       // 0 详情 1 新增 2 更新
       type: 0,
-      title: '新增Server',
-      titleArr: ['Server详情', '新增Server', '更新Server'],
-      serverFormData: {},
-      serverTypeArr: [],
+      title: '新增',
+      titleArr: ['详情', '新增', '更新'],
+      formData: {},
+      typeArr: [],
       id: 0,
       disabled: false,
       dialogVisible: false,
@@ -122,15 +119,15 @@ export default {
     }
   },
   created() {
-    // 初始化查询 服务器类型列表
-    getServerTypeList().then(res => {
-      this.serverTypeArr = res.data
+    // 初始化查询
+    getTypeList().then(res => {
+      this.typeArr = res.data
     })
   },
   methods: {
-    initServerDialog(visible, serverId, type) {
+    initDbInfoDialog(visible, infoId, type) {
       console.log('type', type)
-      console.log('serverId', serverId)
+      console.log('infoId', infoId)
       this.type = type
       if (type && type instanceof Number) {
         this.title = this.type[type]
@@ -139,45 +136,43 @@ export default {
         this.disabled = true
       }
       if (this.type === 1) {
-        this.serverFormData = {}
+        this.formData = {}
       }
       this.dialogVisible = true
-      this.id = serverId
+      this.id = infoId
       // 查询详情数据
-      if (serverId !== 0) {
-        detail(serverId).then(res => {
-          this.serverFormData = res.data
+      if (infoId !== 0) {
+        detail(infoId).then(res => {
+          this.formData = res.data
         })
       }
     },
     submit() {
       // 更新
       if (this.type === 2) {
-        update(this.id, this.serverFormData).then(res => {
+        update(this.id, this.formData).then(res => {
           if (res.code === 200) {
             this.dialogVisible = false
             this.$emit('close')
+            Message({
+              message: res.message,
+              type: 'success',
+              duration: 3 * 1000
+            })
           }
-          Message({
-            message: res.message,
-            type: 'success',
-            duration: 3 * 1000
-          })
         })
       } else {
         // 新增
-        // const data = JSON.stringify(this.serverFormData)
-        // console.log('data', data)
-        create(this.serverFormData).then(res => {
+        create(this.formData).then(res => {
           if (res.code === 200) {
             this.dialogVisible = false
             this.$emit('close')
+            Message({
+              message: res.message,
+              type: 'success',
+              duration: 3 * 1000
+            })
           }
-          Message({
-            message: res.message,
-            type: 'success',
-            duration: 3 * 1000
-          })
         })
       }
     },

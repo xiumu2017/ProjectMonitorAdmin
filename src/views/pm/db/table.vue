@@ -4,7 +4,7 @@
     <!-- 查询区域 -->
     <div class="filter-container">
       <el-select v-model="pageQuery.type" class="filter-item" placeholder="请选择类别" filterable clearable>
-        <el-option v-for="item in serverTypeArr" :key="item" :value="item" :label="item" />
+        <el-option v-for="item in typeArr" :key="item" :value="item" :label="item" />
       </el-select>
       <el-input v-model="pageQuery.name" placeholder="请输入项目名称" style="width: 200px;" class="filter-item" />
       <el-select v-model="pageQuery.enable" class="filter-item" placeholder="启用/禁用" clearable>
@@ -34,40 +34,54 @@
           {{ scope.$index +1 }}
         </template>
       </el-table-column>
-      <el-table-column label="名称" min-width="10%">
+      <el-table-column label="名称" min-width="8%">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column label="内网IP" min-width="10%">
+      <el-table-column label="数据库类型" min-width="5%">
+        <template slot-scope="scope">
+          {{ scope.row.type }}
+        </template>
+      </el-table-column>
+      <el-table-column label="数据库版本" min-width="5%">
+        <template slot-scope="scope">
+          {{ scope.row.version }}
+        </template>
+      </el-table-column>
+      <el-table-column label="内网IP" min-width="7%">
         <template slot-scope="scope">
           {{ scope.row.ipAddr }}
         </template>
       </el-table-column>
-      <el-table-column label="公网IP" min-width="10%">
+      <el-table-column label="公网IP" min-width="8%">
         <template slot-scope="scope">
           {{ scope.row.ipAddrPublic }}
         </template>
       </el-table-column>
-      <el-table-column label="域名" min-width="10%">
+      <el-table-column label="域名" min-width="9%">
         <template slot-scope="scope">
           {{ scope.row.domainAddr }}
         </template>
       </el-table-column>
-      <el-table-column label="端口" min-width="5%">
+      <el-table-column label="端口" min-width="3%">
         <template slot-scope="scope">
           {{ scope.row.port }}
         </template>
       </el-table-column>
-      <el-table-column label="用户名" min-width="10%">
+      <el-table-column label="用户名" min-width="4%">
         <template slot-scope="scope">
           {{ scope.row.userName }}
         </template>
       </el-table-column>
-      <el-table-column label="密码" min-width="10%">
+      <el-table-column label="密码" min-width="4%">
         <template slot-scope="scope">
           {{ scope.row.password }}
-          <a :href="scope.row.url" class="el-icon-share" target="_blank" style="color: #409EFF">link</a>
+        </template>
+      </el-table-column>
+      <el-table-column label="JDBC_URL" min-width="10%">
+        <template slot-scope="scope">
+          {{ scope.row.url }}
         </template>
       </el-table-column>
       <el-table-column label="是否启用" min-width="5%" align="center">
@@ -76,20 +90,27 @@
             v-model="row.enable"
             active-color="#13ce66"
             inactive-color="#ff4949"
-            active-value="1"
-            inactive-value="0"
+            :active-value="1"
+            :inactive-value="0"
             @change="changeEnable(row)"
           />
         </template>
       </el-table-column>
-      <el-table-column label="类型" min-width="5%">
-        <template slot-scope="scope">
-          {{ scope.row.serverType }}
+      <el-table-column label="外网连接" min-width="5%" align="center">
+        <template slot-scope="{row}">
+          <el-switch
+            v-model="row.isPublic"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            :active-value="1"
+            :inactive-value="0"
+            @change="changeEnable(row)"
+          />
         </template>
       </el-table-column>
-      <el-table-column label="状态" min-width="5%">
+      <el-table-column label="关联服务器" min-width="5%">
         <template slot-scope="scope">
-          {{ scope.row.serverStatus }}
+          {{ scope.row.serverId }}
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="10%">
@@ -107,17 +128,17 @@
       :page-size="pageQuery.pageSize"
       :current-page="pageQuery.pageNum"
     />
-    <ServerInfo ref="serverInfoDialog" @close="fetchData" />
+    <DbInfo ref="DbInfoDialog" @close="fetchData" />
   </div>
 </template>
 
 <script>
-import ServerInfo from './info'
+import DbInfo from './info'
 import { Message } from 'element-ui'
-import { getPage, del, update, getServerTypeList, connect, excelExport } from '@/api/server'
+import { getPage, del, update, getTypeList, excelExport } from '@/api/pm/db'
 
 export default {
-  components: { ServerInfo },
+  components: { DbInfo },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -130,7 +151,7 @@ export default {
   },
   data() {
     return {
-      serverTypeArr: [],
+      typeArr: [],
       list: null,
       listLoading: false,
       pageQuery: {
@@ -143,8 +164,8 @@ export default {
     }
   },
   created() {
-    getServerTypeList().then(res => {
-      this.serverTypeArr = res.data
+    getTypeList().then(res => {
+      this.typeArr = res.data
     })
     this.fetchData()
   },
@@ -182,30 +203,17 @@ export default {
         }
       })
     },
-    serverTest() {
-      this.openLoading()
-      connect(this.serverFormData).then(res => {
-        this.closeLoading()
-        if (res.code === 200) {
-          Message({
-            message: res.msg + res.data,
-            type: 'success',
-            duration: 3 * 1000
-          })
-        }
-      })
+    handleDetail(row) {
+      console.info('handleDetail', row)
+      this.$refs['DbInfoDialog'].initDbInfoDialog(true, row.id, 0)
     },
     handleAdd() {
       console.info('tag', 'handleAdd')
-      this.$refs['serverInfoDialog'].initServerDialog(true, 0, 1)
+      this.$refs['DbInfoDialog'].initDbInfoDialog(true, 0, 1)
     },
     handleEdit(row) {
       console.info('handleEdit', row)
-      this.$refs['serverInfoDialog'].initServerDialog(true, row.id, 2)
-    },
-    handleDetail(row) {
-      console.info('handleDetail', row)
-      this.$refs['serverInfoDialog'].initServerDialog(true, row.id, 0)
+      this.$refs['DbInfoDialog'].initDbInfoDialog(true, row.id, 2)
     },
     handleDel(row) {
       this.$confirm('是否确认删除', '提示', {
@@ -220,32 +228,6 @@ export default {
             this.fetchData()
             Message({
               message: res.message,
-              type: 'success',
-              duration: 3 * 1000
-            })
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
-    },
-    deleteProject(row, c, e) {
-      event.preventDefault()
-      this.$confirm('是否确认删除', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.openLoading()
-        del({ 'id': row.id }).then(res => {
-          this.closeLoading()
-          if (res.code === 200) {
-            this.fetchData()
-            Message({
-              message: res.msg,
               type: 'success',
               duration: 3 * 1000
             })
