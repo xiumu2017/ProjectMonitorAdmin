@@ -119,6 +119,12 @@ export const constantRoutes = [
     meta: { title: 'DayRecord', icon: 'record' },
     children: [
       {
+        path: 'timeline',
+        name: '时间轴',
+        component: () => import('@/views/day/timeline/table'),
+        meta: { title: '时间轴', icon: 'sleep' }
+      },
+      {
         path: 'sleep-record',
         name: '睡眠管理',
         component: () => import('@/views/day/sleep/table'),
