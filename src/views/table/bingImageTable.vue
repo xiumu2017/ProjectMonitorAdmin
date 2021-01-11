@@ -5,15 +5,17 @@
     <div class="filter-container">
       <el-date-picker
         v-model="timeRange"
-        type="datetimerange"
+        type="daterange"
         :picker-options="pickerOptions"
         range-separator="至"
         start-placeholder="开始日期"
         end-placeholder="结束日期"
         align="right"
+        value-format="yyyy-MM-dd HH:mm:ss"
       />
-      <el-button class="filter-item" type="primary" size="mini" icon="el-icon-search" @click="fetchData">查询</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-refresh" @click="pageQuery = {pageNum: 1,pageSize: 10}">重置</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" size="mini" icon="el-icon-refresh" @click="refresh">刷新</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" size="mini" icon="el-icon-search" @click="fetchData">查询</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" @click="pageQuery = {pageNum: 1,pageSize: 10};timeRange=[]">重置</el-button>
     </div>
 
     <el-table
@@ -78,7 +80,7 @@
 <script>
 import { Message } from 'element-ui'
 import { formatDate } from '@/utils/dateUtils'
-import { getPage, del, update } from '@/api/bingImage'
+import { getPage, del, update, refresh } from '@/api/bingImage'
 
 export default {
   filters: {
@@ -150,7 +152,10 @@ export default {
     },
     fetchData() {
       this.listLoading = true
-      console.info('tag', this.pageQuery)
+      if (this.timeRange) {
+        this.pageQuery.startTime = this.timeRange[0]
+        this.pageQuery.endTime = this.timeRange[1]
+      }
       getPage(this.pageQuery).then(response => {
         this.list = response.data.list
         this.total = response.data.total
@@ -159,6 +164,12 @@ export default {
           this.srcList.push(item.url)
           item.date = formatDate(item.date)
         })
+      })
+    },
+    refresh() {
+      this.listLoading = true
+      refresh().then(res => {
+        this.fetchData()
       })
     },
     changeEnable(row) {

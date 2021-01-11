@@ -58,3 +58,11 @@ export function excelExport() {
     method: 'get'
   })
 }
+
+// 刷新
+export function refresh() {
+  return request({
+    url: '/bingImage/refresh',
+    method: 'get'
+  })
+}
