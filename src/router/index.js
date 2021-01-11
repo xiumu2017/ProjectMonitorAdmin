@@ -122,7 +122,7 @@ export const constantRoutes = [
         path: 'timeline',
         name: '时间轴',
         component: () => import('@/views/day/timeline/table'),
-        meta: { title: '时间轴', icon: 'sleep' }
+        meta: { title: '时间轴', icon: 'timeline' }
       },
       {
         path: 'sleep-record',
@@ -150,6 +150,21 @@ export const constantRoutes = [
         name: 'Bing壁纸',
         component: () => import('@/views/table/bingImageTable'),
         meta: { title: 'Bing壁纸', icon: 'sleep' }
+      }
+    ]
+  },
+  {
+    path: '/account-pass',
+    component: Layout,
+    redirect: '/account-pass/table',
+    name: 'accountPass',
+    meta: { title: 'accountPass', icon: 'record' },
+    children: [
+      {
+        path: 'account-pass',
+        name: 'accountPass',
+        component: () => import('@/views/table/accountPassTable'),
+        meta: { title: '网络账户管理', icon: 'setting' }
       }
     ]
   },
