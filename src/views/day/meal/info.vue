@@ -55,7 +55,7 @@
 
     <div v-if="type !== 0" class="dialog-footer" style="margin-left: 30px">
       <el-button type="primary" size="mini" @click="submit()">保存</el-button>
-      <el-button type="primary" size="mini" @click="submit()">保存并继续</el-button>
+      <el-button type="primary" size="mini" @click="submit('zz')">保存并继续</el-button>
     </div>
   </el-dialog>
 </template>
@@ -123,7 +123,7 @@ export default {
         })
       }
     },
-    submit() {
+    submit(val) {
       // 更新
       if (this.type === 2) {
         this.formData.cost = this.formData.costY * 100
@@ -139,17 +139,22 @@ export default {
           })
         })
       } else {
-        this.formData.cost = this.formData.cost * 100
+        this.formData.cost = this.formData.costY * 100
         create(this.formData).then(res => {
           if (res.code === 200) {
-            this.dialogVisible = false
-            this.$emit('close')
+            Message({
+              message: res.message,
+              type: 'success',
+              duration: 3 * 1000
+            })
+            if (val) {
+              // this.formData = {}
+              this.$emit('close')
+            } else {
+              this.dialogVisible = false
+              this.$emit('close')
+            }
           }
-          Message({
-            message: res.message,
-            type: 'success',
-            duration: 3 * 1000
-          })
         })
       }
     },
