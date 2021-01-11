@@ -11,7 +11,7 @@
         <el-option key="1" :value="1" label="启用" />
         <el-option key="0" :value="0" label="禁用" />
       </el-select>
-      <el-button class="filter-item" type="primary" size="mini" icon="el-icon-search" @click="fetchData">查询</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-search" @click="fetchData">查询</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-edit" @click="handleAdd">添加</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-refresh" @click="pageQuery = {pageNum: 1,pageSize: 10}">重置</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" @click="excelExport">导出</el-button>
@@ -46,6 +46,11 @@
           <a :href="scope.row.url" class="el-icon-share" target="_blank" style="color: #409EFF">link</a>
         </template>
       </el-table-column>
+      <el-table-column label="重要性" min-width="5%">
+        <template slot-scope="scope">
+          <el-rate v-model="scope.row.importance" disabled />
+        </template>
+      </el-table-column>
       <el-table-column label="是否启用" min-width="5%" align="center">
         <template slot-scope="{row}">
           <el-switch
@@ -72,6 +77,7 @@
       :total="total"
       :page-size="pageQuery.pageSize"
       :current-page="pageQuery.pageNum"
+      @current-change="fetchData"
     />
     <Info ref="InfoDialog" @close="fetchData" />
   </div>

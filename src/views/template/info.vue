@@ -4,7 +4,7 @@
     :close-on-click-modal="false"
     :title="title"
     width="35%"
-    top="6vh"
+    top="10vh"
     @close="handleClose()"
   >
     <el-form label-width="120px" size="mini" label-position="right" :disabled="disabled">
@@ -58,7 +58,7 @@
 
     <div v-if="type !== 0" class="dialog-footer" style="margin-left: 30px">
       <el-button type="primary" size="mini" @click="submit()">保存</el-button>
-      <el-button type="primary" size="mini" @click="submit()">保存并继续</el-button>
+      <el-button type="primary" size="mini" @click="submit('on')">保存并继续</el-button>
     </div>
   </el-dialog>
 </template>
@@ -121,7 +121,7 @@ export default {
         })
       }
     },
-    submit() {
+    submit(val) {
       // 更新
       if (this.type === 2) {
         update(this.id, this.formData).then(res => {
@@ -139,13 +139,17 @@ export default {
         // 新增
         create(this.formData).then(res => {
           if (res.code === 200) {
-            this.dialogVisible = false
-            this.$emit('close')
             Message({
               message: res.message,
               type: 'success',
               duration: 3 * 1000
             })
+            if (val) {
+              this.$emit('close')
+            } else {
+              this.dialogVisible = false
+              this.$emit('close')
+            }
           }
         })
       }
