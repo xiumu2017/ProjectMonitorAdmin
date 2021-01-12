@@ -7,15 +7,10 @@
         <el-option key="1" value="1" label="是" />
         <el-option key="0" value="0" label="否" />
       </el-select>
-      <el-button class="filter-item" type="primary" size="mini" icon="el-icon-search" @click="fetchData">查询</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" size="mini" icon="el-icon-search" @click="fetchData">查询</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-edit" @click="handleAdd">添加</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-refresh" @click="pageQuery = {pageNum: 1,pageSize: 10}">重置</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" @click="excelExport">导出</el-button>
     </div>
-
-    <!-- table
-      @row-dblclick="handleEdit"
-      @row-contextmenu="deleteProject" -->
 
     <el-table
       v-loading="listLoading"
@@ -25,12 +20,12 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="序号" min-width="5%">
+      <el-table-column align="center" label="序号" min-width="3%">
         <template slot-scope="scope">
           {{ scope.$index +1 }}
         </template>
       </el-table-column>
-      <el-table-column label="日期" min-width="10%">
+      <el-table-column label="日期" min-width="5%">
         <template slot-scope="scope">
           {{ scope.row.date }}
         </template>
@@ -50,28 +45,27 @@
           {{ scope.row.wakeTime }}
         </template>
       </el-table-column>
-      <el-table-column label="起床时间" min-width="5%">
+      <el-table-column label="起床时间" min-width="10%">
         <template slot-scope="scope">
           {{ scope.row.upTime }}
         </template>
       </el-table-column>
-      <el-table-column label="睡眠时长" min-width="10%">
+      <el-table-column label="睡眠时长" min-width="5%">
         <template slot-scope="scope">
           {{ scope.row.duration }}
         </template>
       </el-table-column>
-      <el-table-column label="睡眠质量" min-width="10%">
+      <el-table-column label="睡眠质量" min-width="8%">
         <template slot-scope="scope">
-          {{ scope.row.sleepQuality }}
-          <a :href="scope.row.sleepQuality" class="el-icon-share" target="_blank" style="color: #409EFF">link</a>
+          <el-rate v-model="scope.row.sleepQuality" disabled />
         </template>
       </el-table-column>
-      <el-table-column label="睡前回忆" min-width="5%">
+      <el-table-column label="睡前回忆" min-width="10%">
         <template slot-scope="scope">
           {{ scope.row.memory }}
         </template>
       </el-table-column>
-      <el-table-column label="熬夜原因" min-width="5%">
+      <el-table-column label="熬夜原因" min-width="10%">
         <template slot-scope="scope">
           {{ scope.row.lateReason }}
         </template>
@@ -147,6 +141,9 @@ export default {
         this.list = response.data.list
         this.total = response.data.total
         this.listLoading = false
+        this.list.forEach(item => {
+          item.date = this.formatDate(item.date)
+        })
       })
     },
     changeEnable(row) {

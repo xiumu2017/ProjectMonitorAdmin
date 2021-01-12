@@ -11,7 +11,7 @@
         <el-option key="1" value="1" label="启用" />
         <el-option key="0" value="0" label="禁用" />
       </el-select>
-      <el-button class="filter-item" type="primary" size="mini" icon="el-icon-search" @click="fetchData">查询</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" size="mini" icon="el-icon-search" @click="fetchData">查询</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-edit" @click="handleAdd">添加</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-refresh" @click="pageQuery = {pageNum: 1,pageSize: 10}">重置</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" @click="excelExport">导出</el-button>
@@ -28,8 +28,9 @@
       element-loading-text="Loading"
       fit
       highlight-current-row
+      stripe
     >
-      <el-table-column align="center" label="序号" min-width="5%">
+      <el-table-column align="center" label="序号" min-width="3%">
         <template slot-scope="scope">
           {{ scope.$index +1 }}
         </template>
@@ -37,6 +38,11 @@
       <el-table-column label="名称" min-width="10%">
         <template slot-scope="scope">
           {{ scope.row.name }}
+        </template>
+      </el-table-column>
+      <el-table-column label="类型" min-width="5%">
+        <template slot-scope="scope">
+          {{ scope.row.serverType }}
         </template>
       </el-table-column>
       <el-table-column label="内网IP" min-width="10%">
@@ -59,15 +65,9 @@
           {{ scope.row.port }}
         </template>
       </el-table-column>
-      <el-table-column label="用户名" min-width="10%">
+      <el-table-column label="用户名" min-width="5%">
         <template slot-scope="scope">
           {{ scope.row.userName }}
-        </template>
-      </el-table-column>
-      <el-table-column label="密码" min-width="10%">
-        <template slot-scope="scope">
-          {{ scope.row.password }}
-          <a :href="scope.row.url" class="el-icon-share" target="_blank" style="color: #409EFF">link</a>
         </template>
       </el-table-column>
       <el-table-column label="是否启用" min-width="5%" align="center">
@@ -76,23 +76,25 @@
             v-model="row.enable"
             active-color="#13ce66"
             inactive-color="#ff4949"
-            active-value="1"
-            inactive-value="0"
+            :active-value="1"
+            :inactive-value="0"
             @change="changeEnable(row)"
           />
         </template>
       </el-table-column>
-      <el-table-column label="类型" min-width="5%">
-        <template slot-scope="scope">
-          {{ scope.row.serverType }}
+      <el-table-column label="状态" min-width="5%" align="center">
+        <template slot-scope="{row}">
+          <el-switch
+            v-model="row.serverStatus"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            :active-value="1"
+            :inactive-value="0"
+            @change="changeEnable(row)"
+          />
         </template>
       </el-table-column>
-      <el-table-column label="状态" min-width="5%">
-        <template slot-scope="scope">
-          {{ scope.row.serverStatus }}
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" min-width="10%">
+      <el-table-column label="操作" min-width="15%" align="center">
         <template slot-scope="{row}">
           <el-button type="info" size="mini" @click="handleDetail(row)">详情</el-button>
           <el-button type="primary" size="mini" @click="handleEdit(row)">编辑</el-button>
@@ -167,6 +169,9 @@ export default {
         this.list = response.data.list
         this.total = response.data.total
         this.listLoading = false
+        this.list.forEach(element => {
+          element.serverType = this.serverTypeArr[element.serverType]
+        })
       })
     },
     changeEnable(row) {

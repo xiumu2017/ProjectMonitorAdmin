@@ -128,7 +128,7 @@ export default {
         this.disabled = true
       }
       if (this.type === 1) {
-        this.formData = {}
+        // this.formData = {}
       }
       this.dialogVisible = true
       this.id = infoId

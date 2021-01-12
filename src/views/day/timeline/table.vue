@@ -2,18 +2,13 @@
   <div class="app-container">
 
     <!-- 查询区域 -->
-    <div class="filter-container">
-      <el-select v-model="pageQuery.type" class="filter-item" placeholder="请选择类别" filterable clearable>
-        <el-option v-for="item in typeArr" :key="item" :value="item" :label="item" />
-      </el-select>
-      <el-input v-model="pageQuery.name" placeholder="请输入项目名称" style="width: 200px;" class="filter-item" />
-      <el-select v-model="pageQuery.enable" class="filter-item" placeholder="启用/禁用" clearable>
-        <el-option key="1" :value="1" label="启用" />
-        <el-option key="0" :value="0" label="禁用" />
-      </el-select>
-      <el-button class="filter-item" type="primary" size="mini" icon="el-icon-search" @click="fetchData">查询</el-button>
+    <div class="filter-container" style="margin-left: 10px;">
+      <el-button class="filter-item" style="margin-left: 10px;" type="info" size="mini" icon="el-icon-left" @click="changeDate(-1)">前一天</el-button>
+      <el-date-picker v-model="date" style="margin-left: 10px;" type="date" value-format="yyyy-MM-dd" placeholder="选择日期" />
+      <el-button class="filter-item" style="margin-left: 10px;" type="info" size="mini" icon="el-icon-right" @click="changeDate(1)">后一天</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" size="mini" icon="el-icon-search" @click="fetchData">查询</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-edit" @click="handleAdd">添加</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-refresh" @click="pageQuery = {pageNum: 1,pageSize: 10}">重置</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-refresh" @click="date=formatDateYmd(new Date())">重置</el-button>
     </div>
 
     <div class="block" style="margin-top:75px;margin-left:50px">
@@ -44,6 +39,7 @@
 import TimelineInfo from './info'
 import { Message } from 'element-ui'
 import { getPage, del, update } from '@/api/day/timeline'
+import { formatDateYmd, leftDay, rightDay } from '@/utils/dateUtils'
 
 export default {
   components: { TimelineInfo },
@@ -62,8 +58,7 @@ export default {
       typeArr: [],
       list: null,
       listLoading: false,
-      pageQuery: {
-      },
+      date: formatDateYmd(new Date()),
       total: 0,
       loading: null,
       currentId: 0,
@@ -91,6 +86,18 @@ export default {
     this.fetchData()
   },
   methods: {
+    changeDate(val) {
+      if (this.date) {
+        if (val && val > 0) {
+          this.date = rightDay(this.date)
+        } else {
+          this.date = leftDay(this.date)
+        }
+        console.log('this.date', this.date)
+      } else {
+        this.date = new Date()
+      }
+    },
     openLoading() {
       this.loading = this.$loading({
         lock: true,
@@ -104,8 +111,7 @@ export default {
     },
     fetchData() {
       this.listLoading = true
-      console.info('tag', this.pageQuery)
-      getPage(this.pageQuery).then(response => {
+      getPage({ 'date': this.date }).then(response => {
         this.list = response.data
         this.total = response.data.total
         this.listLoading = false
