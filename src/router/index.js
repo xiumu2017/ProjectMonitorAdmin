@@ -168,6 +168,21 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/oss',
+    component: Layout,
+    redirect: '/oss/table',
+    name: 'Oss',
+    meta: { title: 'Oss', icon: 'record' },
+    children: [
+      {
+        path: 'oss',
+        name: 'oss',
+        component: () => import('@/views/table/ossTable'),
+        meta: { title: 'Oss 管理', icon: 'setting' }
+      }
+    ]
+  },
 
   /*  {
     path: '/form',

@@ -7,7 +7,7 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="http://localhost:9000/test/lADPDetfShzYdPzNBDjNB4A_1920_1080.jpg?imageView2/1/w/80/h/80" class="user-avatar">
+          <img src="http://paradise-1256237186.cos.ap-nanjing.myqcloud.com/135942HCimg2.jpg?imageView2/1/w/80/h/80" class="user-avatar">
           <!-- <img :src="avatar+'http://localhost:9000/test/lADPDetfShzYdPzNBDjNB4A_1920_1080.jpg?imageView2/1/w/80/h/80'" class="user-avatar"> -->
           <i class="el-icon-caret-bottom" />
         </div>
