@@ -22,7 +22,8 @@
       fit
       highlight-current-row
       @row-dblclick="handleEdit"
-      @row-contextmenu="deleteProject">
+      @row-contextmenu="deleteProject"
+    >
       <el-table-column align="center" label="序号" width="50">
         <template slot-scope="scope">
           {{ scope.$index +1 }}
@@ -46,8 +47,8 @@
       </el-table-column>
       <el-table-column label="状态" width="100" align="center">
         <template slot-scope="scope">
-          {{scope.row.status}}
-      </el-table-column>
+          {{ scope.row.status }}
+        </template></el-table-column>
       <el-table-column label="投票开始时间" width="180" prop="startTime">
         <template slot-scope="scope">
           {{ scope.row.startTime }}
@@ -79,7 +80,7 @@ export default {
     }
   },
   created() {
-    
+
   },
   methods: {
     openLoading() {

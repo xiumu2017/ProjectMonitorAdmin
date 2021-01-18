@@ -42,9 +42,6 @@
       <el-form-item label="密码" prop="password">
         <el-input v-model="serverFormData.password" />
       </el-form-item>
-      <el-form-item label="登录用户名" prop="userName">
-        <el-input v-model="serverFormData.userName" />
-      </el-form-item>
       <el-form-item label="OS" prop="os">
         <el-input v-model="serverFormData.os" />
       </el-form-item>
@@ -60,8 +57,8 @@
           class="filter-item"
           placeholder="Please select"
         >
-          <el-option key="0" value="0" label="启用" />
-          <el-option key="1" value="1" label="停用" />
+          <el-option key="0" :value="0" label="启用" />
+          <el-option key="1" :value="1" label="停用" />
         </el-select>
       </el-form-item>
       <el-form-item label="链接状态">
@@ -70,8 +67,8 @@
           class="filter-item"
           placeholder="Please select"
         >
-          <el-option key="0" value="0" label="启用" />
-          <el-option key="1" value="1" label="停用" />
+          <el-option key="0" :value="0" label="启用" />
+          <el-option key="1" :value="1" label="停用" />
         </el-select>
       </el-form-item>
 

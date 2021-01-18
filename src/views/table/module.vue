@@ -22,7 +22,8 @@
       element-loading-text="Loading"
       border
       fit
-      highlight-current-row>
+      highlight-current-row
+    >
       <el-table-column align="center" label="序号" width="50">
         <template slot-scope="scope">
           {{ scope.$index +1 }}
@@ -46,7 +47,7 @@
       </el-table-column>
       <el-table-column label="重要性" width="100">
         <template slot-scope="scope">
-          <el-rate v-model="scope.row.importance" :max="3" disabled/>
+          <el-rate v-model="scope.row.importance" :max="3" disabled />
         </template>
       </el-table-column>
       <el-table-column label="是否启用" width="90" align="center">
@@ -57,7 +58,8 @@
             inactive-color="#ff4949"
             active-value="1"
             inactive-value="0"
-            @change="changeEnable(row)"/>
+            @change="changeEnable(row)"
+          />
         </template>
       </el-table-column>
       <el-table-column label="Mas类型" width="180" prop="masTypeName">

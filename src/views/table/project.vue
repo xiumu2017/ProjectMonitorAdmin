@@ -32,7 +32,8 @@
       fit
       highlight-current-row
       @row-dblclick="handleEdit"
-      @row-contextmenu="deleteProject">
+      @row-contextmenu="deleteProject"
+    >
       <el-table-column align="center" label="序号" width="50">
         <template slot-scope="scope">
           {{ scope.$index +1 }}
@@ -56,7 +57,7 @@
       </el-table-column>
       <el-table-column label="重要性" width="100">
         <template slot-scope="scope">
-          <el-rate v-model="scope.row.importance" :max="3" disabled/>
+          <el-rate v-model="scope.row.importance" :max="3" disabled />
         </template>
       </el-table-column>
       <el-table-column label="是否启用" width="90" align="center">
@@ -67,7 +68,8 @@
             inactive-color="#ff4949"
             active-value="1"
             inactive-value="0"
-            @change="changeEnable(row)"/>
+            @change="changeEnable(row)"
+          />
         </template>
       </el-table-column>
       <el-table-column label="Mas类型" width="180" prop="masTypeName">
@@ -225,14 +227,14 @@
             <el-button type="primary" size="mini" @click="handleDbTest()">连接测试</el-button>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="MAS信息"/>
+        <el-tab-pane label="MAS信息" />
       </el-tabs>
     </el-dialog>
 
     <!-- server dialog -->
-    <el-dialog :visible.sync="serverDialogVisible" title="服务器信息"/>
+    <el-dialog :visible.sync="serverDialogVisible" title="服务器信息" />
     <!-- db dialog -->
-    <el-dialog :visible.sync="dbDialogVisible" title="数据库信息"/>
+    <el-dialog :visible.sync="dbDialogVisible" title="数据库信息" />
     <!-- 巡检结果form - dialog -->
     <el-dialog :visible.sync="tcDialogVisible" :close-on-click-modal="false" title="Transit - Check - Result">
       <!--      <el-col :span="24" style="font-size: medium">系统配置情况：</el-col>-->
@@ -260,7 +262,7 @@
         </el-col>
         <el-col :span="24">
           <el-form-item label="短信内容">
-            <el-input v-model="checkResultData.smsContent" type="textarea"/>
+            <el-input v-model="checkResultData.smsContent" type="textarea" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -293,7 +295,7 @@
             <el-input v-model="checkResultData.sendTotalCount" />
           </el-form-item>
         </el-col>
-        <el-col :span="12"/>
+        <el-col :span="12" />
       </el-form>
       <table>
         <thead>
@@ -362,7 +364,7 @@ export default {
       cityArr: ['合肥', '宿州', '阜阳', '马鞍山', '宣城', '池州', '安庆', '六安', '滁州', '铜陵', '亳州', '淮南', '淮北', '黄山'],
       list: null,
       listLoading: true,
-      listQuery: {pageNum:1, pageSize:10},
+      listQuery: { pageNum: 1, pageSize: 10 },
       dialogFormVisible: false,
       serverDialogVisible: false,
       dbDialogVisible: false,
@@ -378,7 +380,7 @@ export default {
     }
   },
   created() {
-    this.fetchData();
+    this.fetchData()
   },
   methods: {
     openLoading() {

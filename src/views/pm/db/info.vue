@@ -24,9 +24,6 @@
       <el-form-item label="数据库版本" prop="version">
         <el-input v-model="formData.version" />
       </el-form-item>
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="formData.name" />
-      </el-form-item>
       <el-form-item label="IP地址" prop="ipAddr">
         <el-input v-model="formData.ipAddr" />
       </el-form-item>

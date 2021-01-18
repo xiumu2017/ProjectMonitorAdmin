@@ -11,15 +11,11 @@
         <el-option key="1" value="1" label="启用" />
         <el-option key="0" value="0" label="禁用" />
       </el-select>
-      <el-button class="filter-item" type="primary" size="mini" icon="el-icon-search" @click="fetchData">查询</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" size="mini" icon="el-icon-search" @click="fetchData">查询</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-edit" @click="handleAdd">添加</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-refresh" @click="pageQuery = {pageNum: 1,pageSize: 10}">重置</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" @click="excelExport">导出</el-button>
     </div>
-
-    <!-- table
-      @row-dblclick="handleEdit"
-      @row-contextmenu="deleteProject" -->
 
     <el-table
       v-loading="listLoading"
@@ -29,14 +25,9 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="序号" min-width="5%">
+      <el-table-column align="center" label="序号" min-width="3%">
         <template slot-scope="scope">
           {{ scope.$index +1 }}
-        </template>
-      </el-table-column>
-      <el-table-column label="名称" min-width="8%">
-        <template slot-scope="scope">
-          {{ scope.row.name }}
         </template>
       </el-table-column>
       <el-table-column label="数据库类型" min-width="5%">
@@ -59,7 +50,7 @@
           {{ scope.row.ipAddrPublic }}
         </template>
       </el-table-column>
-      <el-table-column label="域名" min-width="9%">
+      <el-table-column label="域名" min-width="8%">
         <template slot-scope="scope">
           {{ scope.row.domainAddr }}
         </template>
@@ -127,6 +118,7 @@
       :total="total"
       :page-size="pageQuery.pageSize"
       :current-page="pageQuery.pageNum"
+      @current-change="fetchData"
     />
     <DbInfo ref="DbInfoDialog" @close="fetchData" />
   </div>

@@ -6,20 +6,15 @@
       <el-select v-model="pageQuery.type" class="filter-item" placeholder="请选择类别" filterable clearable>
         <el-option v-for="item in serverTypeArr" :key="item" :value="item" :label="item" />
       </el-select>
-      <el-input v-model="pageQuery.name" placeholder="请输入项目名称" style="width: 200px;" class="filter-item" />
       <el-select v-model="pageQuery.enable" class="filter-item" placeholder="启用/禁用" clearable>
-        <el-option key="1" value="1" label="启用" />
-        <el-option key="0" value="0" label="禁用" />
+        <el-option key="1" :value="1" label="启用" />
+        <el-option key="0" :value="0" label="禁用" />
       </el-select>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" size="mini" icon="el-icon-search" @click="fetchData">查询</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-edit" @click="handleAdd">添加</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-refresh" @click="pageQuery = {pageNum: 1,pageSize: 10}">重置</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" @click="excelExport">导出</el-button>
     </div>
-
-    <!-- table
-      @row-dblclick="handleEdit"
-      @row-contextmenu="deleteProject" -->
 
     <el-table
       v-loading="listLoading"
@@ -108,6 +103,7 @@
       :total="total"
       :page-size="pageQuery.pageSize"
       :current-page="pageQuery.pageNum"
+      @current-change="fetchData"
     />
     <ServerInfo ref="serverInfoDialog" @close="fetchData" />
   </div>
