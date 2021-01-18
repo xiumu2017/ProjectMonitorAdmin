@@ -8,7 +8,7 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="info" size="mini" icon="el-icon-right" @click="changeDate(1)">后一天</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" size="mini" icon="el-icon-search" @click="fetchData">查询</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-edit" @click="handleAdd">添加</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-refresh" @click="date=formatDateYmd(new Date())">重置</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-refresh" @click="reset">重置</el-button>
     </div>
 
     <div class="block" style="margin-top:75px;margin-left:50px">
@@ -16,18 +16,30 @@
         <el-timeline-item
           v-for="(activity) in list"
           :key="activity.id"
-          :icon="activity.icon"
+          icon="el-icon-apple"
           :type="activity.type"
-          :color="activity.color"
-          :size="activity.size"
+          color="#0bbd87"
+          size="large"
+          placement="top"
           :timestamp="activity.startTime"
         >
-          {{ activity.things }}
-          <el-button-group style="margin-left: 35px">
-            <el-button type="info" size="mini" icon="el-icon-info" circle @click="handleDetail(activity)" />
-            <el-button type="primary" size="mini" icon="el-icon-edit" circle @click="handleEdit(activity)" />
-            <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="handleDel(activity)" />
-          </el-button-group>
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span>{{ activity.things }}</span>
+              <el-button-group style="float: right; padding: 3px 0">
+                <el-button type="info" size="mini" icon="el-icon-info" circle @click="handleDetail(activity)" />
+                <el-button type="primary" size="mini" icon="el-icon-edit" circle @click="handleEdit(activity)" />
+                <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="handleDel(activity)" />
+              </el-button-group>
+            </div>
+            <div class="text item">
+              <span class="text item">开始时间： {{ activity.startTime }} </span><br><br>
+              <span class="text item">结束时间： {{ activity.endTime }} </span><br><br>
+              <span class="text item">备注： {{ activity.remark }} </span><br><br>
+              <span class="text item">位置： {{ activity.location }} </span><br><br><br>
+              <el-tag>{{ activity.label }}</el-tag>
+            </div>
+          </el-card>
         </el-timeline-item>
       </el-timeline>
     </div>
@@ -61,31 +73,17 @@ export default {
       date: formatDateYmd(new Date()),
       total: 0,
       loading: null,
-      currentId: 0,
-      activities: [{
-        content: '支持使用图标',
-        timestamp: '2018-04-12 20:46',
-        size: 'large',
-        type: 'primary',
-        icon: 'el-icon-more'
-      }, {
-        content: '支持自定义颜色',
-        timestamp: '2018-04-03 20:46',
-        color: '#0bbd87'
-      }, {
-        content: '支持自定义尺寸',
-        timestamp: '2018-04-03 20:46',
-        size: 'large'
-      }, {
-        content: '默认样式的节点',
-        timestamp: '2018-04-03 20:46'
-      }]
+      currentId: 0
     }
   },
   created() {
     this.fetchData()
   },
   methods: {
+    reset() {
+      this.date = formatDateYmd(new Date())
+      this.fetchData()
+    },
     changeDate(val) {
       if (this.date) {
         if (val && val > 0) {
@@ -97,6 +95,7 @@ export default {
       } else {
         this.date = new Date()
       }
+      this.fetchData()
     },
     openLoading() {
       this.loading = this.$loading({
@@ -171,3 +170,12 @@ export default {
   }
 }
 </script>
+<style>
+  .text {
+    font-size: 15px;
+  }
+
+  .box-card {
+    width: 500px;
+  }
+</style>

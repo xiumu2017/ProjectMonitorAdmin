@@ -22,13 +22,13 @@
         </el-select>
       </el-form-item>
       <el-form-item label="日期" prop="date">
-        <el-date-picker v-model="formData.date" type="date" value-format="yyyy-MM-dd HH:mm:ss" :default-value="now" placeholder="选择日期" />
+        <el-date-picker v-model="formData.date" type="date" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期" />
       </el-form-item>
       <el-form-item label="开始时间" prop="startTime">
-        <el-date-picker v-model="formData.startTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" :default-value="now" placeholder="选择日期" />
+        <el-input v-model="formData.startTime" placeholder="输入时间" />
       </el-form-item>
       <el-form-item label="结束时间" prop="endTime">
-        <el-date-picker v-model="formData.endTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" :default-value="now" placeholder="选择日期" />
+        <el-input v-model="formData.endTime" placeholder="输入时间" />
       </el-form-item>
       <el-form-item label="做了什么事">
         <el-input
@@ -133,6 +133,8 @@ export default {
         })
       } else {
         // 新增
+        //
+        this.handleFormData()
         create(this.formData).then(res => {
           if (res.code === 200) {
             Message({
@@ -153,6 +155,20 @@ export default {
     handleClose() {
       this.disabled = false
       this.hideIdFlag = true
+    },
+    handleFormData() {
+      const rq = this.formData.date
+      const st = rq.split(' ')[0] + ' ' + this.formData.startTime + ':00'
+      const et = rq.split(' ')[0] + ' ' + this.formData.endTime + ':00'
+      this.formData.startTime = st
+      this.formData.endTime = et
+      console.log('form', this.formData)
+      if (!this.formData.photos) {
+        this.formData.photos = '/'
+      }
+      if (!this.formData.remark) {
+        this.formData.remark = '/'
+      }
     }
   }
 }
