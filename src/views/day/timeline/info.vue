@@ -12,7 +12,13 @@
         <el-input v-model="formData.id" disabled />
       </el-form-item>
       <el-form-item label="标签" prop="label">
-        <el-select v-model="formData.label">
+        <el-select
+          v-model="formData.label"
+          multiple
+          filterable
+          allow-create
+          default-first-option
+        >
           <el-option
             v-for="(item) in typeArr"
             :key="item"
@@ -146,8 +152,8 @@ export default {
               this.formData = {}
             } else {
               this.dialogVisible = false
-              this.$emit('close')
             }
+            this.$emit('close')
           }
         })
       }
@@ -162,6 +168,8 @@ export default {
       const et = rq.split(' ')[0] + ' ' + this.formData.endTime + ':00'
       this.formData.startTime = st
       this.formData.endTime = et
+      const labelList = this.formData.label
+      this.formData.label = labelList.toString()
       console.log('form', this.formData)
       if (!this.formData.photos) {
         this.formData.photos = '/'

@@ -37,7 +37,7 @@
               <span class="text item">结束时间： {{ activity.endTime }} </span><br><br>
               <span class="text item">备注： {{ activity.remark }} </span><br><br>
               <span class="text item">位置： {{ activity.location }} </span><br><br><br>
-              <el-tag>{{ activity.label }}</el-tag>
+              <el-tag v-for="(label,index) in activity.labels" :key="index" style="margin-right: 10px">{{ label }}</el-tag>
             </div>
           </el-card>
         </el-timeline-item>
@@ -114,6 +114,10 @@ export default {
         this.list = response.data
         this.total = response.data.total
         this.listLoading = false
+        this.list.forEach(element => {
+          const labels = element.label.split(/[,，]/g)
+          element.labels = labels
+        })
         console.log('list', this.list)
       })
     },
