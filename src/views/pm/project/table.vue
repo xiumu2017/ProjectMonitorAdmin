@@ -3,23 +3,16 @@
 
     <!-- 查询区域 -->
     <div class="filter-container">
-      <el-select v-model="pageQuery.type" class="filter-item" placeholder="请选择类别" filterable clearable>
-        <el-option v-for="item in typeArr" :key="item" :value="item" :label="item" />
-      </el-select>
       <el-input v-model="pageQuery.name" placeholder="请输入项目名称" style="width: 200px;" class="filter-item" />
       <el-select v-model="pageQuery.enable" class="filter-item" placeholder="启用/禁用" clearable>
-        <el-option key="1" value="1" label="启用" />
-        <el-option key="0" value="0" label="禁用" />
+        <el-option key="1" :value="1" label="启用" />
+        <el-option key="0" :value="0" label="禁用" />
       </el-select>
-      <el-button class="filter-item" type="primary" size="mini" icon="el-icon-search" @click="fetchData">查询</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" size="mini" icon="el-icon-search" @click="fetchData">查询</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-edit" @click="handleAdd">添加</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-refresh" @click="pageQuery = {pageNum: 1,pageSize: 10}">重置</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-refresh" @click="reset">重置</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" @click="excelExport">导出</el-button>
     </div>
-
-    <!-- table
-      @row-dblclick="handleEdit"
-      @row-contextmenu="deleteProject" -->
 
     <el-table
       v-loading="listLoading"
@@ -39,23 +32,6 @@
           {{ scope.row.projectName }}
         </template>
       </el-table-column>
-      <el-table-column label="访问地址" min-width="10%">
-        <template slot-scope="scope">
-          {{ scope.row.serviceUrl }}
-          <a :href="scope.row.serviceUrl" class="el-icon-share" target="_blank" style="color: #409EFF">link</a>
-        </template>
-      </el-table-column>
-      <el-table-column label="用户名密码" min-width="10%">
-        <template slot-scope="scope">
-          {{ scope.row.username + ':' + scope.row.password }}
-        </template>
-      </el-table-column>
-      <el-table-column label="信息与资料地址" min-width="10%">
-        <template slot-scope="scope">
-          {{ scope.row.projectInfoLink }}
-          <a :href="scope.row.projectInfoLink" class="el-icon-share" target="_blank" style="color: #409EFF">link</a>
-        </template>
-      </el-table-column>
       <el-table-column label="重要性" min-width="5%">
         <template slot-scope="scope">
           <el-rate v-model="scope.row.importance" disabled />
@@ -68,12 +44,12 @@
       </el-table-column>
       <el-table-column label="项目开始时间" min-width="5%">
         <template slot-scope="scope">
-          {{ scope.row.startTime }}
+          {{ scope.row.startTimeStr }}
         </template>
       </el-table-column>
       <el-table-column label="项目结束时间" min-width="5%">
         <template slot-scope="scope">
-          {{ scope.row.endTime }}
+          {{ scope.row.endTimeStr }}
         </template>
       </el-table-column>
       <el-table-column label="是否启用" min-width="5%" align="center">
@@ -82,8 +58,8 @@
             v-model="row.status"
             active-color="#13ce66"
             inactive-color="#ff4949"
-            active-value="1"
-            inactive-value="0"
+            :active-value="1"
+            :inactive-value="0"
             @change="changeEnable(row)"
           />
         </template>
@@ -96,6 +72,21 @@
       <el-table-column label="简介" min-width="15%">
         <template slot-scope="scope">
           {{ scope.row.remark }}
+        </template>
+      </el-table-column>
+      <el-table-column label="访问地址" min-width="5%">
+        <template slot-scope="scope">
+          <a :href="scope.row.serviceUrl" class="el-icon-share" target="_blank" style="color: #409EFF">link</a>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label="用户名密码" min-width="10%">
+        <template slot-scope="scope">
+          {{ scope.row.username + ':' + scope.row.password }}
+        </template>
+      </el-table-column> -->
+      <el-table-column label="资料地址" min-width="5%">
+        <template slot-scope="scope">
+          <a :href="scope.row.projectInfoLink" class="el-icon-share" target="_blank" style="color: #409EFF">link</a>
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="10%">
@@ -152,6 +143,12 @@ export default {
     this.fetchData()
   },
   methods: {
+    reset() {
+      this.pageQuery = {
+        pageNum: 1,
+        pageSize: 10
+      }
+    },
     openLoading() {
       this.loading = this.$loading({
         lock: true,
@@ -169,8 +166,8 @@ export default {
       getPage(this.pageQuery).then(response => {
         this.list = response.data.list
         this.list.forEach(element => {
-          element.startTime = this.formatDate(element.startTime)
-          element.endTime = this.formatDate(element.endTime)
+          element.startTimeStr = this.formatDate(element.startTime)
+          element.endTimeStr = this.formatDate(element.endTime)
         })
         this.total = response.data.total
         this.listLoading = false
@@ -181,12 +178,11 @@ export default {
       return v.getFullYear() + '/' + (v.getMonth() + 1) + '/' + v.getDate()
     },
     changeEnable(row) {
-      const param = { 'id': row.id, 'enable': row.enable }
-      update(row.id, param).then(res => {
+      update(row.id, row).then(res => {
         if (res.code === 200) {
           this.fetchData()
           Message({
-            message: res.msg,
+            message: res.message,
             type: 'success',
             duration: 3 * 1000
           })

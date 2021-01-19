@@ -50,18 +50,8 @@
           class="filter-item"
           placeholder="Please select"
         >
-          <el-option key="0" value="0" label="启用" />
-          <el-option key="1" value="1" label="停用" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="链接状态">
-        <el-select
-          v-model="formData.statusCode"
-          class="filter-item"
-          placeholder="Please select"
-        >
-          <el-option key="0" value="0" label="启用" />
-          <el-option key="1" value="1" label="停用" />
+          <el-option key="0" :value="1" label="启用" />
+          <el-option key="1" :value="0" label="停用" />
         </el-select>
       </el-form-item>
 
