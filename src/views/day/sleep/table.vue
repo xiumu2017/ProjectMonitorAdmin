@@ -16,9 +16,10 @@
       v-loading="listLoading"
       :data="list"
       style="margin-top: 20px"
+      :row-style="rowStyle"
+      :cell-style="cellStyle"
       element-loading-text="Loading"
       fit
-      highlight-current-row
     >
       <el-table-column align="center" label="序号" min-width="3%">
         <template slot-scope="scope">
@@ -27,7 +28,7 @@
       </el-table-column>
       <el-table-column label="日期" min-width="5%">
         <template slot-scope="scope">
-          {{ scope.row.date }}
+          {{ scope.row.dateStr }}
         </template>
       </el-table-column>
       <el-table-column label="上床时间" min-width="10%">
@@ -83,7 +84,8 @@
       layout="prev, pager, next"
       :total="total"
       :page-size="pageQuery.pageSize"
-      :current-page="pageQuery.pageNum"
+      :current-page.sync="pageQuery.pageNum"
+      @current-change="fetchData"
     />
     <SleepRecordInfo ref="SleepRecordInfoDialog" @close="fetchData" />
   </div>
@@ -123,6 +125,37 @@ export default {
     this.fetchData()
   },
   methods: {
+    rowStyle({ row, rowIndex }) {
+      if (row.date) {
+        const d = new Date(row.date)
+        if (d.getDay() === 6 || d.getDay() === 0) {
+          return {
+            'background-color': '#FFF8DC'
+          }
+        }
+        return ''
+      }
+    },
+    cellStyle({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 3) {
+        const time = new Date(row.sleepTime)
+        if (time.getHours() >= 0 && time.getHours() < 10) {
+          return {
+            'color': 'red',
+            'font-weight': 'bold'
+          }
+        } else if (time.getHours() >= 21 && time.getHours() <= 22) {
+          return {
+            'color': '#228B22',
+            'font-weight': 'bold'
+          }
+        } else {
+          return {
+            'font-weight': 'bold'
+          }
+        }
+      }
+    },
     openLoading() {
       this.loading = this.$loading({
         lock: true,
@@ -142,7 +175,7 @@ export default {
         this.total = response.data.total
         this.listLoading = false
         this.list.forEach(item => {
-          item.date = this.formatDate(item.date)
+          item.dateStr = this.formatDate(item.date)
         })
       })
     },

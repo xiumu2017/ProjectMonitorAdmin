@@ -15,16 +15,16 @@
         <el-date-picker v-model="formData.date" type="date" placeholder="选择日期" value-format="timestamp" />
       </el-form-item>
       <el-form-item label="上床时间">
-        <el-date-picker v-model="formData.bedTime" type="datetime" placeholder="选择时间" value-format="timestamp" />
+        <el-input v-model="formData.bedTime" />
       </el-form-item>
       <el-form-item label="入睡时间">
-        <el-date-picker v-model="formData.sleepTime" type="datetime" placeholder="选择时间" value-format="timestamp" />
+        <el-input v-model="formData.sleepTime" />
       </el-form-item>
       <el-form-item label="醒来时间">
-        <el-date-picker v-model="formData.wakeTime" type="datetime" placeholder="选择时间" value-format="timestamp" />
+        <el-input v-model="formData.wakeTime" />
       </el-form-item>
       <el-form-item label="起床时间">
-        <el-date-picker v-model="formData.upTime" type="datetime" placeholder="选择时间" value-format="timestamp" />
+        <el-input v-model="formData.upTime" />
       </el-form-item>
       <el-form-item label="睡眠质量">
         <el-rate v-model="formData.sleepQuality" />
@@ -68,10 +68,14 @@ export default {
       title: '新增睡眠记录',
       titleArr: ['详情', '新增', '更新'],
       formData: {},
+      submitFormData: {},
       id: 0,
       disabled: false,
       dialogVisible: false,
       hideIdFlag: true,
+      pickerOptions: {
+        format: 'HH:mm'
+      },
       props: {
         id: {
           type: Number,
@@ -93,7 +97,7 @@ export default {
       console.log('id', id)
       this.type = type
       if (type && type instanceof Number) {
-        this.title = this.type[type]
+        this.title = this.titleArr[type]
       }
       if (this.type === 0) {
         this.disabled = true
@@ -107,13 +111,15 @@ export default {
       if (id !== 0) {
         detail(id).then(res => {
           this.formData = res.data
+          this.formData.date = (new Date(this.formData.date)).getTime()
         })
       }
     },
     submit() {
+      this.handleFormData()
       // 更新
       if (this.type === 2) {
-        update(this.id, this.formData).then(res => {
+        update(this.id, this.submitFormData).then(res => {
           if (res.code === 200) {
             this.dialogVisible = false
             this.$emit('close')
@@ -126,7 +132,7 @@ export default {
         })
       } else {
         // 新增
-        create(this.formData).then(res => {
+        create(this.submitFormData).then(res => {
           if (res.code === 200) {
             this.dialogVisible = false
             this.$emit('close')
@@ -142,6 +148,33 @@ export default {
     handleClose() {
       this.disabled = false
       this.hideIdFlag = true
+    },
+    handleFormData() {
+      this.submitFormData = Object.assign({}, this.formData)
+      const bedTime = this.submitFormData.bedTime
+      const sleepTime = this.submitFormData.sleepTime
+      const v = new Date(this.submitFormData.date)
+      const rq = v.getFullYear() + '-' + (v.getMonth() + 1) + '-' + v.getDate()
+      const bt = rq + ' ' + this.submitFormData.bedTime + ':00'
+      const st = rq + ' ' + this.submitFormData.sleepTime + ':00'
+      const wt = rq + ' ' + this.submitFormData.wakeTime + ':00'
+      const ut = rq + ' ' + this.submitFormData.upTime + ':00'
+      const std = new Date(st)
+      const btd = new Date(bt)
+      const wtd = new Date(wt)
+      const utd = new Date(ut)
+      this.submitFormData.bedTime = btd.getTime()
+      this.submitFormData.sleepTime = std.getTime()
+      this.submitFormData.wakeTime = wtd.getTime()
+      this.submitFormData.upTime = utd.getTime()
+      // 时间修正
+      if (bedTime.split(':')[0] > 20) {
+        this.submitFormData.bedTime = this.submitFormData.bedTime - 24 * 3600 * 1000
+      }
+      if (sleepTime.split(':')[0] > 20) {
+        this.submitFormData.sleepTime = this.submitFormData.sleepTime - 24 * 3600 * 1000
+      }
+      console.log('submitFormData', this.submitFormData)
     }
   }
 }
