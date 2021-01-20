@@ -94,8 +94,22 @@ export const constantRoutes = [
       {
         path: 'server',
         name: '服务器管理',
-        component: () => import('@/views/pm/server/table'),
-        meta: { title: '服务器管理', icon: 'server2' }
+        meta: { title: '服务器管理', icon: 'server2' },
+        component: () => import('@/views/pm/server/index'),
+        children: [
+          {
+            path: 'type',
+            name: '类别管理',
+            component: () => import('@/views/pm/serverType/table'),
+            meta: { title: '类别管理', icon: 'server2' }
+          },
+          {
+            path: 'management',
+            name: '服务器管理',
+            component: () => import('@/views/pm/server/table'),
+            meta: { title: '服务器管理', icon: 'server2' }
+          }
+        ]
       },
       {
         path: 'db',

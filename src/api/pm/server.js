@@ -9,6 +9,13 @@ export function getPage(params) {
   })
 }
 
+export function allServers() {
+  return request({
+    url: '/server/all',
+    method: 'get'
+  })
+}
+
 // 新增服务器信息
 export function create(data) {
   return request({
@@ -45,7 +52,7 @@ export function detail(id) {
 
 export function connect(id) {
   return request({
-    url: '/server/test-conect/' + id,
+    url: '/server/test-connect/' + id,
     method: 'get'
   })
 }

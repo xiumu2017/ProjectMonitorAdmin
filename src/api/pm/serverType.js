@@ -1,18 +1,9 @@
 import request from '@/utils/request'
 
 // 分页查询
-export function getList(params) {
-  return request({
-    url: '/table/page',
-    method: 'get',
-    params
-  })
-}
-
-// 分页查询
 export function getPage(params) {
   return request({
-    url: '/table/s',
+    url: '/serverType/s',
     method: 'get',
     params
   })
@@ -21,7 +12,7 @@ export function getPage(params) {
 // 新增记录
 export function create(data) {
   return request({
-    url: '/table',
+    url: '/serverType',
     method: 'post',
     data
   })
@@ -30,7 +21,7 @@ export function create(data) {
 // 修改记录
 export function update(id, data) {
   return request({
-    url: '/table/' + id,
+    url: '/serverType/' + id,
     method: 'put',
     data
   })
@@ -39,7 +30,7 @@ export function update(id, data) {
 // 删除记录
 export function del(id) {
   return request({
-    url: '/table/' + id,
+    url: '/serverType/' + id,
     method: 'delete'
   })
 }
@@ -47,23 +38,7 @@ export function del(id) {
 // 记录详情
 export function detail(id) {
   return request({
-    url: '/table/' + id,
-    method: 'get'
-  })
-}
-
-// 获取类别列表
-export function getTypeList() {
-  return request({
-    url: '/table/types',
-    method: 'get'
-  })
-}
-
-// 导出excel
-export function excelExport() {
-  return request({
-    url: '/table/excel',
+    url: '/serverType/' + id,
     method: 'get'
   })
 }
