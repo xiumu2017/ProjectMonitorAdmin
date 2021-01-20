@@ -67,12 +67,20 @@
       </el-table-column>
       <el-table-column label="密码" min-width="4%">
         <template slot-scope="scope">
-          {{ scope.row.password }}
+          <span :id="'span' + scope.row.id" @click="showPassword(scope.row)"> ****** </span>
         </template>
       </el-table-column>
       <el-table-column label="JDBC_URL" min-width="10%">
         <template slot-scope="scope">
-          {{ scope.row.url }}
+          <el-popover
+            placement="top"
+            title=""
+            width="300"
+            trigger="click"
+            :content="scope.row.url"
+          >
+            <el-button slot="reference" type="primary" size="small">查看</el-button>
+          </el-popover>
         </template>
       </el-table-column>
       <el-table-column label="是否启用" min-width="5%" align="center">
@@ -162,6 +170,16 @@ export default {
     this.fetchData()
   },
   methods: {
+    showPassword(row) {
+      // this.$ref['span' + row.id].innerHtml = row.password
+      const text = document.getElementById('span' + row.id).innerText
+      const stars = '******'
+      if (text === stars) {
+        document.getElementById('span' + row.id).innerHTML = row.password
+      } else {
+        document.getElementById('span' + row.id).innerHTML = stars
+      }
+    },
     openLoading() {
       this.loading = this.$loading({
         lock: true,

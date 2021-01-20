@@ -14,10 +14,10 @@
       <el-form-item label="服务器类型" prop="type">
         <el-select v-model="serverFormData.serverType">
           <el-option
-            v-for="(item,index) in serverTypeArr"
-            :key="item"
-            :value="index"
-            :label="item"
+            v-for="(item) in serverTypeArr"
+            :key="item.id"
+            :value="item.id"
+            :label="item.typeName"
           />
         </el-select>
       </el-form-item>
@@ -33,7 +33,7 @@
       <el-form-item label="域名地址" prop="domainAddr">
         <el-input v-model="serverFormData.domainAddr" />
       </el-form-item>
-      <el-form-item label="PORT" prop="port">
+      <el-form-item label="端口号" prop="port">
         <el-input v-model="serverFormData.port" />
       </el-form-item>
       <el-form-item label="用户名" prop="userName">
@@ -42,14 +42,22 @@
       <el-form-item label="密码" prop="password">
         <el-input v-model="serverFormData.password" />
       </el-form-item>
-      <el-form-item label="OS" prop="os">
-        <el-input v-model="serverFormData.os" />
-      </el-form-item>
       <el-form-item label="OSVersion" prop="osVersion">
         <el-input v-model="serverFormData.osVersion" />
       </el-form-item>
-      <el-form-item label="内存大小" prop="memory">
-        <el-input v-model="serverFormData.memory" />
+      <el-form-item label="标签">
+        <el-select
+          v-model="serverFormData.tagArr"
+          class="filter-item"
+          placeholder="请选择标签"
+          multiple
+          filterable
+          allow-create
+          default-first-option
+        >
+          <el-option key="0" value="启用" label="启用" />
+          <el-option key="1" value="停用" label="停用" />
+        </el-select>
       </el-form-item>
       <el-form-item label="启用状态">
         <el-select
@@ -57,8 +65,8 @@
           class="filter-item"
           placeholder="Please select"
         >
-          <el-option key="0" :value="0" label="启用" />
-          <el-option key="1" :value="1" label="停用" />
+          <el-option key="0" :value="1" label="启用" />
+          <el-option key="1" :value="0" label="停用" />
         </el-select>
       </el-form-item>
       <el-form-item label="链接状态">
@@ -67,9 +75,18 @@
           class="filter-item"
           placeholder="Please select"
         >
-          <el-option key="0" :value="0" label="启用" />
-          <el-option key="1" :value="1" label="停用" />
+          <el-option key="0" :value="1" label="启用" />
+          <el-option key="1" :value="0" label="停用" />
         </el-select>
+      </el-form-item>
+
+      <el-form-item label="配置信息">
+        <el-input
+          v-model="serverFormData.configuration"
+          :autosize="{ minRows: 2, maxRows: 4 }"
+          type="textarea"
+          placeholder=""
+        />
       </el-form-item>
 
       <el-form-item label="备注">
@@ -79,6 +96,28 @@
           type="textarea"
           placeholder=""
         />
+      </el-form-item>
+      <el-form-item label="宿主机" prop="hostId">
+        <el-select v-model="serverFormData.hostId">
+          <el-option :value="0" label="无" />
+          <el-option
+            v-for="(item) in serverArr"
+            :key="item.id"
+            :value="item.id"
+            :label="item.name"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="跳板机" prop="forwardId">
+        <el-select v-model="serverFormData.forwardId">
+          <el-option :value="0" label="无" />
+          <el-option
+            v-for="(item) in serverArr"
+            :key="item.id"
+            :value="item.id"
+            :label="item.name"
+          />
+        </el-select>
       </el-form-item>
     </el-form>
 
@@ -91,7 +130,7 @@
 
 <script>
 import { Message } from 'element-ui'
-import { create, update, getServerTypeList, detail } from '@/api/server'
+import { create, update, getServerTypeList, detail, allServers } from '@/api/pm/server'
 export default {
   name: 'ServerInfo',
   data() {
@@ -102,6 +141,7 @@ export default {
       titleArr: ['Server详情', '新增Server', '更新Server'],
       serverFormData: {},
       serverTypeArr: [],
+      serverArr: [],
       id: 0,
       disabled: false,
       dialogVisible: false,
@@ -122,6 +162,9 @@ export default {
     // 初始化查询 服务器类型列表
     getServerTypeList().then(res => {
       this.serverTypeArr = res.data
+    })
+    allServers().then(res => {
+      this.serverArr = res.data
     })
   },
   methods: {
@@ -148,6 +191,9 @@ export default {
       }
     },
     submit() {
+      if (this.serverFormData.tagArr.length > 0) {
+        this.serverFormData.tags = this.serverFormData.tagArr.toString()
+      }
       // 更新
       if (this.type === 2) {
         update(this.id, this.serverFormData).then(res => {
@@ -169,12 +215,12 @@ export default {
           if (res.code === 200) {
             this.dialogVisible = false
             this.$emit('close')
+            Message({
+              message: res.message,
+              type: 'success',
+              duration: 3 * 1000
+            })
           }
-          Message({
-            message: res.message,
-            type: 'success',
-            duration: 3 * 1000
-          })
         })
       }
     },

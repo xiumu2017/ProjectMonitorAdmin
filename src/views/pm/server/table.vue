@@ -4,7 +4,7 @@
     <!-- 查询区域 -->
     <div class="filter-container">
       <el-select v-model="pageQuery.type" class="filter-item" placeholder="请选择类别" filterable clearable>
-        <el-option v-for="item in serverTypeArr" :key="item" :value="item" :label="item" />
+        <el-option v-for="item in serverTypeArr" :key="item.id" :value="item.id" :label="item.typeName" />
       </el-select>
       <el-select v-model="pageQuery.enable" class="filter-item" placeholder="启用/禁用" clearable>
         <el-option key="1" :value="1" label="启用" />
@@ -50,10 +50,17 @@
           {{ scope.row.ipAddrPublic }}
         </template>
       </el-table-column>
-      <el-table-column label="域名" min-width="10%">
+      <el-table-column label="域名" min-width="5%">
         <template slot-scope="scope">
-          {{ scope.row.domainAddr }}
-        </template>
+          <el-popover
+            placement="top"
+            title=""
+            width="200"
+            trigger="click"
+            :content="scope.row.domainAddr"
+          >
+            <el-button slot="reference" type="primary" size="small">查看</el-button>
+          </el-popover></template>
       </el-table-column>
       <el-table-column label="端口" min-width="5%">
         <template slot-scope="scope">
@@ -77,7 +84,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="状态" min-width="5%" align="center">
+      <el-table-column label="连接状态" min-width="5%" align="center">
         <template slot-scope="{row}">
           <el-switch
             v-model="row.serverStatus"
@@ -85,14 +92,37 @@
             inactive-color="#ff4949"
             :active-value="1"
             :inactive-value="0"
-            @change="changeEnable(row)"
+            @change="changeStatus(row)"
           />
         </template>
+      </el-table-column>
+      <el-table-column label="配置信息" min-width="5%">
+        <template slot-scope="scope">
+          <el-popover
+            placement="top"
+            title=""
+            width="200"
+            trigger="click"
+            :content="scope.row.configuration"
+          >
+            <el-button slot="reference" type="primary" size="small">查看</el-button>
+          </el-popover></template>
+      </el-table-column>
+      <el-table-column label="标签" min-width="10%">
+        <template slot-scope="scope">
+          <el-tag v-for=" (item,index) in (scope.row.tags.split(/[,，]/g))" :key="index" style="margin-right: 5px"> {{ item }} </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="备注信息" min-width="15%">
+        <template slot-scope="scope">
+          <p style="font-size: 12px"> {{ scope.row.remark }}
+          </p></template>
       </el-table-column>
       <el-table-column label="操作" min-width="15%" align="center">
         <template slot-scope="{row}">
           <el-button type="info" size="mini" @click="handleDetail(row)">详情</el-button>
           <el-button type="primary" size="mini" @click="handleEdit(row)">编辑</el-button>
+          <el-button type="primary" size="mini" @click="serverTest(row)">连接</el-button>
           <el-button type="danger" size="mini" @click="handleDel(row)">删除</el-button>
         </template>
       </el-table-column>
@@ -106,13 +136,14 @@
       @current-change="fetchData"
     />
     <ServerInfo ref="serverInfoDialog" @close="fetchData" />
+    <router-view />
   </div>
 </template>
 
 <script>
 import ServerInfo from './info'
 import { Message } from 'element-ui'
-import { getPage, del, update, getServerTypeList, connect, excelExport } from '@/api/server'
+import { getPage, del, update, getServerTypeList, connect, excelExport } from '@/api/pm/server'
 
 export default {
   components: { ServerInfo },
@@ -166,7 +197,11 @@ export default {
         this.total = response.data.total
         this.listLoading = false
         this.list.forEach(element => {
-          element.serverType = this.serverTypeArr[element.serverType]
+          this.serverTypeArr.forEach(item => {
+            if (element.serverType === item.id) {
+              element.serverType = item.typeName
+            }
+          })
         })
       })
     },
@@ -176,24 +211,42 @@ export default {
         if (res.code === 200) {
           this.fetchData()
           Message({
-            message: res.msg,
+            message: res.message,
             type: 'success',
             duration: 3 * 1000
           })
         }
       })
     },
-    serverTest() {
-      this.openLoading()
-      connect(this.serverFormData).then(res => {
-        this.closeLoading()
+    changeStatus(row) {
+      const param = { 'id': row.id, 'serverStatus': row.enable }
+      update(row.id, param).then(res => {
         if (res.code === 200) {
+          this.fetchData()
           Message({
-            message: res.msg + res.data,
+            message: res.message,
             type: 'success',
             duration: 3 * 1000
           })
         }
+      })
+    },
+    serverTest(row) {
+      this.openLoading()
+      connect(row.id).then(res => {
+        this.closeLoading()
+        if (res.code === 200) {
+          this.$message({
+            message: '<h4>' + res.message + '</h4>' + '服务器当前时间：<br>' + res.data,
+            type: 'success',
+            dangerouslyUseHTMLString: true,
+            showClose: true,
+            duration: 0
+          })
+        }
+      }, error => {
+        this.closeLoading()
+        console.error(error)
       })
     },
     handleAdd() {

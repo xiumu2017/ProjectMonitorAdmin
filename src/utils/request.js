@@ -89,7 +89,8 @@ service.interceptors.response.use(
       Message({
         message: res.message,
         type: 'error',
-        duration: 3 * 1000
+        showClose: true,
+        duration: 0
       })
     }
     return response.data
