@@ -43,18 +43,10 @@ export function detail(id) {
   })
 }
 
-// 获取类别列表
-export function getTypeList() {
+// 获取角色列表
+export function getRoleList(id) {
   return request({
-    url: '/admin/types',
-    method: 'get'
-  })
-}
-
-// 导出excel
-export function excelExport() {
-  return request({
-    url: '/admin/excel',
+    url: '/admin/role/' + id,
     method: 'get'
   })
 }

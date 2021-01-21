@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 分页查询
 export function getPage(params) {
   return request({
-    url: '/table/s',
+    url: '/role/s',
     method: 'get',
     params
   })
@@ -12,7 +12,7 @@ export function getPage(params) {
 // 新增记录
 export function create(data) {
   return request({
-    url: '/table',
+    url: '/role',
     method: 'post',
     data
   })
@@ -21,40 +21,92 @@ export function create(data) {
 // 修改记录
 export function update(id, data) {
   return request({
-    url: '/table/' + id,
+    url: '/role/' + id,
     method: 'put',
     data
   })
 }
 
 // 删除记录
-export function del(id) {
+export function delBatch(params) {
   return request({
-    url: '/table/' + id,
-    method: 'delete'
+    url: '/role/',
+    method: 'delete',
+    params
+  })
+}
+
+// 获取角色权限
+export function getRolePermission(roleId) {
+  return request({
+    url: 'role/permission/' + roleId,
+    method: 'get'
+  })
+}
+
+// 获取角色菜单
+export function getRoleMenu(roleId) {
+  return request({
+    url: 'role/menu/' + roleId,
+    method: 'get'
+  })
+}
+
+// 获取角色资源
+export function getRoleResource(roleId) {
+  return request({
+    url: 'role/resource/' + roleId,
+    method: 'get'
+  })
+}
+
+// 修改角色权限
+export function updateRolePermission(roleId, params) {
+  return request({
+    url: 'role/permission/' + roleId,
+    method: 'put',
+    params
+  })
+}
+// 修改角色菜单
+export function updateRoleMenu(roleId, params) {
+  return request({
+    url: 'role/menu/' + roleId,
+    method: 'put',
+    params
+  })
+}
+// 修改角色资源
+export function updateRoleResource(roleId, params) {
+  return request({
+    url: 'role/resource/' + roleId,
+    method: 'put',
+    params
+  })
+}
+
+// 修改角色权限
+export function updateStatus(roleId, params) {
+  return request({
+    url: 'role/status/' + roleId,
+    method: 'put',
+    params
   })
 }
 
 // 记录详情
 export function detail(id) {
   return request({
-    url: '/table/' + id,
+    url: '/role/' + id,
     method: 'get'
   })
 }
 
-// 获取类别列表
-export function getTypeList() {
+// 记录详情
+export function allRoles() {
   return request({
-    url: '/table/types',
+    url: '/role/all',
     method: 'get'
   })
 }
 
-// 导出excel
-export function excelExport() {
-  return request({
-    url: '/table/excel',
-    method: 'get'
-  })
-}

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 分页查询
 export function getPage(params) {
   return request({
-    url: '/table/s',
+    url: '/menu/s',
     method: 'get',
     params
   })
@@ -12,7 +12,7 @@ export function getPage(params) {
 // 新增记录
 export function create(data) {
   return request({
-    url: '/table',
+    url: '/menu',
     method: 'post',
     data
   })
@@ -21,7 +21,7 @@ export function create(data) {
 // 修改记录
 export function update(id, data) {
   return request({
-    url: '/table/' + id,
+    url: '/menu/' + id,
     method: 'put',
     data
   })
@@ -30,7 +30,7 @@ export function update(id, data) {
 // 删除记录
 export function del(id) {
   return request({
-    url: '/table/' + id,
+    url: '/menu/' + id,
     method: 'delete'
   })
 }
@@ -38,23 +38,16 @@ export function del(id) {
 // 记录详情
 export function detail(id) {
   return request({
-    url: '/table/' + id,
+    url: '/menu/' + id,
     method: 'get'
   })
 }
 
 // 获取类别列表
-export function getTypeList() {
+export function getAllMenus() {
   return request({
-    url: '/table/types',
+    url: '/menu/all',
     method: 'get'
   })
 }
 
-// 导出excel
-export function excelExport() {
-  return request({
-    url: '/table/excel',
-    method: 'get'
-  })
-}
