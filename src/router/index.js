@@ -63,17 +63,17 @@ export const constantRoutes = [
     children: [
       {
         path: 'admin',
-        component: () => import('@/views/ums/admin'),
+        component: () => import('@/views/ums/admin/table'),
         meta: { title: '管理员管理', icon: 'admin' }
       },
       {
         path: 'menu',
-        component: () => import('@/views/ums/menu'),
+        component: () => import('@/views/ums/menu/table'),
         meta: { title: '菜单管理', icon: 'sub-menu' }
       },
       {
         path: 'role',
-        component: () => import('@/views/ums/role'),
+        component: () => import('@/views/ums/role/table'),
         meta: { title: '角色管理', icon: 'role' }
       }
     ]
