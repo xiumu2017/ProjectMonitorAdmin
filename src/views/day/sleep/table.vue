@@ -33,27 +33,27 @@
       </el-table-column>
       <el-table-column label="上床时间" min-width="10%">
         <template slot-scope="scope">
-          {{ scope.row.bedTime }}
+          {{ scope.row.bedTimeStr }}
         </template>
       </el-table-column>
       <el-table-column label="入睡时间" min-width="10%">
         <template slot-scope="scope">
-          {{ scope.row.sleepTime }}
+          {{ scope.row.sleepTimeStr }}
         </template>
       </el-table-column>
       <el-table-column label="醒来时间" min-width="10%">
         <template slot-scope="scope">
-          {{ scope.row.wakeTime }}
+          {{ scope.row.wakeTimeStr }}
         </template>
       </el-table-column>
       <el-table-column label="起床时间" min-width="10%">
         <template slot-scope="scope">
-          {{ scope.row.upTime }}
+          {{ scope.row.upTimeStr }}
         </template>
       </el-table-column>
       <el-table-column label="睡眠时长" min-width="5%">
         <template slot-scope="scope">
-          {{ scope.row.duration }}
+          {{ scope.row.durationStr }}
         </template>
       </el-table-column>
       <el-table-column label="睡眠质量" min-width="8%">
@@ -176,8 +176,16 @@ export default {
         this.listLoading = false
         this.list.forEach(item => {
           item.dateStr = this.formatDate(item.date)
+          item.bedTimeStr = this.formateTime(item.bedTime)
+          item.sleepTimeStr = this.formateTime(item.sleepTime)
+          item.wakeTimeStr = this.formateTime(item.wakeTime)
+          item.upTimeStr = this.formateTime(item.upTime)
+          item.durationStr = (item.duration / (3600)).toFixed(3)
         })
       })
+    },
+    formateTime(time) {
+      return time.split(' ')[1]
     },
     changeEnable(row) {
       const param = { 'id': row.id, 'enable': row.enable }
