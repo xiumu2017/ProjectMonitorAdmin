@@ -21,57 +21,59 @@
       element-loading-text="Loading"
       fit
     >
-      <el-table-column align="center" label="序号" min-width="3%">
+      <el-table-column align="center" label="序号" width="50px" fixed>
         <template slot-scope="scope">
           {{ scope.$index +1 }}
         </template>
       </el-table-column>
-      <el-table-column label="日期" min-width="5%">
+      <el-table-column label="日期" width="150px" fixed>
         <template slot-scope="scope">
           {{ scope.row.dateStr }}
         </template>
       </el-table-column>
-      <el-table-column label="上床时间" min-width="10%">
+      <el-table-column label="上床时间" width="150px">
         <template slot-scope="scope">
           {{ scope.row.bedTimeStr }}
         </template>
       </el-table-column>
-      <el-table-column label="入睡时间" min-width="10%">
+      <el-table-column label="入睡时间" width="150px">
         <template slot-scope="scope">
           {{ scope.row.sleepTimeStr }}
         </template>
       </el-table-column>
-      <el-table-column label="醒来时间" min-width="10%">
+      <el-table-column label="醒来时间" width="150px">
         <template slot-scope="scope">
           {{ scope.row.wakeTimeStr }}
         </template>
       </el-table-column>
-      <el-table-column label="起床时间" min-width="10%">
+      <el-table-column label="起床时间" width="150px">
         <template slot-scope="scope">
           {{ scope.row.upTimeStr }}
         </template>
       </el-table-column>
-      <el-table-column label="睡眠时长" min-width="5%">
+      <el-table-column label="睡眠时长(h)" width="150px">
         <template slot-scope="scope">
           {{ scope.row.durationStr }}
         </template>
       </el-table-column>
-      <el-table-column label="睡眠质量" min-width="8%">
+      <el-table-column label="睡眠质量" width="200px">
         <template slot-scope="scope">
           <el-rate v-model="scope.row.sleepQuality" disabled />
         </template>
       </el-table-column>
-      <el-table-column label="睡前回忆" min-width="10%">
+      <el-table-column label="睡前回忆" width="300px">
         <template slot-scope="scope">
           {{ scope.row.memory }}
         </template>
       </el-table-column>
-      <el-table-column label="熬夜原因" min-width="10%">
+      <el-table-column label="" min-width="5%" />
+      <el-table-column label="熬夜原因" width="200px">
         <template slot-scope="scope">
           {{ scope.row.lateReason }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="10%">
+      <el-table-column label="" min-width="5%" />
+      <el-table-column label="操作" width="250px" fixed="right">
         <template slot-scope="{row}">
           <el-button type="info" size="mini" @click="handleDetail(row)">详情</el-button>
           <el-button type="primary" size="mini" @click="handleEdit(row)">编辑</el-button>
