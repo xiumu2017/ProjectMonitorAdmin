@@ -30,8 +30,8 @@
       <el-form-item label="在哪儿吃" prop="place">
         <el-input v-model="formData.place" />
       </el-form-item>
-      <el-form-item label="花了多少" prop="costY">
-        <el-input v-model="formData.costY" suffix-icon="el-icon-money" type="number" />
+      <el-form-item label="花了多少" prop="cost">
+        <el-input v-model="cost" suffix-icon="el-icon-money" type="number" />
       </el-form-item>
       <el-form-item label="支付方式" prop="payType">
         <el-select v-model="formData.payType">
@@ -72,6 +72,8 @@ export default {
       title: '新增',
       titleArr: ['详情', '新增', '更新'],
       formData: {},
+      submitFormData: {},
+      cost: 0,
       typeArr: [],
       payTypeArr: [],
       id: 0,
@@ -101,8 +103,6 @@ export default {
   },
   methods: {
     initDialog(visible, infoId, type) {
-      console.log('type', type)
-      console.log('infoId', infoId)
       this.type = type
       if (type && type instanceof Number) {
         this.title = this.type[type]
@@ -119,28 +119,30 @@ export default {
       if (infoId !== 0) {
         detail(infoId).then(res => {
           this.formData = res.data
-          this.formData.costY = this.formData.cost / 100
+          this.cost = this.formData.cost / 100
         })
       }
     },
     submit(val) {
       // 更新
       if (this.type === 2) {
-        this.formData.cost = this.formData.costY * 100
-        update(this.id, this.formData).then(res => {
+        this.submitFormData = Object.assign({}, this.formData)
+        this.submitFormData.cost = this.cost * 100
+        update(this.id, this.submitFormData).then(res => {
           if (res.code === 200) {
             this.dialogVisible = false
             this.$emit('close')
+            Message({
+              message: res.message,
+              type: 'success',
+              duration: 3 * 1000
+            })
           }
-          Message({
-            message: res.message,
-            type: 'success',
-            duration: 3 * 1000
-          })
         })
       } else {
-        this.formData.cost = this.formData.costY * 100
-        create(this.formData).then(res => {
+        this.submitFormData = Object.assign({}, this.formData)
+        this.submitFormData.cost = this.cost * 100
+        create(this.submitFormData).then(res => {
           if (res.code === 200) {
             Message({
               message: res.message,
