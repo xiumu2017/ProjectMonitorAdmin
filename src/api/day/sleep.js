@@ -9,6 +9,14 @@ export function getPage(params) {
   })
 }
 
+export function sleepStatistics(params) {
+  return request({
+    url: '/daySleepRecord/statistics',
+    method: 'get',
+    params
+  })
+}
+
 // 新增睡眠记录
 export function create(data) {
   return request({

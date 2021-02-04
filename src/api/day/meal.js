@@ -64,3 +64,11 @@ export function payTypes() {
     method: 'get'
   })
 }
+
+export function statistics(params) {
+  return request({
+    url: '/dayMealRecord/statistics',
+    method: 'get',
+    params
+  })
+}
