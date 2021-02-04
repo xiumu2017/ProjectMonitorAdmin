@@ -153,6 +153,21 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/finance',
+    component: Layout,
+    redirect: '/finance/table',
+    name: 'Finance',
+    meta: { title: '财务管理', icon: 'record' },
+    children: [
+      {
+        path: 'alipay',
+        name: '支付宝账单',
+        component: () => import('@/views/finance/alipay/table'),
+        meta: { title: '支付宝账单', icon: 'timeline' }
+      }
+    ]
+  },
+  {
     path: '/bing',
     component: Layout,
     redirect: '/bing/table',
