@@ -76,7 +76,7 @@
       layout="prev, pager, next"
       :total="total"
       :page-size="pageQuery.pageSize"
-      :current-page="pageQuery.pageNum"
+      :current-page.sync="pageQuery.pageNum"
       @current-change="fetchData"
     />
     <Info ref="InfoDialog" @close="fetchData" />
