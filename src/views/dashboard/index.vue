@@ -23,37 +23,6 @@ import SleepChart from '../charts/sleepChart'
 import { statistics } from '@/api/day/meal'
 import { sleepStatistics } from '@/api/day/sleep'
 
-const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145],
-    testData: [20, 8, 9, 15, 62, 10, 15],
-    totalData: [70, 66, 5, 99, 162, 133, 200]
-  },
-  mealData: {
-    breakfast: [3, 6.4, 7, 9, 5.5, 4.5, 7],
-    lunch: [15.5, 19.5, 13.5, 25.5, 20.5, 13.5, 0],
-    dinner: [10, 11, 15, 20, 0, 6, 20],
-    total: [25, 44, 34, 30, 25, 50, 55, 20]
-  },
-  sleepData: [
-    ['02-01', '02-02', '02-03', '02-04'],
-    [7.1, 8.9, 6.33, 9.5]
-  ],
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
-  },
-  purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
-  },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
-  }
-}
-
 export default {
   name: 'Dashboard',
   components: {
@@ -61,8 +30,8 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.mealData,
-      sleepChartData: lineChartData.sleepData
+      lineChartData: {},
+      sleepChartData: []
     }
   },
   computed: {
@@ -76,18 +45,13 @@ export default {
     this.getSleepData()
   },
   methods: {
-    handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
-    },
     getMealStatisticsData() {
       statistics().then(res => {
-        console.log('meal-stat', res.data)
         this.lineChartData = res.data
       })
     },
     getSleepData() {
       sleepStatistics().then(res => {
-        console.log('tag', res)
         this.sleepChartData = res.data
       })
     }

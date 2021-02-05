@@ -62,6 +62,9 @@ export default {
       this.setOptions(this.chartData)
     },
     setOptions(obj) {
+      if (!obj || !obj[1]) {
+        return
+      }
       const dateList = obj[0]
       const duration = obj[1]
       const dataList = []
@@ -97,10 +100,8 @@ export default {
             }
           }
         }
-        console.log('obj', obj)
         dataList.push(obj)
       })
-      console.log('dura-data', dataList)
       this.chart.setOption({
         title: {
           text: '睡眠时长统计',
@@ -109,17 +110,21 @@ export default {
         },
         xAxis: {
           data: dateList,
-          boundaryGap: false,
+          boundaryGap: true,
           axisTick: {
-            show: false
+            show: true
           }
         },
         grid: {
-          left: 10,
-          right: 10,
+          left: 20,
+          right: 30,
           bottom: 20,
           top: 30,
-          containLabel: true
+          containLabel: true,
+          show: true,
+          backgroundColor: '#DDA0DD',
+          borderColor: '#FFF5EE',
+          borderWidth: 3
         },
         toolbox: {
           show: true,
@@ -150,6 +155,17 @@ export default {
           smooth: true,
           type: 'bar',
           data: dataList,
+          markPoint: {
+            data: [
+              { type: 'max', name: '最大值' },
+              { type: 'min', name: '最小值' }
+            ]
+          },
+          markLine: {
+            data: [
+              { type: 'average', name: '平均值' }
+            ]
+          },
           barWidth: '30%',
           animationDuration: 3000,
           animationEasing: 'cubicInOut'

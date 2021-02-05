@@ -5,10 +5,10 @@
 <script>
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
-import resize from './mixins/resize'
+// import resize from './mixins/resize'
 
 export default {
-  mixins: [resize],
+  // mixins: [resize],
   props: {
     className: {
       type: String,
@@ -58,11 +58,12 @@ export default {
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$el, 'macarons')
+      // this.chart = echarts.init(this.$el, 'macarons')
+      this.chart = echarts.init(this.$el)
       this.setOptions(this.chartData)
     },
     setOptions(obj) {
-      console.log('tag', obj)
+      console.log('line-data-tag', obj)
       const dateList = obj.dateList
       const breakfast = obj.breakfast
       const lunch = obj.lunch
@@ -75,18 +76,25 @@ export default {
           show: false
         },
         xAxis: {
+          name: '日期',
+          nameLocation: 'start',
           data: dateList,
-          boundaryGap: false,
+          boundaryGap: true,
+          // type: 'time',
           axisTick: {
-            show: false
+            show: true
           }
         },
         grid: {
-          left: 10,
-          right: 10,
+          left: 20,
+          right: 30,
           bottom: 20,
           top: 30,
-          containLabel: true
+          containLabel: true,
+          show: true,
+          backgroundColor: '#DA70D6',
+          borderColor: '#FFD700',
+          borderWidth: 3
         },
         toolbox: {
           show: true,
@@ -115,7 +123,7 @@ export default {
         series: [{
           name: '早饭',
           smooth: true,
-          type: 'line',
+          type: 'bar',
           data: breakfast,
           animationDuration: 2800,
           animationEasing: 'cubicInOut',
@@ -132,7 +140,7 @@ export default {
         {
           name: '午饭',
           smooth: true,
-          type: 'line',
+          type: 'bar',
           data: lunch,
           animationDuration: 2800,
           animationEasing: 'quadraticOut',
@@ -149,7 +157,7 @@ export default {
         {
           name: '晚饭',
           smooth: true,
-          type: 'line',
+          type: 'bar',
           data: dinner,
           animationDuration: 2800,
           animationEasing: 'quadraticOut',
