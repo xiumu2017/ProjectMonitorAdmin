@@ -164,6 +164,12 @@ export const constantRoutes = [
         name: '支付宝账单',
         component: () => import('@/views/finance/alipay/table'),
         meta: { title: '支付宝账单', icon: 'timeline' }
+      },
+      {
+        path: 'shopping',
+        name: '购物清单',
+        component: () => import('@/views/finance/shopping/table'),
+        meta: { title: '购物清单', icon: 'timeline' }
       }
     ]
   },
