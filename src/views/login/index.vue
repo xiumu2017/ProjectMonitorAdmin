@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">Welcome Login</h3>
       </div>
 
       <el-form-item prop="username">
@@ -153,7 +153,8 @@ $cursor: #fff;
       -webkit-appearance: none;
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
-      color: $light_gray;
+      // color: $light_gray;
+      color: #000;
       height: 47px;
       caret-color: $cursor;
 
@@ -183,6 +184,8 @@ $light_gray:#eee;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
+  background-image: URL('https://cn.bing.com//th?id=OHR.MittenwalderHut_ZH-CN4406131876_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp');
+  background-size: cover;
 
   .login-form {
     position: relative;
@@ -191,6 +194,10 @@ $light_gray:#eee;
     padding: 160px 35px 0;
     margin: 0 auto;
     overflow: hidden;
+    background:#F5F5F5;
+    top: 200px;
+    margin-top: 100px;
+    padding-top: 20px;
   }
 
   .tips {
@@ -218,7 +225,8 @@ $light_gray:#eee;
 
     .title {
       font-size: 26px;
-      color: $light_gray;
+      // color: $light_gray;
+      color: #000;
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;

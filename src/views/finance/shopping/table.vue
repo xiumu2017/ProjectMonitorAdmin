@@ -83,8 +83,8 @@
       </el-table-column>
       <el-table-column label="满意度" width="150%">
         <template slot-scope="scope">
-          {{ scope.row.rate }}
-          <el-rate v-model="scope.row.importance" disabled />
+          {{ scope.row.rateText }}
+          <el-rate v-model="scope.row.rate" show-text :texts="texts" disabled />
         </template>
       </el-table-column>
       <el-table-column label="备注" width="150px">
@@ -132,6 +132,7 @@ export default {
   data() {
     return {
       typeArr: [],
+      texts: ['', '垃圾', '失望', '一般', '满意', '惊喜'],
       list: null,
       listLoading: false,
       payTypeArr: [],
@@ -180,6 +181,10 @@ export default {
         this.list = response.data.list
         this.total = response.data.total
         this.listLoading = false
+        this.list.forEach(item => {
+          item.rate = parseInt(item.rate)
+          item.rateText = this.texts[item.rate]
+        })
       })
     },
     changeEnable(row) {

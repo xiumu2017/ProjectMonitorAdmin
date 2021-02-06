@@ -11,45 +11,72 @@
       <el-form-item label="ID" prop="id" :hidden="hideIdFlag">
         <el-input v-model="formData.id" disabled />
       </el-form-item>
-      <el-form-item label="类型" prop="type">
-        <el-select v-model="formData.type">
+      <el-form-item label="购买时间" prop="purchaseTime">
+        <el-input v-model="formData.purchaseTime" />
+      </el-form-item>
+      <el-form-item label="来源" prop="source">
+        <el-select v-model="formData.source">
           <el-option
-            v-for="(item,index) in typeArr"
-            :key="item"
-            :value="index"
+            v-for="(item,index) in sourceArr"
+            :key="index"
+            :value="item"
             :label="item"
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="formData.name" />
+      <el-form-item label="订单号" prop="orderNo">
+        <el-input v-model="formData.orderNo" />
       </el-form-item>
-      <el-form-item label="PORT" prop="port">
-        <el-input v-model="formData.port" />
-      </el-form-item>
-      <el-form-item label="用户名" prop="userName">
-        <el-input v-model="formData.userName" />
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input v-model="formData.password" />
-      </el-form-item>
-      <el-form-item label="登录用户名" prop="userName">
-        <el-input v-model="formData.userName" />
-      </el-form-item>
-      <el-form-item label="启用状态">
+      <el-form-item label="标签" prole="labelArr">
         <el-select
-          v-model="formData.enable"
-          class="filter-item"
-          placeholder="Please select"
-        >
-          <el-option key="0" :value="0" label="禁用" />
-          <el-option key="1" :value="1" label="启用" />
+          v-model="formData.labelArr"
+          multiple
+          filterable
+          allow-create
+          default-first-option
+        />
+      </el-form-item>
+      <el-form-item label="类型" prop="type">
+        <el-input v-model="formData.type" />
+      </el-form-item>
+      <el-form-item label="名称" prop="productName">
+        <el-input v-model="formData.productName" />
+      </el-form-item>
+      <el-form-item label="明细">
+        <el-input
+          v-model="formData.detailName"
+          :autosize="{ minRows: 2, maxRows: 4 }"
+          type="textarea"
+          placeholder=""
+        />
+      </el-form-item>
+      <el-form-item label="链接" prop="orderLink">
+        <el-input v-model="formData.orderLink" />
+      </el-form-item>
+      <el-form-item label="价格" prop="price">
+        <el-input v-model="formData.price" />
+      </el-form-item>
+      <el-form-item label="支付方式" prop="payType">
+        <el-select v-model="formData.payType">
+          <el-option
+            v-for="(item,index) in payTypeArr"
+            :key="index"
+            :value="item"
+            :label="item"
+          />
         </el-select>
+      </el-form-item>
+      <el-form-item label="满意度" prop="rate">
+        <el-rate
+          v-model="formData.rate"
+          show-text
+          :texts="rateTexts"
+        />
       </el-form-item>
       <el-form-item label="备注">
         <el-input
           v-model="formData.remark"
-          :autosize="{ minRows: 2, maxRows: 4 }"
+          :autosize="{ minRows: 2, maxRows: 5 }"
           type="textarea"
           placeholder=""
         />
@@ -74,6 +101,7 @@ export default {
       type: 0,
       title: '新增',
       titleArr: ['详情', '新增', '更新'],
+      rateTexts: ['垃圾', '失望', '一般', '满意', '惊喜'],
       formData: {},
       typeArr: [],
       payTypeArr: [],
@@ -122,11 +150,16 @@ export default {
       // 查询详情数据
       if (infoId !== 0) {
         detail(infoId).then(res => {
+          res.data.rate = parseInt(res.data.rate)
           this.formData = res.data
+          this.formData.labelArr = this.formData.labels.split(/[,，]/g)
         })
       }
     },
     submit(val) {
+      if (this.formData.labelArr) {
+        this.formData.labels = this.formData.labelArr.toString()
+      }
       // 更新
       if (this.type === 2) {
         update(this.id, this.formData).then(res => {

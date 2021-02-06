@@ -112,7 +112,7 @@ export default {
           data: dateList,
           boundaryGap: true,
           axisTick: {
-            show: true
+            show: false
           }
         },
         grid: {
@@ -122,7 +122,7 @@ export default {
           top: 30,
           containLabel: true,
           show: true,
-          backgroundColor: '#DDA0DD',
+          backgroundColor: '#DA70D6',
           borderColor: '#FFF5EE',
           borderWidth: 3
         },
@@ -163,7 +163,23 @@ export default {
           },
           markLine: {
             data: [
-              { type: 'average', name: '平均值' }
+              { type: 'average', name: '平均值' },
+              { yAxis: 7.5,
+                name: '基准线',
+                symbol: 'none',
+                lineStyle: {
+                  color: '#F8F8FF',
+                  width: 1,
+                  type: 'dotted',
+                  shadowOffsetX: 0,
+                  shadowOffsetY: 0,
+                  opacity: 1,
+                  curveness: 0
+                },
+                label: {
+                  position: 'middle'
+                }
+              }
             ]
           },
           barWidth: '30%',

@@ -63,6 +63,9 @@ export default {
       this.setOptions(this.chartData)
     },
     setOptions(obj) {
+      if (!obj.dateList) {
+        return
+      }
       console.log('line-data-tag', obj)
       const dateList = obj.dateList
       const breakfast = obj.breakfast
@@ -76,13 +79,13 @@ export default {
           show: false
         },
         xAxis: {
-          name: '日期',
-          nameLocation: 'start',
+          // name: '日期',
+          // nameLocation: 'start',
           data: dateList,
           boundaryGap: true,
           // type: 'time',
           axisTick: {
-            show: true
+            show: false
           }
         },
         grid: {
@@ -92,7 +95,7 @@ export default {
           top: 30,
           containLabel: true,
           show: true,
-          backgroundColor: '#DA70D6',
+          backgroundColor: '#DDA0DD',
           borderColor: '#FFD700',
           borderWidth: 3
         },
