@@ -1,5 +1,16 @@
 <template>
   <div class="login-container">
+    <div id="color-name" class="fadeout" />
+    <div className="verses" class="verses waves vertical">
+      <div id="verses-content">无人知此意 歌罢满帘风 </div>
+      <a href="" target="_blank" rel="noopener noreferrer">
+        <div id="verses-origin">
+          <span className="title" class="title">「临江仙·高咏楚词酬午日」</span>
+          <span className="stamp" class="stamp">陈与义</span>
+          <span className="origin-search-icon" />
+        </div>
+      </a>
+    </div>
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
@@ -41,7 +52,7 @@
         </span>
       </el-form-item>
       <el-form-item>
-        <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
+        <el-button id="loginButton" :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
           Sign in
         </el-button>
       </el-form-item>
@@ -50,14 +61,24 @@
         <span> password: admin</span>
       </div>-->
     </el-form>
+    <vue-p5
+      @sketch="sketches[0]"
+    />
   </div>
 </template>
 
 <script>
 import { validUsername } from '@/utils/validate'
+// import Example from '@/components/p5/Example.vue'
+import VueP5 from 'vue-p5'
+import waves from '@/sketchs/waves'
+// import blobs from './sketchs/blobs'
 
 export default {
   name: 'Login',
+  components: {
+    'vue-p5': VueP5
+  },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
@@ -84,7 +105,8 @@ export default {
       },
       loading: false,
       passwordType: 'password',
-      redirect: undefined
+      redirect: undefined,
+      sketches: [waves]
     }
   },
   watch: {
@@ -184,20 +206,24 @@ $light_gray:#eee;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
-  background-image: URL('https://cn.bing.com//th?id=OHR.MittenwalderHut_ZH-CN4406131876_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp');
-  background-size: cover;
+  // background-image: URL('https://cn.bing.com//th?id=OHR.MittenwalderHut_ZH-CN4406131876_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp');
+  // background-size: cover;
 
   .login-form {
-    position: relative;
+    // position: relative;
     width: 520px;
     max-width: 100%;
-    padding: 160px 35px 0;
-    margin: 0 auto;
+    // padding: 160px 35px 0;
+    // margin: 0 auto;
     overflow: hidden;
-    background:#F5F5F5;
-    top: 200px;
-    margin-top: 100px;
-    padding-top: 20px;
+    // background:#F5F5F5;
+    // top: 200px;
+    // margin-top: 100px;
+    // padding-top: 20px;
+    position: absolute;
+    left: 40%;
+    top: 25%;
+    margin-left: 10%;
   }
 
   .tips {

@@ -5,10 +5,10 @@
 <script>
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
-// import resize from './mixins/resize'
+import resize from './mixins/resize'
 
 export default {
-  // mixins: [resize],
+  mixins: [resize],
   props: {
     className: {
       type: String,
@@ -58,8 +58,8 @@ export default {
   },
   methods: {
     initChart() {
-      // this.chart = echarts.init(this.$el, 'macarons')
-      this.chart = echarts.init(this.$el)
+      this.chart = echarts.init(this.$el, 'macarons')
+      // this.chart = echarts.init(this.$el)
       this.setOptions(this.chartData)
     },
     setOptions(obj) {
