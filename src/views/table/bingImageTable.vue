@@ -25,6 +25,7 @@
       element-loading-text="Loading"
       fit
       highlight-current-row
+      max-height="960px"
     >
       <el-table-column align="center" label="序号" min-width="3%">
         <template slot-scope="scope">

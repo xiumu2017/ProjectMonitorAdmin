@@ -1,9 +1,10 @@
 #color-name {
-  font-family: 'FZXiJinLJW';
+  // font-family: 'FZXiJinLJW';
+  font-family: 'FangSong';
   position: absolute;
-  font-size: calc(100px + 5vw);
+  font-size: calc(100px + 3vw);
   right: 0;
-  top: 0;
+  top: 20;
   color: rgba(0, 0, 0, 0.1);
   opacity: 1;
   writing-mode: vertical-rl;
@@ -12,7 +13,7 @@
 
   &.fadeout {
     opacity: 0;
-    animation: fadeOut 5s ease;
+    animation: fadeOut 10s ease;
   }
 }
 
