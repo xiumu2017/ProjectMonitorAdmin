@@ -72,6 +72,11 @@
           {{ scope.row.lateReason }}
         </template>
       </el-table-column>
+      <el-table-column label="备注" width="300px">
+        <template slot-scope="scope">
+          {{ scope.row.remark }}
+        </template>
+      </el-table-column>
       <el-table-column label="" min-width="5%" />
       <el-table-column label="操作" width="250px" fixed="right">
         <template slot-scope="{row}">
