@@ -2,11 +2,11 @@
   <div class="login-container">
     <div id="color-name" class="fadeout" />
     <div className="verses" class="verses waves vertical">
-      <div id="verses-content">无人知此意 歌罢满帘风 </div>
+      <div id="verses-content">{{ poem.content }}</div>
       <a href="" target="_blank" rel="noopener noreferrer">
         <div id="verses-origin">
-          <span className="title" class="title">「临江仙·高咏楚词酬午日」</span>
-          <span className="stamp" class="stamp">陈与义</span>
+          <span className="title" class="title">{{ '「' + poem.origin.title + '」' }}</span>
+          <span className="stamp" class="stamp">{{ poem.origin.author }}</span>
           <span className="origin-search-icon" />
         </div>
       </a>
@@ -72,7 +72,10 @@ import { validUsername } from '@/utils/validate'
 // import Example from '@/components/p5/Example.vue'
 import VueP5 from 'vue-p5'
 import waves from '@/sketchs/waves'
+import { load } from '@/utils/jinrishici'
 // import blobs from './sketchs/blobs'
+
+const DEFAULT_SHICI_LIST = require('@/constants/shici.json')
 
 export default {
   name: 'Login',
@@ -95,6 +98,26 @@ export default {
       }
     }
     return {
+      poem: {
+        'id': '5b8b9572e116fb3714e6fa58',
+        'content': '乱花渐欲迷人眼，浅草才能没马蹄。',
+        'popularity': 734000,
+        'origin': {
+          'title': '钱塘湖春行',
+          'dynasty': '唐代',
+          'author': '白居易',
+          'content': [
+            '孤山寺北贾亭西，水面初平云脚低。',
+            '几处早莺争暖树，谁家新燕啄春泥。',
+            '乱花渐欲迷人眼，浅草才能没马蹄。',
+            '最爱湖东行不足，绿杨阴里白沙堤。'
+          ],
+          'translate': null
+        },
+        'matchTags': ['春'],
+        'recommendedReason': '',
+        'cacheAt': '2019-05-25T07:40:39.170681'
+      },
       loginForm: {
         username: 'admin',
         password: 'macro123'
@@ -116,6 +139,21 @@ export default {
       },
       immediate: true
     }
+  },
+  created() {
+    load(
+      (result) => {
+        // Storager.set({ verses: result.data })
+        console.log('result', result)
+        this.poem = result.data
+      },
+      (err) => {
+        this.setState({ errMessage: err.errMessage })
+        const localShici = DEFAULT_SHICI_LIST[Math.floor(Math.random() * DEFAULT_SHICI_LIST.length)]
+        this.poem = localShici
+        // Storager.set({ verses: localShici })
+      }
+    )
   },
   methods: {
     showPwd() {
