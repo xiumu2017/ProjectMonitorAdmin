@@ -119,8 +119,8 @@ export default {
         'cacheAt': '2019-05-25T07:40:39.170681'
       },
       loginForm: {
-        username: 'admin',
-        password: 'macro123'
+        username: '',
+        password: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
