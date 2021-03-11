@@ -13,6 +13,12 @@
       <el-button type="primary" size="mini" @click="getSleepData">刷新</el-button>
       <sleep-chart :chart-data="sleepChartData" />
     </el-row>
+
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+      <span>入睡时间分布图：</span>
+      <el-button type="primary" size="mini" @click="getSleepData">刷新</el-button>
+      <sleep-pie :chart-data="sleepPieData" width="50%" />
+    </el-row>
   </div>
 </template>
 
@@ -22,16 +28,18 @@ import LineChart from '../charts/LineChart'
 import SleepChart from '../charts/sleepChart'
 import { statistics } from '@/api/day/meal'
 import { sleepStatistics } from '@/api/day/sleep'
+import SleepPie from '../charts/sleepPie'
 
 export default {
   name: 'Dashboard',
   components: {
-    LineChart, SleepChart
+    LineChart, SleepChart, SleepPie
   },
   data() {
     return {
       lineChartData: {},
-      sleepChartData: []
+      sleepChartData: [],
+      sleepPieData: []
     }
   },
   computed: {
