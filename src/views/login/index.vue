@@ -141,16 +141,17 @@ export default {
     }
   },
   created() {
+    const _this = this
     load(
       (result) => {
         // Storager.set({ verses: result.data })
         console.log('result', result)
-        this.poem = result.data
+        _this.poem = result.data
       },
       (err) => {
         this.setState({ errMessage: err.errMessage })
         const localShici = DEFAULT_SHICI_LIST[Math.floor(Math.random() * DEFAULT_SHICI_LIST.length)]
-        this.poem = localShici
+        _this.poem = localShici
         // Storager.set({ verses: localShici })
       }
     )
@@ -190,9 +191,9 @@ export default {
 /* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
-$bg:#283443;
+$bg:#E6E6E6;
 $light_gray:#fff;
-$cursor: #fff;
+$cursor: #000;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {
@@ -226,8 +227,9 @@ $cursor: #fff;
   }
 
   .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 1);
+    // background: rgba(0, 0, 0, 0.1);
+    background: transparent;
     border-radius: 5px;
     color: #454545;
   }
