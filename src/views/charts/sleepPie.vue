@@ -33,7 +33,8 @@ export default {
   },
   data() {
     return {
-      chart: null
+      chart: null,
+      pieData: []
     }
   },
   watch: {
@@ -86,13 +87,7 @@ export default {
             itemStyle: {
               borderRadius: 8
             },
-            data: [
-              { value: 40, name: 'rose 1' },
-              { value: 38, name: 'rose 2' },
-              { value: 32, name: 'rose 3' },
-              { value: 30, name: 'rose 4' },
-              { value: 28, name: 'rose 5' }
-            ]
+            data: obj
           }
         ]
       })

@@ -17,6 +17,14 @@ export function sleepStatistics(params) {
   })
 }
 
+export function sleepStatisticsPie(params) {
+  return request({
+    url: '/daySleepRecord/statistics/pie',
+    method: 'get',
+    params
+  })
+}
+
 // 新增睡眠记录
 export function create(data) {
   return request({

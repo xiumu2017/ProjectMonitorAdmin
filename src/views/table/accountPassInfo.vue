@@ -45,16 +45,6 @@
       <el-form-item label="重要性" prop="importance">
         <el-rate v-model="formData.importance" />
       </el-form-item>
-      <el-form-item label="启用状态">
-        <el-select
-          v-model="formData.enable"
-          class="filter-item"
-          placeholder="Please select"
-        >
-          <el-option key="0" :value="0" label="禁用" />
-          <el-option key="1" :value="1" label="启用" />
-        </el-select>
-      </el-form-item>
       <el-form-item label="备注">
         <el-input
           v-model="formData.remark"

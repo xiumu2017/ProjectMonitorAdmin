@@ -3,9 +3,18 @@
     <!-- <div class="dashboard-text">name: {{ name }}</div> -->
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <span>吃饭开销统计图：</span>
-      <el-button type="primary" size="mini" @click="getMealStatisticsData">刷新</el-button>
-      <line-chart :chart-data="lineChartData" />
+      <span>入睡时间分布图：</span>
+      <el-button type="primary" size="mini" @click="getSleepPieData">刷新</el-button>
+      <el-select v-model="sleepPieType" size="mini" placeholder="请选择">
+        <el-option
+          v-for="item in sleepPieTypes"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+          @change="getSleepPieData"
+        />
+      </el-select>
+      <sleep-pie :chart-data="sleepPieData" width="50%" />
     </el-row>
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
@@ -15,9 +24,9 @@
     </el-row>
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <span>入睡时间分布图：</span>
-      <el-button type="primary" size="mini" @click="getSleepData">刷新</el-button>
-      <sleep-pie :chart-data="sleepPieData" width="50%" />
+      <span>吃饭开销统计图：</span>
+      <el-button type="primary" size="mini" @click="getMealStatisticsData">刷新</el-button>
+      <line-chart :chart-data="lineChartData" />
     </el-row>
   </div>
 </template>
@@ -27,7 +36,7 @@ import { mapGetters } from 'vuex'
 import LineChart from '../charts/LineChart'
 import SleepChart from '../charts/sleepChart'
 import { statistics } from '@/api/day/meal'
-import { sleepStatistics } from '@/api/day/sleep'
+import { sleepStatistics, sleepStatisticsPie } from '@/api/day/sleep'
 import SleepPie from '../charts/sleepPie'
 
 export default {
@@ -39,7 +48,14 @@ export default {
     return {
       lineChartData: {},
       sleepChartData: [],
-      sleepPieData: []
+      sleepPieData: [],
+      sleepPieTypes: [
+        { name: '全部', value: 'ALL' },
+        { name: '当前年度', value: 'YEAR' },
+        { name: '当前月度', value: 'MONTH' },
+        { name: '最近30天', value: 'LAST_30_DAY' }
+      ],
+      sleepPieType: 'LAST_30_DAY'
     }
   },
   computed: {
@@ -51,6 +67,7 @@ export default {
     // 初始化查询
     this.getMealStatisticsData()
     this.getSleepData()
+    this.getSleepPieData()
   },
   methods: {
     getMealStatisticsData() {
@@ -61,6 +78,11 @@ export default {
     getSleepData() {
       sleepStatistics().then(res => {
         this.sleepChartData = res.data
+      })
+    },
+    getSleepPieData() {
+      sleepStatisticsPie({ 'type': this.sleepPieType }).then(res => {
+        this.sleepPieData = res.data
       })
     }
   }

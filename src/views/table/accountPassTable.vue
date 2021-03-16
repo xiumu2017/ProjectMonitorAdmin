@@ -52,7 +52,15 @@
       </el-table-column>
       <el-table-column label="密码" min-width="12%">
         <template slot-scope="scope">
-          {{ scope.row.password }}
+          <el-popover
+            placement="top"
+            title=""
+            width="300"
+            trigger="click"
+            :content="scope.row.password"
+          >
+            <el-button slot="reference" type="primary" size="mini">查看</el-button>
+          </el-popover>
         </template>
       </el-table-column>
       <el-table-column label="助记词" min-width="15%">
@@ -69,18 +77,6 @@
       <el-table-column label="重要性" min-width="6%">
         <template slot-scope="scope">
           <el-rate v-model="scope.row.importance" disabled />
-        </template>
-      </el-table-column>
-      <el-table-column label="是否启用" min-width="5%" align="center">
-        <template slot-scope="{row}">
-          <el-switch
-            v-model="row.enable"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            :active-value="1"
-            :inactive-value="0"
-            @change="changeEnable(row)"
-          />
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="10%">
@@ -129,6 +125,7 @@ export default {
         pageNum: 1,
         pageSize: 10
       },
+      passwordVisiable: false,
       total: 0,
       loading: null,
       currentId: 0
@@ -154,11 +151,13 @@ export default {
     },
     fetchData() {
       this.listLoading = true
-      console.info('tag', this.pageQuery)
       getPage(this.pageQuery).then(response => {
         this.list = response.data.list
         this.total = response.data.total
         this.listLoading = false
+        this.list.forEach(element => {
+          element.password = this.decrypt(element.password)
+        })
       })
     },
     changeEnable(row) {
@@ -175,15 +174,12 @@ export default {
       })
     },
     handleDetail(row) {
-      console.info('handleDetail', row)
       this.$refs['InfoDialog'].initInfoDialog(true, row.id, 0)
     },
     handleAdd() {
-      console.info('tag', 'handleAdd')
       this.$refs['InfoDialog'].initInfoDialog(true, 0, 1)
     },
     handleEdit(row) {
-      console.info('handleEdit', row)
       this.$refs['InfoDialog'].initInfoDialog(true, row.id, 2)
     },
     handleDel(row) {
