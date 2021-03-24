@@ -92,7 +92,7 @@
       layout="prev, pager, next"
       :total="total"
       :page-size="pageQuery.pageSize"
-      :current-page="pageQuery.pageNum"
+      :current-page.sync="pageQuery.pageNum"
       @current-change="fetchData"
     />
     <AccountPassInfo ref="InfoDialog" @close="fetchData" />

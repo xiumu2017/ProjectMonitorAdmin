@@ -24,6 +24,7 @@
       fit
       highlight-current-row
       stripe
+      @row-dblclick="copyInfo"
     >
       <el-table-column align="center" label="序号" min-width="3%">
         <template slot-scope="scope">
@@ -132,10 +133,17 @@
       layout="prev, pager, next"
       :total="total"
       :page-size="pageQuery.pageSize"
-      :current-page="pageQuery.pageNum"
+      :current-page.sync="pageQuery.pageNum"
       @current-change="fetchData"
     />
     <ServerInfo ref="serverInfoDialog" @close="fetchData" />
+    <el-dialog
+      title="服务器连接信息"
+      :visible.sync="serverInfoDialogVisible"
+      width="30%"
+    >
+      <span>{{ serverInfo }}</span>
+    </el-dialog>
     <router-view />
   </div>
 </template>
@@ -159,6 +167,8 @@ export default {
   },
   data() {
     return {
+      serverInfoDialogVisible: false,
+      serverInfo: '',
       serverTypeArr: [],
       list: null,
       listLoading: false,
@@ -317,6 +327,21 @@ export default {
       excelExport(this.pageQuery).then(res => {
         this.closeLoading()
       })
+    },
+    copyInfo(row, column, event) {
+      // const info = {
+      //   host: row.ipAddrPublic,
+      //   port: row.port,
+      //   username: row.userName,
+      //   password: row.password
+      // }
+      const text = `host: ${row.ipAddrPublic}
+port: ${row.port}
+username: ${row.userName}
+password: ${row.password}`
+      // 同步文本
+      this.serverInfo = text
+      this.serverInfoDialogVisible = true
     }
   }
 }
