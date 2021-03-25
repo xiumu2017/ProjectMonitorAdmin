@@ -72,3 +72,10 @@ export function statistics(params) {
     params
   })
 }
+
+export function statisticsMonth() {
+  return request({
+    url: '/dayMealRecord/statistics/month',
+    method: 'get'
+  })
+}

@@ -28,6 +28,48 @@
       <el-button type="primary" size="mini" @click="getMealStatisticsData">刷新</el-button>
       <line-chart :chart-data="lineChartData" />
     </el-row>
+
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+      <span>饮食开销按月汇总：</span>
+      <el-button type="primary" size="mini" @click="getMealStatisticsMonthData">刷新</el-button>
+      <el-table
+        :data="mealMonthTableData"
+        border
+        show-summary
+        style="width: 60%;margin: 10px"
+      >
+        <el-table-column
+          prop="month"
+          label="月度"
+          width="180"
+        />
+        <el-table-column
+          prop="total"
+          sortable
+          label="合计"
+        />
+        <el-table-column
+          prop="breakfast"
+          label="早饭"
+        />
+        <el-table-column
+          prop="lunch"
+          label="午饭"
+        />
+        <el-table-column
+          prop="dinner"
+          label="晚饭"
+        />
+        <el-table-column
+          prop="supper"
+          label="夜宵"
+        />
+        <el-table-column
+          prop="snacks"
+          label="零食"
+        />
+      </el-table>
+    </el-row>
   </div>
 </template>
 
@@ -35,7 +77,7 @@
 import { mapGetters } from 'vuex'
 import LineChart from '../charts/LineChart'
 import SleepChart from '../charts/sleepChart'
-import { statistics } from '@/api/day/meal'
+import { statistics, statisticsMonth } from '@/api/day/meal'
 import { sleepStatistics, sleepStatisticsPie } from '@/api/day/sleep'
 import SleepPie from '../charts/sleepPie'
 
@@ -47,6 +89,7 @@ export default {
   data() {
     return {
       lineChartData: {},
+      mealMonthTableData: [],
       sleepChartData: [],
       sleepPieData: [],
       sleepPieTypes: [
@@ -68,11 +111,25 @@ export default {
     this.getMealStatisticsData()
     this.getSleepData()
     this.getSleepPieData()
+    this.getMealStatisticsMonthData()
   },
   methods: {
     getMealStatisticsData() {
       statistics().then(res => {
         this.lineChartData = res.data
+      })
+    },
+    getMealStatisticsMonthData() {
+      statisticsMonth().then(res => {
+        this.mealMonthTableData = res.data
+        this.mealMonthTableData.forEach(item => {
+          item.breakfast = item.breakfast / 100
+          item.lunch = item.lunch / 100
+          item.dinner = item.dinner / 100
+          item.supper = item.supper / 100
+          item.snacks = item.snacks / 100
+          item.total = (item.breakfast + item.lunch + item.dinner + item.supper + item.snacks).toFixed(2)
+        })
       })
     },
     getSleepData() {
