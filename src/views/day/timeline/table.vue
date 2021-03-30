@@ -22,6 +22,8 @@
           size="large"
           placement="top"
           :timestamp="activity.startTime"
+          class="infinite-list"
+          style="overflow:auto"
         >
           <el-card class="box-card">
             <div slot="header" class="clearfix">
@@ -42,6 +44,7 @@
           </el-card>
         </el-timeline-item>
       </el-timeline>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" size="mini" icon="el-icon-search" @click="fetchData">加载更多</el-button>
     </div>
     <TimelineInfo ref="infoDialog" @close="fetchData" />
   </div>
@@ -68,12 +71,13 @@ export default {
   data() {
     return {
       typeArr: [],
-      list: null,
+      list: [],
       listLoading: false,
       date: formatDateYmd(new Date()),
       total: 0,
       loading: null,
-      currentId: 0
+      currentId: 0,
+      pageNum: 1
     }
   },
   created() {
@@ -109,17 +113,26 @@ export default {
       this.loading.close()
     },
     fetchData() {
+      if (this.total === this.list.length) {
+        Message({
+          message: '没有更多了',
+          type: 'warning',
+          duration: 3 * 1000
+        })
+      }
       this.listLoading = true
-      getPage({ 'date': this.date }).then(response => {
-        this.list = response.data
+      // { 'date': this.date }
+      getPage({ 'pageNum': this.pageNum, 'pageSize': 10 }).then(response => {
+        const listData = response.data.list
         this.total = response.data.total
         this.listLoading = false
-        this.list.forEach(element => {
+        listData.forEach(element => {
           const labels = element.label.split(/[,，]/g)
           element.labels = labels
         })
-        console.log('list', this.list)
+        this.list = this.list.concat(listData)
       })
+      this.pageNum++
     },
     changeEnable(row) {
       const param = { 'id': row.id, 'enable': row.enable }

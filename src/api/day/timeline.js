@@ -1,9 +1,18 @@
 import request from '@/utils/request'
 
 // 分页查询
-export function getPage(params) {
+export function getListByDate(params) {
   return request({
     url: '/dayTimeline/s',
+    method: 'get',
+    params
+  })
+}
+
+// 分页查询
+export function getPage(params) {
+  return request({
+    url: '/dayTimeline/page',
     method: 'get',
     params
   })
