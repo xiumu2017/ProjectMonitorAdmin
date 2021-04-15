@@ -16,7 +16,7 @@ limitations under the License.
 
 // 今日诗词 V2 NPM-SDK 1.0.0
 // 今日诗词API 是一个可以免费调用的诗词接口：https://www.jinrishici.com
-
+import axios from 'axios'
 const keyName = 'jinrishici-token'
 
 const load = (callback, errHandler) => {
@@ -44,20 +44,16 @@ const commonLoad = (callback, errHandler, token) => {
     callback,
     errHandler,
     'https://v2.jinrishici.com/one.json?client=npm-sdk/1.0&X-User-Token=' +
-      encodeURIComponent(token)
+    encodeURIComponent(token)
   )
 }
 
 const sendRequest = (callback, errHandler, apiUrl) => {
-  const xhr = new XMLHttpRequest()
-  xhr.open('get', apiUrl)
-  xhr.withCredentials = true
-  xhr.send()
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState === 4) {
-      const data = xhr.responseText
-        ? JSON.parse(xhr.responseText)
-        : { errMessage: '无法获取诗词，请检查网络连接，正为您显示本地诗词...' }
+  // 解决生产环境不显示古诗词的问题
+  axios.get(apiUrl).then(res => {
+    console.log('res', res)
+    if (res.status === 200) {
+      const data = res.data ? res.data : { errMessage: '无法获取诗词，请检查网络连接，正为您显示本地诗词...' }
       if (data.status === 'success') {
         callback(data)
       } else {
@@ -68,7 +64,27 @@ const sendRequest = (callback, errHandler, apiUrl) => {
         }
       }
     }
-  }
-}
+  })
 
+  // const xhr = new XMLHttpRequest()
+  // xhr.open('get', apiUrl)
+  // xhr.withCredentials = true
+  // xhr.send()
+  // xhr.onreadystatechange = function() {
+  //   if (xhr.readyState === 4) {
+  //     const data = xhr.responseText
+  //       ? JSON.parse(xhr.responseText)
+  //       : { errMessage: '无法获取诗词，请检查网络连接，正为您显示本地诗词...' }
+  //     if (data.status === 'success') {
+  //       callback(data)
+  //     } else {
+  //       if (errHandler) {
+  //         errHandler(data)
+  //       } else {
+  //         console.error('今日诗词API加载失败，错误原因：' + data.errMessage)
+  //       }
+  //     }
+  //   }
+  // }
+}
 export { load }

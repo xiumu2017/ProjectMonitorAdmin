@@ -142,10 +142,11 @@ export default {
   },
   created() {
     const _this = this
+    console.log('tag', '进入created')
     load(
       (result) => {
         // Storager.set({ verses: result.data })
-        console.log('result', result)
+        console.log('获取古诗词：result', result)
         _this.poem = result.data
       },
       (err) => {
@@ -153,8 +154,10 @@ export default {
         const localShici = DEFAULT_SHICI_LIST[Math.floor(Math.random() * DEFAULT_SHICI_LIST.length)]
         _this.poem = localShici
         // Storager.set({ verses: localShici })
+        console.log('error', '获取诗词出问题了')
       }
     )
+    console.log('tag', '结束created')
   },
   methods: {
     showPwd() {

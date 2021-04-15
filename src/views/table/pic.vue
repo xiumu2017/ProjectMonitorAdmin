@@ -2,6 +2,7 @@
   <div class="app-container" style="overflow: scroll">
     <div v-for="(item,index) in picList" :key="index" style="float: left">
       <el-image :src="item.img" :preview-src-list="srcList" />
+      <el-link type="primary" :href="item.img" target="_blank">{{ item.img }}</el-link>
     </div>
   </div>
 </template>
