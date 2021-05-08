@@ -45,12 +45,36 @@
           name="password"
           tabindex="2"
           auto-complete="on"
-          @keyup.enter.native="handleLogin"
         />
         <span class="show-pwd" @click="showPwd">
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
+
+      <el-form-item prop="code">
+        <span class="svg-container">
+          <i class="el-icon-success" />
+        </span>
+        <el-input
+          :key="passwordType"
+          ref="code"
+          v-model="loginForm.code"
+          :type="passwordType"
+          placeholder="Code"
+          name="code"
+          tabindex="2"
+          auto-complete="off"
+          @keyup.enter.native="handleLogin"
+        />
+        <span class="show-pwd" @click="renderCode">
+          <el-image
+            style="width: 120px; height: 35px"
+            :src="captchaUrl"
+            fit="contain"
+          />
+        </span>
+      </el-form-item>
+
       <el-form-item>
         <el-button id="loginButton" :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
           Sign in
@@ -120,8 +144,10 @@ export default {
       },
       loginForm: {
         username: '',
-        password: ''
+        password: '',
+        code: ''
       },
+      captchaUrl: process.env.VUE_APP_BASE_API + 'kaptcha/render?' + new Date().getTime(),
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
@@ -169,6 +195,10 @@ export default {
       this.$nextTick(() => {
         this.$refs.password.focus()
       })
+    },
+    renderCode() {
+      console.log('renderCode', '验证码刷新')
+      this.captchaUrl = process.env.VUE_APP_BASE_API + 'kaptcha/render?' + new Date().getTime()
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
