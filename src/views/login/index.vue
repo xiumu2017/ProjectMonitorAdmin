@@ -66,12 +66,17 @@
           auto-complete="off"
           @keyup.enter.native="handleLogin"
         />
-        <span class="show-pwd" @click="renderCode">
-          <el-image
+        <span class="show-code-img" @click="renderCode">
+          <!-- <el-image
             style="width: 120px; height: 35px"
             :src="captchaUrl"
             fit="contain"
-          />
+          /> -->
+          <img
+            style="width: 120px; height: 35px; margin-top: 5%"
+            :src="captchaUrl"
+            fit="contain"
+          >
         </span>
       </el-form-item>
 
@@ -147,7 +152,7 @@ export default {
         password: '',
         code: ''
       },
-      captchaUrl: process.env.VUE_APP_BASE_API + 'kaptcha/render?' + new Date().getTime(),
+      captchaUrl: process.env.VUE_APP_BASE_API + 'kaptcha/render',
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
@@ -211,6 +216,7 @@ export default {
             this.loading = false
           })
         } else {
+          this.loading = false
           console.log('error submit!!')
           return false
         }
@@ -340,6 +346,16 @@ $light_gray:#eee;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
+  }
+
+  .show-code-img {
+    position: absolute;
+    right: 10px;
+    // top: 7px;
+    // font-size: 16px;
+    // color: $dark_gray;
+    // cursor: pointer;
+    // user-select: none;
   }
 }
 </style>

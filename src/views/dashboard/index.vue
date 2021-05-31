@@ -2,7 +2,7 @@
   <div class="dashboard-editor-container">
     <!-- <div class="dashboard-text">name: {{ name }}</div> -->
 
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;" :gutter="10">
       <span>入睡时间分布图：</span>
       <el-button type="primary" size="mini" @click="getSleepPieData">刷新</el-button>
       <el-select v-model="sleepPieType" size="mini" placeholder="请选择">
@@ -14,7 +14,27 @@
           @change="getSleepPieData"
         />
       </el-select>
-      <sleep-pie :chart-data="sleepPieData" width="50%" />
+      <el-col :span="6">
+        <el-table
+          :data="sleepPieData"
+          border
+          style="width: 60%;margin: 10px"
+        >
+          <el-table-column
+            prop="name"
+            label="时间段"
+            width="180"
+          />
+          <el-table-column
+            prop="value"
+            sortable
+            label="Times"
+          />
+        </el-table>
+      </el-col>
+      <el-col :span="18">
+        <sleep-pie :chart-data="sleepPieData" width="100%" />
+      </el-col>
     </el-row>
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">

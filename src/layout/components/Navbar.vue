@@ -23,17 +23,38 @@
           <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
             <el-dropdown-item>Docs</el-dropdown-item>
           </a>
+          <el-dropdown-item @click.native="changePass">修改密码</el-dropdown-item>
           <el-dropdown-item divided @click.native="logout">
             <span style="display:block;">Log Out</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+
+    <div>
+      <el-dialog :visible.sync="passDialogVisible" width="35%" title="登录密码修改" :close-on-click-modal="false">
+        <el-form size="middle">
+          <el-form-item label="原密码" prop="oldPass">
+            <el-input v-model="oldPass" type="password" />
+          </el-form-item>
+          <el-form-item label="新密码" prop="newPass">
+            <el-input v-model="newPass" type="password" />
+          </el-form-item>
+          <el-form-item label="确认密码" prop="newPass">
+            <el-input v-model="newPass" type="password" />
+          </el-form-item>
+        </el-form>
+        <el-button type="primary" @click="modifyPass">确认</el-button>
+        <el-button type="danger" @click.native="passDialogVisible = false">取消</el-button>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
 <script>
+import { Message } from 'element-ui'
 import { mapGetters } from 'vuex'
+import { changePass } from '@/api/user'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 
@@ -41,6 +62,13 @@ export default {
   components: {
     Breadcrumb,
     Hamburger
+  },
+  data() {
+    return {
+      passDialogVisible: false,
+      oldPass: '',
+      newPass: ''
+    }
   },
   computed: {
     ...mapGetters([
@@ -55,6 +83,23 @@ export default {
     async logout() {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    },
+    changePass() {
+      this.passDialogVisible = true
+    },
+    modifyPass() {
+      console.log('info', 'modifyPass-click')
+      console.log('newPass', this.newPass)
+      changePass({ 'oldPass': this.oldPass, 'newPass': this.newPass }).then(res => {
+        console.log('res', res)
+        if (res.code === 200) {
+          Message({
+            message: res.message,
+            type: 'success'
+          })
+          this.passDialogVisible = false
+        }
+      })
     }
   }
 }
