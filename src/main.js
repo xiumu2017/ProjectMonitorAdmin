@@ -18,10 +18,12 @@ import '@/permission' // permission control
 
 import { encrypt, decrypt } from '@/utils/encryp.js'
 import { formatDate } from '@/utils/dateUtils.js'
+import { listToTree } from '@/utils/index'
 
 Vue.prototype.encrypt = encrypt
 Vue.prototype.decrypt = decrypt
 Vue.prototype.formatDate = formatDate
+Vue.prototype.listToTree = listToTree
 
 /**
  * If you don't want to use mock-server

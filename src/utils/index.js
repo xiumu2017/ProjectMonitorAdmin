@@ -156,3 +156,25 @@ export function debounce(func, wait, immediate) {
     return result
   }
 }
+
+/**
+* @description        数组转树形数据
+* @param {数据数组}    list
+* @param {树结构配置}  config
+*/
+export function listToTree(list, config) {
+  const conf = {}
+  Object.assign(conf, config)
+  const nodeMap = new Map()
+  const result = []
+  const { id, pid } = conf
+  for (const node of list) {
+    // node[children] = node[children] || [];
+    nodeMap.set(node[id], node)
+  }
+  for (const node of list) {
+    const parent = nodeMap.get(node[pid]);
+    (parent ? (parent.children ? parent.children : parent.children = []) : result).push(node)
+  }
+  return result
+}
