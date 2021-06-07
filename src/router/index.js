@@ -101,7 +101,7 @@ export const constantRoutes = [
             path: 'type',
             name: '类别管理',
             component: () => import('@/views/pm/serverType/table'),
-            meta: { title: '类别管理', icon: 'server2' }
+            meta: { title: '类别管理', icon: 'type' }
           },
           {
             path: 'management',
@@ -163,13 +163,25 @@ export const constantRoutes = [
         path: 'alipay',
         name: '支付宝账单',
         component: () => import('@/views/finance/alipay/table'),
-        meta: { title: '支付宝账单', icon: 'timeline' }
+        meta: { title: '支付宝账单', icon: 'alipay' }
       },
       {
         path: 'shopping',
         name: '购物清单',
         component: () => import('@/views/finance/shopping/table'),
-        meta: { title: '购物清单', icon: 'timeline' }
+        meta: { title: '购物清单', icon: 'shopping' }
+      },
+      {
+        path: 'bill-type',
+        name: '账单分类',
+        component: () => import('@/views/finance/billType/table'),
+        meta: { title: '账单分类', icon: 'type' }
+      },
+      {
+        path: 'bill',
+        name: '账单管理',
+        component: () => import('@/views/finance/bill/table'),
+        meta: { title: '账单管理', icon: 'bill2' }
       }
     ]
   },
@@ -184,7 +196,7 @@ export const constantRoutes = [
         path: 'sleep-record',
         name: 'Bing壁纸',
         component: () => import('@/views/table/bingImageTable'),
-        meta: { title: 'Bing壁纸', icon: 'sleep' }
+        meta: { title: 'Bing壁纸', icon: 'bing' }
       }
     ]
   },
@@ -199,7 +211,7 @@ export const constantRoutes = [
         path: 'account-pass',
         name: 'accountPass',
         component: () => import('@/views/table/accountPassTable'),
-        meta: { title: '网络账户管理', icon: 'setting' }
+        meta: { title: '网络账户管理', icon: 'password' }
       }
     ]
   },
@@ -214,7 +226,7 @@ export const constantRoutes = [
         path: 'oss',
         name: 'oss',
         component: () => import('@/views/table/ossTable'),
-        meta: { title: 'Oss 管理', icon: 'setting' }
+        meta: { title: 'Oss 管理', icon: 'oss' }
       }
     ]
   },
