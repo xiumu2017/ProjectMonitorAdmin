@@ -34,7 +34,7 @@
 
       <el-form-item prop="password">
         <span class="svg-container">
-          <svg-icon icon-class="password" />
+          <svg-icon icon-class="pwd" />
         </span>
         <el-input
           :key="passwordType"
@@ -59,7 +59,6 @@
           :key="passwordType"
           ref="code"
           v-model="loginForm.code"
-          :type="passwordType"
           placeholder="Code"
           name="code"
           tabindex="2"
