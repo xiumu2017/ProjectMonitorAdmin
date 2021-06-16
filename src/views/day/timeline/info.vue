@@ -48,7 +48,9 @@
         <el-input v-model="formData.location" />
       </el-form-item>
       <el-form-item label="图片链接" prop="photos">
-        <el-input v-model="formData.photos" />
+        <el-input v-model="formData.photos" hidden />
+        <input ref="file" type="file" @change="fileUpload">
+        <img v-if="imageUrl" :src="imageUrl">
       </el-form-item>
       <el-form-item label="备注">
         <el-input
@@ -70,6 +72,7 @@
 <script>
 import { Message } from 'element-ui'
 import { create, update, detail } from '@/api/day/timeline'
+import { upload } from '@/utils/upload'
 export default {
   name: 'TimelineInfo',
   data() {
@@ -85,6 +88,7 @@ export default {
       disabled: false,
       dialogVisible: false,
       hideIdFlag: true,
+      imageUrl: '',
       props: {
         id: {
           type: Number,
@@ -101,6 +105,19 @@ export default {
     // 初始化查询
   },
   methods: {
+    fileUpload(e) {
+      const dom = this.$refs.file
+      const data = dom.files[0]
+      const this_ = this
+      console.log('file', data)
+      if (data) {
+        const key = data.size + '-' + new Date().getTime() + data.name
+        upload(data, key, function(url) {
+          this_.imageUrl = 'https://' + url
+          console.log('img', this_.imageUrl)
+        })
+      }
+    },
     initInfoDialog(visible, infoId, type) {
       console.log('type', type)
       console.log('infoId', infoId)

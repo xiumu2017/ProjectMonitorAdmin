@@ -5,16 +5,20 @@
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;" :gutter="10">
       <span>入睡时间分布图：</span>
       <el-button type="primary" size="mini" @click="getSleepPieData">刷新</el-button>
-      <el-select v-model="sleepPieType" size="mini" placeholder="请选择">
+      <el-select
+        v-model="sleepPieType"
+        size="mini"
+        placeholder="请选择"
+        @change="getSleepPieData"
+      >
         <el-option
           v-for="item in sleepPieTypes"
           :key="item.value"
           :label="item.label"
           :value="item.value"
-          @change="getSleepPieData"
         />
       </el-select>
-      <el-col :span="6">
+      <el-col :span="8">
         <el-table
           :data="sleepPieData"
           border
@@ -32,7 +36,7 @@
           />
         </el-table>
       </el-col>
-      <el-col :span="18">
+      <el-col :span="16">
         <sleep-pie :chart-data="sleepPieData" width="100%" />
       </el-col>
     </el-row>
