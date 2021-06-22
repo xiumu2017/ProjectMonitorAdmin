@@ -52,6 +52,44 @@
         <input ref="file" type="file" @change="fileUpload">
         <img v-if="imageUrl" :src="imageUrl">
       </el-form-item>
+      <el-form-item>
+        <el-upload
+          action="#"
+          list-type="picture-card"
+          :auto-upload="false"
+        >
+          <i slot="default" class="el-icon-plus" />
+          <div slot="file" slot-scope="{file}">
+            <img
+              class="el-upload-list__item-thumbnail"
+              :src="file.url"
+              alt=""
+            >
+            <span class="el-upload-list__item-actions">
+              <span
+                class="el-upload-list__item-preview"
+                @click="handlePictureCardPreview(file)"
+              >
+                <i class="el-icon-zoom-in" />
+              </span>
+              <span
+                v-if="!downloadDisabled"
+                class="el-upload-list__item-delete"
+                @click="handleDownload(file)"
+              >
+                <i class="el-icon-download" />
+              </span>
+              <span
+                v-if="!downloadDisabled"
+                class="el-upload-list__item-delete"
+                @click="handleRemove(file)"
+              >
+                <i class="el-icon-delete" />
+              </span>
+            </span>
+          </div>
+        </el-upload>
+      </el-form-item>
       <el-form-item label="备注">
         <el-input
           v-model="formData.remark"
@@ -61,7 +99,9 @@
         />
       </el-form-item>
     </el-form>
-
+    <el-dialog :visible.sync="imgDialogVisible">
+      <img width="100%" :src="dialogImageUrl" alt="">
+    </el-dialog>
     <div v-if="type !== 0" class="dialog-footer" style="margin-left: 30px">
       <el-button type="primary" size="mini" @click="submit()">保存</el-button>
       <el-button type="primary" size="mini" @click="submit('zz')">保存并继续</el-button>
@@ -89,6 +129,9 @@ export default {
       dialogVisible: false,
       hideIdFlag: true,
       imageUrl: '',
+      dialogImageUrl: '',
+      imgDialogVisible: false,
+      downloadDisabled: false,
       props: {
         id: {
           type: Number,
@@ -117,6 +160,16 @@ export default {
           console.log('img', this_.imageUrl)
         })
       }
+    },
+    handleRemove(file) {
+      console.log(file)
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
+    },
+    handleDownload(file) {
+      console.log(file)
     },
     initInfoDialog(visible, infoId, type) {
       console.log('type', type)
