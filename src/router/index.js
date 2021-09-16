@@ -186,6 +186,39 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/tools',
+    component: Layout,
+    redirect: '/tools/table',
+    name: 'Tools',
+    meta: { title: 'Tools', icon: 'setting' },
+    children: [
+      {
+        path: 'sleep-record',
+        name: 'Bing壁纸',
+        component: () => import('@/views/table/bingImageTable'),
+        meta: { title: 'Bing壁纸', icon: 'bing' }
+      },
+      {
+        path: 'account-pass',
+        name: 'accountPass',
+        component: () => import('@/views/table/accountPassTable'),
+        meta: { title: '网络账户管理', icon: 'password' }
+      },
+      {
+        path: 'oss',
+        name: 'oss',
+        component: () => import('@/views/table/ossTable'),
+        meta: { title: 'Oss 管理', icon: 'oss' }
+      },
+      {
+        path: 'unicode',
+        name: 'unicode',
+        component: () => import('@/views/table/unicode'),
+        meta: { title: '艺术字', icon: 'oss' }
+      }
+    ]
+  },
+  {
     path: '/bing',
     component: Layout,
     redirect: '/bing/table',
