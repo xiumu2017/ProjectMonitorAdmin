@@ -263,21 +263,6 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/pic',
-    component: Layout,
-    redirect: '/pic/table',
-    name: 'Pic',
-    meta: { title: 'Pic', icon: 'record' },
-    children: [
-      {
-        path: 'pic',
-        name: 'pic',
-        component: () => import('@/views/table/pic'),
-        meta: { title: 'Pic', icon: 'setting' }
-      }
-    ]
-  },
 
   /*  {
     path: '/form',
