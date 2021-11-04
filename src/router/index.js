@@ -215,6 +215,12 @@ export const constantRoutes = [
         name: 'unicode',
         component: () => import('@/views/table/unicode'),
         meta: { title: '艺术字', icon: 'oss' }
+      },
+      {
+        path: 'poem',
+        name: 'poem',
+        component: () => import('@/views/day/poem/table'),
+        meta: { title: '古诗词', icon: 'record' }
       }
     ]
   },
