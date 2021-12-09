@@ -153,6 +153,33 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/photo',
+    component: Layout,
+    redirect: '/photo/album/table',
+    name: 'Photo',
+    meta: { title: 'Photo', icon: 'record' },
+    children: [
+      {
+        path: 'album',
+        name: '相册',
+        component: () => import('@/views/photo/album/table'),
+        meta: { title: '相册', icon: 'timeline' }
+      },
+      {
+        path: 'photo',
+        name: '照片',
+        component: () => import('@/views/photo/photo/table'),
+        meta: { title: '照片', icon: 'sleep' }
+      },
+      {
+        path: 'photo-view',
+        name: '照片墙',
+        component: () => import('@/views/photo/photo/table'),
+        meta: { title: '照片预览', icon: 'meal' }
+      }
+    ]
+  },
+  {
     path: '/finance',
     component: Layout,
     redirect: '/finance/table',
