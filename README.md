@@ -26,4 +26,11 @@ ctrl c/v 修改即可
 
 api.js 模板地址：src -> api -> template.js
 
-## 服务端部署
+## 服务端部署 
+
+`npm run build:prod`
+
+### jenkins 自动部署
+
+1. setting -> webhook 配置 http://jenkins_url/githu_webhook/
+2. **send files over SSH** dist 目录
