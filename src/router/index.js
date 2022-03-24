@@ -187,6 +187,12 @@ export const constantRoutes = [
     meta: { title: '财务管理', icon: 'record' },
     children: [
       {
+        path: 'wish-list',
+        name: '愿望清单',
+        component: () => import('@/views/finance/wishList/table'),
+        meta: { title: '愿望清单', icon: 'alipay' }
+      },
+      {
         path: 'alipay',
         name: '支付宝账单',
         component: () => import('@/views/finance/alipay/table'),
