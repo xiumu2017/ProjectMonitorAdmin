@@ -34,3 +34,14 @@ api.js 模板地址：src -> api -> template.js
 
 1. setting -> webhook 配置 http://jenkins_url/githu_webhook/
 2. **send files over SSH** dist 目录
+
+离线文件 管理 git 仓库
+``` bash
+unzip <repo>.zip
+cd <repo>
+git init
+git add .
+git remote add origin https://github.com/<user>/<repo>.git
+git remote update
+git checkout master
+```
