@@ -133,6 +133,12 @@ export const constantRoutes = [
     meta: { title: 'DayRecord', icon: 'record' },
     children: [
       {
+        path: 'progress',
+        name: '进度目标',
+        component: () => import('@/views/day/progress/table'),
+        meta: { title: 'Progress', icon: 'progress' }
+      },
+      {
         path: 'timeline',
         name: '时间轴',
         component: () => import('@/views/day/timeline/table'),
