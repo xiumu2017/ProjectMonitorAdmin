@@ -60,6 +60,11 @@
           {{ scope.row.payType }}
         </template>
       </el-table-column>
+<!--      <el-table-column label="图片" min-width="15%">-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-image style="width: 108px; height: 192px" :src="scope.row.photos + '?imageView2/1/w/216/h/384/q/40'" />-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="备注信息" min-width="15%">
         <template slot-scope="scope">
           {{ scope.row.remark }}

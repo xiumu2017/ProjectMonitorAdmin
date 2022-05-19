@@ -111,7 +111,25 @@ export default {
         this.disabled = true
       }
       if (this.type === 1) {
-        this.formData = {}
+        // 初始化默认值
+        // 日期默认当天
+        const now = new Date()
+        let type = 1
+        const hours = now.getHours()
+        if (hours > 8 && hours < 12) {
+          type = 1
+        } else if (hours >= 12 && hours < 18) {
+          type = 2
+        } else {
+          type = 3
+        }
+        this.formData = {
+          date: now,
+          type: type,
+          place: '公司食堂',
+          payType: 4
+        }
+        this.cost = 0
       }
       this.dialogVisible = true
       this.id = infoId
