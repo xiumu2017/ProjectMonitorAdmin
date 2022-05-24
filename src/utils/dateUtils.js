@@ -19,3 +19,6 @@ export function rightDay(date) {
   v.setTime(v.getTime() + 24 * 3600 * 1000)
   return v.getFullYear() + '-' + (v.getMonth() + 1) + '-' + v.getDate()
 }
+export function formatDateTime(time) {
+  return time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds()
+}

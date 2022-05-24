@@ -18,15 +18,15 @@
     </div>
 
     <div class="progress-data">
-      <el-progress type="circle" percentage="0"></el-progress>
-      <el-progress type="circle" percentage="10"></el-progress>
-      <el-progress type="circle" stroke-width="12" percentage="30"></el-progress>
-      <el-progress type="circle" status="warning" percentage="50"></el-progress>
-      <el-progress type="circle" color="pink" percentage="75"></el-progress>
-      <el-progress type="circle" width="200" percentage="99"></el-progress>
-      <el-progress type="circle" stroke-linecap="round" percentage="100"></el-progress>
-      <el-progress type="circle" stroke-linecap="butt" percentage="100"></el-progress>
-      <el-progress type="circle" stroke-linecap="square" percentage="100"></el-progress>
+      <el-progress type="circle" percentage="0" />
+      <el-progress type="circle" percentage="10" />
+      <el-progress type="circle" stroke-width="12" percentage="30" />
+      <el-progress type="circle" status="warning" percentage="50" />
+      <el-progress type="circle" color="pink" percentage="75" />
+      <el-progress type="circle" width="200" percentage="99" />
+      <el-progress type="circle" stroke-linecap="round" percentage="100" />
+      <el-progress type="circle" stroke-linecap="butt" percentage="100" />
+      <el-progress type="circle" stroke-linecap="square" percentage="100" />
     </div>
 
     <el-table
@@ -100,7 +100,7 @@
 <script>
 import Info from './info'
 import { Message } from 'element-ui'
-import { getPage, del, update, getTypeList, excelExport } from '@/api/day/progress'
+import { getPage, del, update } from '@/api/day/progress'
 
 export default {
   components: { Info },

@@ -63,6 +63,8 @@
 <script>
 import { Message } from 'element-ui'
 import { create, update, types, payTypes, detail } from '@/api/day/meal'
+import { formatDateTime } from '@/utils/dateUtils'
+
 export default {
   name: 'MealInfo',
   data() {
@@ -116,7 +118,7 @@ export default {
         const now = new Date()
         let type = 1
         const hours = now.getHours()
-        if (hours > 8 && hours < 12) {
+        if (hours > 6 && hours < 12) {
           type = 1
         } else if (hours >= 12 && hours < 18) {
           type = 2
@@ -124,7 +126,7 @@ export default {
           type = 3
         }
         this.formData = {
-          date: now,
+          date: formatDateTime(now),
           type: type,
           place: '公司食堂',
           payType: 4
