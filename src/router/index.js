@@ -169,19 +169,19 @@ export const constantRoutes = [
         path: 'album',
         name: '相册',
         component: () => import('@/views/photo/album/table'),
-        meta: { title: '相册', icon: 'timeline' }
+        meta: { title: '相册', icon: 'album' }
       },
       {
         path: 'photo',
         name: '照片',
         component: () => import('@/views/photo/photo/table'),
-        meta: { title: '照片', icon: 'sleep' }
+        meta: { title: '照片', icon: 'photo' }
       },
       {
         path: 'photo-view',
         name: '照片墙',
         component: () => import('@/views/photo/photo/table'),
-        meta: { title: '照片预览', icon: 'meal' }
+        meta: { title: '照片预览', icon: 'gallery-clas' }
       }
     ]
   },
@@ -196,7 +196,7 @@ export const constantRoutes = [
         path: 'wish-list',
         name: '愿望清单',
         component: () => import('@/views/finance/wishList/table'),
-        meta: { title: '愿望清单', icon: 'alipay' }
+        meta: { title: '愿望清单', icon: 'wishlist' }
       },
       {
         path: 'alipay',
@@ -253,13 +253,13 @@ export const constantRoutes = [
         path: 'unicode',
         name: 'unicode',
         component: () => import('@/views/table/unicode'),
-        meta: { title: '艺术字', icon: 'oss' }
+        meta: { title: '艺术字', icon: 'font1' }
       },
       {
         path: 'poem',
         name: 'poem',
         component: () => import('@/views/day/poem/table'),
-        meta: { title: '古诗词', icon: 'record' }
+        meta: { title: '古诗词', icon: 'book' }
       },
       {
         path: 'word',

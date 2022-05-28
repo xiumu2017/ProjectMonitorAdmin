@@ -30,7 +30,12 @@
         <el-rate v-model="formData.sleepQuality" />
       </el-form-item>
       <el-form-item label="睡前回忆">
-        <el-input v-model="formData.memory" />
+        <el-input
+          v-model="formData.memory"
+          :autosize="{ minRows: 2, maxRows: 4 }"
+          type="textarea"
+          placeholder=""
+        />
       </el-form-item>
       <el-form-item label="熬夜原因">
         <el-input v-model="formData.lateReason" />
@@ -57,6 +62,7 @@
 <script>
 import { Message } from 'element-ui'
 import { create, update, detail } from '@/api/day/sleep'
+
 export default {
   name: 'SleepRecordInfo',
   data() {
@@ -103,7 +109,9 @@ export default {
         this.disabled = true
       }
       if (this.type === 1) {
-        this.formData = {}
+        this.formData = {
+          date: new Date().getTime()
+        }
       }
       this.dialogVisible = true
       this.id = id
