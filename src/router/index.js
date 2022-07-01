@@ -54,7 +54,66 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
-
+  {
+    path: '/day',
+    component: Layout,
+    redirect: '/day/table',
+    name: 'Day',
+    meta: { title: 'DayRecord', icon: 'record' },
+    children: [
+      {
+        path: 'progress',
+        name: '进度目标',
+        component: () => import('@/views/day/progress/table'),
+        meta: { title: 'Progress', icon: 'progress' }
+      },
+      {
+        path: 'timeline',
+        name: '时间轴',
+        component: () => import('@/views/day/timeline/table'),
+        meta: { title: '时间轴', icon: 'timeline' }
+      },
+      {
+        path: 'sleep-record',
+        name: '睡眠管理',
+        component: () => import('@/views/day/sleep/table'),
+        meta: { title: '睡眠管理', icon: 'sleep' }
+      },
+      {
+        path: 'meal-record',
+        name: '用餐管理',
+        component: () => import('@/views/day/meal/table'),
+        meta: { title: '用餐管理', icon: 'meal' }
+      }
+    ]
+  },
+  {
+    path: '/photo',
+    component: Layout,
+    redirect: '/photo/album/table',
+    name: 'Photo',
+    meta: { title: 'Photo', icon: 'record' },
+    children: [
+      {
+        path: 'album',
+        name: '相册',
+        component: () => import('@/views/photo/album/table'),
+        meta: { title: '相册', icon: 'album' }
+      },
+      {
+        path: 'photo',
+        name: '照片',
+        component: () => import('@/views/photo/photo/table'),
+        meta: { title: '照片', icon: 'photo' }
+      },
+      {
+        path: 'photo-view',
+        name: '照片墙',
+        component: () => import('@/views/photo/photo/table'),
+        meta: { title: '照片预览', icon: 'gallery-clas' }
+      }
+    ]
+  },
   {
     path: '/ums',
     component: Layout,
@@ -126,66 +185,6 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/day',
-    component: Layout,
-    redirect: '/day/table',
-    name: 'Day',
-    meta: { title: 'DayRecord', icon: 'record' },
-    children: [
-      {
-        path: 'progress',
-        name: '进度目标',
-        component: () => import('@/views/day/progress/table'),
-        meta: { title: 'Progress', icon: 'progress' }
-      },
-      {
-        path: 'timeline',
-        name: '时间轴',
-        component: () => import('@/views/day/timeline/table'),
-        meta: { title: '时间轴', icon: 'timeline' }
-      },
-      {
-        path: 'sleep-record',
-        name: '睡眠管理',
-        component: () => import('@/views/day/sleep/table'),
-        meta: { title: '睡眠管理', icon: 'sleep' }
-      },
-      {
-        path: 'meal-record',
-        name: '用餐管理',
-        component: () => import('@/views/day/meal/table'),
-        meta: { title: '用餐管理', icon: 'meal' }
-      }
-    ]
-  },
-  {
-    path: '/photo',
-    component: Layout,
-    redirect: '/photo/album/table',
-    name: 'Photo',
-    meta: { title: 'Photo', icon: 'record' },
-    children: [
-      {
-        path: 'album',
-        name: '相册',
-        component: () => import('@/views/photo/album/table'),
-        meta: { title: '相册', icon: 'album' }
-      },
-      {
-        path: 'photo',
-        name: '照片',
-        component: () => import('@/views/photo/photo/table'),
-        meta: { title: '照片', icon: 'photo' }
-      },
-      {
-        path: 'photo-view',
-        name: '照片墙',
-        component: () => import('@/views/photo/photo/table'),
-        meta: { title: '照片预览', icon: 'gallery-clas' }
-      }
-    ]
-  },
-  {
     path: '/finance',
     component: Layout,
     redirect: '/finance/table',
@@ -232,12 +231,6 @@ export const constantRoutes = [
     meta: { title: 'Tools', icon: 'setting' },
     children: [
       {
-        path: 'sleep-record',
-        name: 'Bing壁纸',
-        component: () => import('@/views/table/bingImageTable'),
-        meta: { title: 'Bing壁纸', icon: 'bing' }
-      },
-      {
         path: 'account-pass',
         name: 'accountPass',
         component: () => import('@/views/table/accountPassTable'),
@@ -281,36 +274,6 @@ export const constantRoutes = [
         name: 'Bing壁纸',
         component: () => import('@/views/table/bingImageTable'),
         meta: { title: 'Bing壁纸', icon: 'bing' }
-      }
-    ]
-  },
-  {
-    path: '/account-pass',
-    component: Layout,
-    redirect: '/account-pass/table',
-    name: 'accountPass',
-    meta: { title: 'accountPass', icon: 'record' },
-    children: [
-      {
-        path: 'account-pass',
-        name: 'accountPass',
-        component: () => import('@/views/table/accountPassTable'),
-        meta: { title: '网络账户管理', icon: 'password' }
-      }
-    ]
-  },
-  {
-    path: '/oss',
-    component: Layout,
-    redirect: '/oss/table',
-    name: 'Oss',
-    meta: { title: 'Oss', icon: 'record' },
-    children: [
-      {
-        path: 'oss',
-        name: 'oss',
-        component: () => import('@/views/table/ossTable'),
-        meta: { title: 'Oss 管理', icon: 'oss' }
       }
     ]
   },
