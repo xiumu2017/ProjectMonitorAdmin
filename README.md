@@ -45,3 +45,5 @@ git remote add origin https://github.com/<user>/<repo>.git
 git remote update
 git checkout master
 ```
+
+Github Actions
