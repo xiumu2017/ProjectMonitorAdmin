@@ -28,9 +28,8 @@ jobs:
           host: ${{ secrets.MY_HOST }} # 服务器IP（需要在GitHub上自行配置对应的secret）
           user: ${{ secrets.MY_USER }} # 服务器用户名
           pass: ${{ secrets.MY_PASS }} # 服务器密码
-          connect_timeout: 10s
-          local: './dist/*' # 源路径（工作流）
-          remote: /data/docker/frontend/nginx/www # 目标路径（服务器）
+          scp: |
+            './dist/*' => /data/docker/frontend/www/admin/
       
       # 在服务器端执行相关指令
       - name: Executing remote ssh commands
