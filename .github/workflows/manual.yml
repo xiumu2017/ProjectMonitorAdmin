@@ -28,6 +28,7 @@ jobs:
           host: ${{ secrets.MY_HOST }} # 服务器IP（需要在GitHub上自行配置对应的secret）
           user: ${{ secrets.MY_USER }} # 服务器用户名
           pass: ${{ secrets.MY_PASS }} # 服务器密码
+          port: 20202
           scp: |
             './dist/*' => /data/docker/frontend/www/admin/
       
@@ -38,5 +39,6 @@ jobs:
           host: ${{ secrets.MY_HOST }} # 服务器IP（需要在GitHub上自行配置对应的secret）
           username: ${{ secrets.MY_USER }} # 服务器用户名
           password: ${{ secrets.MY_PASS }} # 服务器密码
+          port: 20202
           script: |
             docker restart nginx-docker
