@@ -233,7 +233,7 @@ export const constantRoutes = [
       {
         path: 'account-pass',
         name: 'accountPass',
-        component: () => import('@/views/table/accountPassTable'),
+        component: () => import('@/views/tools/bookmark/accountPassTable'),
         meta: { title: '网络账户管理', icon: 'password' }
       },
       {
@@ -245,7 +245,7 @@ export const constantRoutes = [
       {
         path: 'unicode',
         name: 'unicode',
-        component: () => import('@/views/table/unicode'),
+        component: () => import('@/views/tools/unicode/unicode'),
         meta: { title: '艺术字', icon: 'font1' }
       },
       {

@@ -1,23 +1,22 @@
 <template>
   <div class="app-container">
 
-  <el-row :gutter="250">
-    <el-col :span="4" v-for="item in list" :key="item.id" :offset="1">
-      <el-card class="box-card">
-        <div slot="header" class="clearfix">
-          <span>{{ item.title }}</span>
-          <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
-        </div>
-        <div class="text item" style="color: red">
-          {{ item.sentence }}
-        </div>
-        <div class="text item">
-          {{ item.content }}
-        </div>
-      </el-card>  
-    </el-col>
-  </el-row>
-  
+    <el-row :gutter="250">
+      <el-col v-for="item in list" :key="item.id" :span="4" :offset="1">
+        <el-card class="box-card-poem">
+          <div slot="header" class="clearfix">
+            <span>{{ item.title }}</span>
+            <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+          </div>
+          <div class="text item" style="color: red">
+            {{ item.sentence }}
+          </div>
+          <div class="text item">
+            {{ item.content }}
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
     <!-- 查询区域 -->
     <div class="filter-container">
       <el-date-picker v-model="pageQuery.date" type="date" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期" style="width: 200px;" class="filter-item" />
@@ -28,7 +27,8 @@
 
     <!-- table
       @row-dblclick="handleEdit"
-      @row-contextmenu="deleteProject" -->
+      @row-contextmenu="deleteProject"
+     -->
 
     <el-table
       v-loading="listLoading"
@@ -205,22 +205,22 @@ export default {
       transition: 2s;
       font-size: 18px;
     }
-  
+
     .item {
       margin-bottom: 18px;
     }
-  
+
     .clearfix:before,
     .clearfix:after {
       display: table;
       content: "";
     }
-  
+
     .clearfix:after {
       clear: both
     }
-  
-    .box-card {
+
+    .box-card-poem {
       margin-left: 10px;
       margin-bottom: 20px;
       width: 480px;
@@ -228,18 +228,18 @@ export default {
       background: linear-gradient(45deg, rgb(220, 208, 160), #dfc7d3, hwb(290 51% 27%));
       animation: hueRotate 10s infinite alternate;
     }
-    
-    .box-card:hover {
+
+    .box-card-poem:hover {
       font-size: 18px;
       font-weight: bold;
       transition: 2s;
     }
-  
+
     @keyframes hueRotate {
       0 {
         filter: hue-rotate(0);
       }
-  
+
       100% {
         filter: hue-rotate(360deg);
       }

@@ -40,15 +40,20 @@
           @change="textChange"
         />
 
-        <el-card v-for="item in resArr" :key="item.index" class="box-card" width="500px">
-          <div slot="header" class="clearfix">
-            <span>{{ item.fontName }}</span>
-            <el-button style="float: right; padding: 3px 0" type="text" @click="copy(item.text)">复制</el-button>
-          </div>
-          <div class="text item">
-            {{ item.text }}
-          </div>
-        </el-card>
+        <el-row :gutter="50" style="margin-top:20px">
+          <el-col v-for="item in resArr" :key="item.index" :span="8" :offset="0">
+            <el-card class="box-card" width="500px" style="margin-top:10px">
+              <div slot="header" class="clearfix">
+                <span>{{ item.fontName }}</span>
+                <el-button style="float: right; padding: 3px 0" type="text" @click="copy(item.text)">复制</el-button>
+              </div>
+              <div class="text item">
+                {{ item.text }}
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+
       </div>
     </main>
   </div>
