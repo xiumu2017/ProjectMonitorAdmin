@@ -14,6 +14,7 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
+        <h2 class="title">朽木的学习分享</h2>
         <h3 class="title">Welcome Login</h3>
       </div>
 

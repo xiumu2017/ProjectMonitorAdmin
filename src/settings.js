@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'Paradise Dashbord',
+  title: '朽木的学习分享 - DzUniverse',
 
   /**
    * @type {boolean} true | false
