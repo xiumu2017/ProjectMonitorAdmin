@@ -63,7 +63,7 @@
 <script>
 import { Message } from 'element-ui'
 import { create, update, types, payTypes, detail } from '@/api/day/meal'
-import { formatDateTime } from '@/utils/dateUtils'
+import { formatDateTime, formatDate } from '@/utils/dateUtils'
 
 export default {
   name: 'MealInfo',
@@ -126,7 +126,7 @@ export default {
           type = 3
         }
         this.formData = {
-          date: formatDateTime(now),
+          date: formatDate(now),
           type: type,
           place: '公司食堂',
           payType: 4

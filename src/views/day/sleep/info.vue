@@ -62,6 +62,7 @@
 <script>
 import { Message } from 'element-ui'
 import { create, update, detail } from '@/api/day/sleep'
+import { formatDate } from '@/utils/dateUtils'
 
 export default {
   name: 'SleepRecordInfo',
@@ -110,7 +111,7 @@ export default {
       }
       if (this.type === 1) {
         this.formData = {
-          date: new Date().getTime()
+          date: new Date(formatDate(new Date())).getTime()
         }
       }
       this.dialogVisible = true
