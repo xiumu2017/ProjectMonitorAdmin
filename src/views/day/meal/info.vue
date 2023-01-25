@@ -1,12 +1,6 @@
 <template>
-  <el-dialog
-    :visible.sync="dialogVisible"
-    :close-on-click-modal="false"
-    :title="title"
-    width="35%"
-    top="6vh"
-    @close="handleClose()"
-  >
+  <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false" :title="title" width="35%" top="6vh"
+    @close="handleClose()">
     <el-form label-width="120px" size="mini" label-position="right" :disabled="disabled">
       <el-form-item label="ID" prop="id" :hidden="hideIdFlag">
         <el-input v-model="formData.id" disabled />
@@ -16,12 +10,7 @@
       </el-form-item>
       <el-form-item label="类型" prop="type">
         <el-select v-model="formData.type">
-          <el-option
-            v-for="(item,index) in typeArr"
-            :key="item"
-            :value="index"
-            :label="item"
-          />
+          <el-option v-for="(item, index) in typeArr" :key="item" :value="index" :label="item" />
         </el-select>
       </el-form-item>
       <el-form-item label="吃什么" prop="what">
@@ -35,21 +24,11 @@
       </el-form-item>
       <el-form-item label="支付方式" prop="payType">
         <el-select v-model="formData.payType">
-          <el-option
-            v-for="(item,index) in payTypeArr"
-            :key="item"
-            :value="index"
-            :label="item"
-          />
+          <el-option v-for="(item, index) in payTypeArr" :key="item" :value="index" :label="item" />
         </el-select>
       </el-form-item>
       <el-form-item label="备注">
-        <el-input
-          v-model="formData.remark"
-          :autosize="{ minRows: 3, maxRows: 4 }"
-          type="textarea"
-          placeholder=""
-        />
+        <el-input v-model="formData.remark" :autosize="{ minRows: 3, maxRows: 4 }" type="textarea" placeholder="" />
       </el-form-item>
     </el-form>
 
@@ -63,7 +42,7 @@
 <script>
 import { Message } from 'element-ui'
 import { create, update, types, payTypes, detail } from '@/api/day/meal'
-import { formatTimeYmd } from '@/utils/dateUtils'
+import { formatDateTime } from '@/utils/dateUtils'
 
 export default {
   name: 'MealInfo',
@@ -116,6 +95,9 @@ export default {
         // 初始化默认值
         // 日期默认当天
         const now = new Date()
+        now.setHours(0, 0, 0, 0)
+        let dateStr = formatDateTime(now)
+        console.log(dateStr)
         let type = 1
         const hours = now.getHours()
         if (hours > 6 && hours < 12) {
@@ -126,7 +108,7 @@ export default {
           type = 3
         }
         this.formData = {
-          date: formatTimeYmd(now),
+          date: dateStr,
           type: type,
           place: '公司食堂',
           payType: 4
@@ -148,6 +130,8 @@ export default {
       if (this.type === 2) {
         this.submitFormData = Object.assign({}, this.formData)
         this.submitFormData.cost = this.cost * 100
+        // const date = new String(this.submitFormData.date)
+        // this.submitFormData.date = date.slice(0, 10)
         update(this.id, this.submitFormData).then(res => {
           if (res.code === 200) {
             this.dialogVisible = false
@@ -162,6 +146,8 @@ export default {
       } else {
         this.submitFormData = Object.assign({}, this.formData)
         this.submitFormData.cost = this.cost * 100
+        // const date = new String(this.submitFormData.date)
+        // this.submitFormData.date = date.slice(0, 10)
         create(this.submitFormData).then(res => {
           if (res.code === 200) {
             Message({

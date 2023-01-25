@@ -20,8 +20,15 @@ export function rightDay(date) {
   return v.getFullYear() + '-' + (v.getMonth() + 1) + '-' + v.getDate()
 }
 export function formatDateTime(time) {
-  return time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds()
+  var m = time.getMonth() + 1
+  var d = time.getDate()
+  return time.getFullYear() + '-' + fillZero(m) + '-' + fillZero(d) + ' ' + fillZero(time.getHours()) + ':' + fillZero(time.getMinutes()) + ':' + fillZero(time.getSeconds())
 }
 export function formatTimeYmd(time) {
-  return time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()
+  var m = time.getMonth() + 1
+  var d = time.getDate()
+  return time.getFullYear() + '-' + fillZero(m) + '-' + fillZero(d)
+}
+function fillZero(val) {
+  return val < 10 ? '0' + val : val
 }
