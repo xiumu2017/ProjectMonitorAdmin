@@ -28,9 +28,9 @@ jobs:
           host: ${{ secrets.MY_HOST }} # 服务器IP（需要在GitHub上自行配置对应的secret）
           user: ${{ secrets.MY_USER }} # 服务器用户名
           pass: ${{ secrets.MY_PASS }} # 服务器密码
-          port: 20202
+          port: 22
           scp: |
-            './dist/*' => /data/docker/frontend/www/admin/
+            './dist/*' => /home/ubuntu/universe/frontend/www/admin/
       
       # 在服务器端执行相关指令
       - name: Executing remote ssh commands
@@ -39,6 +39,6 @@ jobs:
           host: ${{ secrets.MY_HOST }} # 服务器IP（需要在GitHub上自行配置对应的secret）
           username: ${{ secrets.MY_USER }} # 服务器用户名
           password: ${{ secrets.MY_PASS }} # 服务器密码
-          port: 20202
+          port: 22
           script: |
-            docker restart nginx-docker
+            sudo docker restart nginx-docker
