@@ -90,9 +90,9 @@
         <span> password: admin</span>
       </div>-->
     </el-form>
-    <vue-p5
-      @sketch="sketches[0]"
-    />
+<!--    <vue-p5-->
+<!--      @sketch="sketches[0]"-->
+<!--    />-->
     <div id="master">
       <a href="https://beian.miit.gov.cn/" target="_blank">皖ICP备20002272号-1</a>
     </div>
@@ -102,8 +102,8 @@
 <script>
 import { validUsername } from '@/utils/validate'
 // import Example from '@/components/p5/Example.vue'
-import VueP5 from 'vue-p5'
-import waves from '@/sketchs/waves'
+// import VueP5 from 'vue-p5'
+// import waves from '@/sketchs/waves'
 import { load } from '@/utils/jinrishici'
 // import blobs from './sketchs/blobs'
 
@@ -112,7 +112,7 @@ const DEFAULT_SHICI_LIST = require('@/constants/shici.json')
 export default {
   name: 'Login',
   components: {
-    'vue-p5': VueP5
+    // 'vue-p5': VueP5
   },
   data() {
     const validateUsername = (rule, value, callback) => {
@@ -162,8 +162,8 @@ export default {
       },
       loading: false,
       passwordType: 'password',
-      redirect: undefined,
-      sketches: [waves]
+      redirect: undefined
+      // sketches: [waves]
     }
   },
   watch: {
