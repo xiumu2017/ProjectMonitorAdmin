@@ -54,6 +54,12 @@
     </el-row>
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+      <span>考勤统计图：</span>
+      <el-button type="primary" size="mini" @click="getMealStatisticsData">刷新</el-button>
+      <click-in-record :chart-data="clockInRecordData" />
+    </el-row>
+
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <span>饮食开销按月汇总：</span>
       <el-button type="primary" size="mini" @click="getMealStatisticsMonthData">刷新</el-button>
       <el-table
@@ -102,16 +108,20 @@ import { mapGetters } from 'vuex'
 import LineChart from '../charts/LineChart'
 import SleepChart from '../charts/sleepChart'
 import { statistics, statisticsMonth } from '@/api/day/meal'
+import { statistics as clockRecordStatistics } from '@/api/day/clockRecord'
 import { sleepStatistics, sleepStatisticsPie } from '@/api/day/sleep'
 import SleepPie from '../charts/sleepPie'
+import ClickInRecord from '@/views/charts/ClickInRecord.vue'
 
 export default {
   name: 'Dashboard',
   components: {
+    ClickInRecord,
     LineChart, SleepChart, SleepPie
   },
   data() {
     return {
+      clockInRecordData: {},
       lineChartData: {},
       mealMonthTableData: [],
       sleepChartData: [],
@@ -136,11 +146,17 @@ export default {
     this.getSleepData()
     this.getSleepPieData()
     this.getMealStatisticsMonthData()
+    this.getClockRecordStatisticsData()
   },
   methods: {
     getMealStatisticsData() {
       statistics().then(res => {
         this.lineChartData = res.data
+      })
+    },
+    getClockRecordStatisticsData() {
+      clockRecordStatistics().then(res => {
+        this.clockInRecordData = res.data
       })
     },
     getMealStatisticsMonthData() {
